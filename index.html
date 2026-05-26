@@ -19,14 +19,14 @@
             <div>
                 <h1 class="text-xs font-bold tracking-tight text-slate-400">Model Konveksi Owlet</h1>
                 <p class="text-[10px] text-emerald-400 flex items-center gap-1">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE SINKRONISASI
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE
                 </p>
             </div>
         </div>
 
         <div class="text-center md:flex-1 px-4" id="headerModelTitle">
-            <span class="text-[9px] font-bold uppercase tracking-widest text-teal-400/70 block">Nama Model</span>
-            <h2 class="text-xl font-black tracking-tight text-white uppercase mt-0.5">- MEMUAT ARTIKEL -</h2>
+            <span class="text-[9px] font-bold uppercase tracking-widest text-teal-400/70 block">Harap Tunggu</span>
+            <h2 class="text-xl font-black tracking-tight text-white uppercase mt-0.5">- MEMUAT -</h2>
         </div>
         
         <div class="w-full md:w-72 relative z-50 shrink-0">
@@ -179,7 +179,7 @@
             const totalHpp = model.items.reduce((sum, item) => sum + item.price, 0);
 
             document.getElementById('headerModelTitle').innerHTML = `
-                <span class="text-[9px] font-bold uppercase tracking-widest text-teal-400 block">Artikel Sedang Ditampilkan</span>
+                <span class="text-[9px] font-bold uppercase tracking-widest text-teal-400 block">Nama Model</span>
                 <h2 class="text-xl font-black tracking-tight text-white uppercase mt-0.5">${model.name}</h2>
             `;
 
