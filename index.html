@@ -74,6 +74,7 @@
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1L24DsxwQ0uLxblnKzJ3YzH91gnsXuEhb8OVcRsH3WNo/export?format=csv&gid=0";
 
         let database = [];
+        let highlightedIndex = -1; // Untuk melacak pilihan di dropdown
         let currentSlideIndex = 0;
         const orderedCategories = ["OBRAS", "JAHIT", "KAM", "KARET", "BIS", "NECCI", "PACKING"];
         const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=600&auto=format&fit=crop";
@@ -356,28 +357,59 @@
 
         window.searchModel = function(query) {
             const dropdown = document.getElementById('searchDropdown');
+            highlightedIndex = -1; // Reset pilihan
+            
             if (!query.trim()) { dropdown.classList.add('hidden'); return; }
 
             const results = database.filter(m => m.name.toLowerCase().includes(query.toLowerCase()));
             dropdown.innerHTML = '';
             
             if (results.length === 0) {
-                dropdown.innerHTML = '<div class="p-3 text-xs text-slate-500 italic text-center bg-slate-900">Model tidak ditemukan</div>';
+                dropdown.innerHTML = '<div class="p-3 text-xs text-slate-500 italic text-center">Tidak ditemukan</div>';
             } else {
-                results.forEach(model => {
+                results.forEach((model, index) => {
                     const div = document.createElement('div');
-                    div.className = "p-3 text-xs text-slate-300 hover:bg-slate-800 cursor-pointer transition flex justify-between items-center bg-slate-900/95 backdrop-blur";
-                    div.innerHTML = `<span class="font-bold text-slate-200 uppercase">${model.name}</span><span class="text-[10px] bg-teal-500/10 text-teal-400 px-1.5 py-0.5 rounded font-mono">Lihat →</span>`;
-                    div.onclick = () => {
-                        currentSlideIndex = database.findIndex(m => m.name === model.name);
-                        dropdown.classList.add('hidden');
-                        document.getElementById('searchInput').value = '';
-                        renderSlide();
-                    };
+                    div.className = "search-item p-3 text-xs text-slate-300 hover:bg-slate-800 cursor-pointer transition flex justify-between items-center";
+                    div.innerHTML = `<span class="font-bold uppercase">${model.name}</span>`;
+                    div.onclick = () => selectModel(model);
                     dropdown.appendChild(div);
                 });
             }
             dropdown.classList.remove('hidden');
+        }
+
+        // Fungsi bantu untuk memilih model
+        function selectModel(model) {
+            currentSlideIndex = database.findIndex(m => m.name === model.name);
+            document.getElementById('searchDropdown').classList.add('hidden');
+            document.getElementById('searchInput').value = '';
+            renderSlide();
+        }
+
+        // --- TAMBAHKAN LOGIKA NAVIGASI KEYBOARD ---
+        document.getElementById('searchInput').addEventListener('keydown', function(e) {
+            const items = document.querySelectorAll('.search-item');
+            if (items.length === 0) return;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                highlightedIndex = (highlightedIndex + 1) % items.length;
+                updateHighlight(items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                highlightedIndex = (highlightedIndex - 1 + items.length) % items.length;
+                updateHighlight(items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (highlightedIndex >= 0) items[highlightedIndex].click();
+            }
+        });
+
+        function updateHighlight(items) {
+            items.forEach((item, idx) => {
+                item.classList.toggle('bg-slate-800', idx === highlightedIndex);
+                if (idx === highlightedIndex) item.scrollIntoView({ block: 'nearest' });
+            });
         }
 
         window.nextSlide = function() { if (currentSlideIndex < database.length - 1) { currentSlideIndex++; renderSlide(); } }
