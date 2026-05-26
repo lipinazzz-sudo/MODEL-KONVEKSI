@@ -15,7 +15,7 @@
         
         <div class="absolute top-5 right-5 flex flex-col gap-2 items-end">
             <div class="text-slate-300 text-xs font-bold uppercase tracking-widest bg-slate-900/80 px-4 py-2 rounded-full border border-slate-700">
-                🔍 Klik gambar untuk Zoom 50%
+                🔍 Klik gambar untuk Zoom 100%
             </div>
             <div class="text-slate-400 text-[10px] font-bold uppercase tracking-widest bg-slate-900/80 px-4 py-1 rounded-full border border-slate-800">
                 Klik area gelap untuk menutup
@@ -109,7 +109,7 @@
 
             if (isZoomed) {
                 // Zoom 50% lebih dekat (skala 1.5)
-                modalImg.style.transform = 'scale(1.5)';
+                modalImg.style.transform = 'scale(2)';
                 modalImg.classList.remove('cursor-zoom-in');
                 modalImg.classList.add('cursor-zoom-out');
             } else {
