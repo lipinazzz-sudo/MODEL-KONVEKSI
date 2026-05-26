@@ -10,14 +10,20 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-start items-center p-6 overflow-y-auto relative">
     
-    <div id="imageModal" class="fixed inset-0 z-[200] hidden bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out overflow-hidden" onclick="closeZoom()">
-        <img id="modalImg" src="" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl transition-transform duration-300 cursor-zoom-in" onclick="toggleZoom(event)">
+    <div id="imageModal" class="fixed inset-0 z-[200] hidden bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4 overflow-hidden" onclick="closeZoom()">
+        <img id="modalImg" src="" 
+             class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl transition-transform duration-300 cursor-zoom-in relative" 
+             onclick="toggleZoom(event)"
+             onmousedown="startDrag(event)"
+             onmousemove="onDrag(event)"
+             onmouseup="endDrag()"
+             onmouseleave="endDrag()">
         
-        <div class="absolute top-5 right-5 flex flex-col gap-2 items-end">
-            <div class="text-slate-300 text-xs font-bold uppercase tracking-widest bg-slate-900/80 px-4 py-2 rounded-full border border-slate-700">
-                🔍 Klik gambar untuk Zoom 100%
+        <div class="absolute top-5 right-5 flex flex-col gap-2 items-end pointer-events-none">
+            <div class="text-slate-300 text-[11px] font-bold uppercase tracking-widest bg-slate-900/80 px-4 py-2 rounded-full border border-slate-700 backdrop-blur">
+                🔍 Klik untuk Zoom 100% | Tahan & Geser
             </div>
-            <div class="text-slate-400 text-[10px] font-bold uppercase tracking-widest bg-slate-900/80 px-4 py-1 rounded-full border border-slate-800">
+            <div class="text-slate-400 text-[9px] font-bold uppercase tracking-widest bg-slate-900/80 px-4 py-1.5 rounded-full border border-slate-800 backdrop-blur">
                 Klik area gelap untuk menutup
             </div>
         </div>
@@ -73,22 +79,32 @@
         const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=600&auto=format&fit=crop";
 
         // ==========================================
-        // FUNGSI ZOOM & FULLSCREEN
+        // FUNGSI ZOOM, FULLSCREEN & DRAG (GESER)
         // ==========================================
         let isZoomed = false;
+        let scaleValue = 1;
+        let isDragging = false;
+        let dragMoved = false; 
+        let startX, startY, translateX = 0, translateY = 0;
+
+        function updateTransform() {
+            const modalImg = document.getElementById('modalImg');
+            modalImg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleValue})`;
+        }
 
         window.openZoom = function(imgSrc) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImg');
             
             modalImg.src = imgSrc;
-            // Reset skala gambar setiap kali modal dibuka
-            modalImg.style.transform = 'scale(1)';
-            isZoomed = false;
             
-            // Atur kursor ke zoom-in saat pertama dibuka
-            modalImg.classList.remove('cursor-zoom-out');
-            modalImg.classList.add('cursor-zoom-in');
+            isZoomed = false;
+            scaleValue = 1;
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+            
+            modalImg.className = "max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl transition-transform duration-300 cursor-zoom-in relative";
 
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -101,23 +117,60 @@
         };
 
         window.toggleZoom = function(event) {
-            // event.stopPropagation() MENCEGAH MODAL TERTUTUP SAAT GAMBAR DIKLIK
             event.stopPropagation(); 
-            const modalImg = document.getElementById('modalImg');
             
+            if (dragMoved) {
+                dragMoved = false;
+                return; 
+            }
+
+            const modalImg = document.getElementById('modalImg');
             isZoomed = !isZoomed;
 
             if (isZoomed) {
-                // Zoom 50% lebih dekat (skala 1.5)
-                modalImg.style.transform = 'scale(2)';
+                scaleValue = 2; // Zoom 100%
                 modalImg.classList.remove('cursor-zoom-in');
-                modalImg.classList.add('cursor-zoom-out');
+                modalImg.classList.add('cursor-grab');
             } else {
-                // Kembali ke ukuran semula
-                modalImg.style.transform = 'scale(1)';
-                modalImg.classList.remove('cursor-zoom-out');
+                scaleValue = 1;
+                translateX = 0;
+                translateY = 0;
+                modalImg.classList.remove('cursor-grab', 'cursor-grabbing');
                 modalImg.classList.add('cursor-zoom-in');
             }
+            updateTransform();
+        };
+
+        window.startDrag = function(event) {
+            if (!isZoomed) return;
+            event.preventDefault(); 
+            isDragging = true;
+            dragMoved = false; 
+            
+            startX = event.clientX - translateX;
+            startY = event.clientY - translateY;
+            
+            const modalImg = document.getElementById('modalImg');
+            modalImg.classList.replace('cursor-grab', 'cursor-grabbing');
+            modalImg.classList.remove('transition-transform', 'duration-300'); 
+        };
+
+        window.onDrag = function(event) {
+            if (!isDragging || !isZoomed) return;
+            dragMoved = true; 
+            
+            translateX = event.clientX - startX;
+            translateY = event.clientY - startY;
+            updateTransform();
+        };
+
+        window.endDrag = function() {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const modalImg = document.getElementById('modalImg');
+            modalImg.classList.replace('cursor-grabbing', 'cursor-grab');
+            modalImg.classList.add('transition-transform', 'duration-300'); 
         };
         // ==========================================
 
