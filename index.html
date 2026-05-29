@@ -421,7 +421,17 @@
                 if (idx === highlightedIndex) item.scrollIntoView({ block: 'nearest' });
             });
         }
+document.addEventListener('keydown', function(event) {
+    if (document.activeElement === document.getElementById('searchInput')) {
+        return; 
+    }
 
+    if (event.key === 'ArrowRight') {
+        nextSlide();
+    } else if (event.key === 'ArrowLeft') {
+        prevSlide();
+    }
+});
         window.nextSlide = function() { if (currentSlideIndex < database.length - 1) { currentSlideIndex++; renderSlide(); } }
         window.prevSlide = function() { if (currentSlideIndex > 0) { currentSlideIndex--; renderSlide(); } }
 
