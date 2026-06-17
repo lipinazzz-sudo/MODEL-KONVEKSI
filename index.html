@@ -8,22 +8,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=400;600;700;800&display=swap" rel="stylesheet">
     <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-start items-center p-6 overflow-y-auto relative">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-start items-center p-4 md:p-6 overflow-x-hidden relative">
     
-    <div id="imageModal" class="fixed inset-0 z-[200] hidden bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4 overflow-hidden" onclick="closeZoom()">
+    <div id="imageModal" class="fixed inset-0 z-[200] hidden bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4 overflow-hidden touch-none" onclick="closeZoom()">
         <img id="modalImg" src="" 
              class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl transition-transform duration-300 cursor-zoom-in relative" 
              onclick="toggleZoom(event)"
              onmousedown="startDrag(event)"
              onmousemove="onDrag(event)"
              onmouseup="endDrag()"
-             onmouseleave="endDrag()">
+             onmouseleave="endDrag()"
+             ontouchstart="startDrag(event)"
+             ontouchmove="onDrag(event)"
+             ontouchend="endDrag()">
         
         <div class="absolute top-5 right-5 flex flex-col gap-2 items-end pointer-events-none">
-            <div class="text-slate-300 text-[11px] font-bold uppercase tracking-widest bg-slate-900/80 px-4 py-2 rounded-full border border-slate-700 backdrop-blur">
+            <div class="text-slate-300 text-[10px] md:text-[11px] font-bold uppercase tracking-widest bg-slate-900/80 px-3 md:px-4 py-2 rounded-full border border-slate-700 backdrop-blur">
                 🔍 Klik untuk Zoom 100% | Tahan & Geser
             </div>
-            <div class="text-slate-400 text-[9px] font-bold uppercase tracking-widest bg-slate-900/80 px-4 py-1.5 rounded-full border border-slate-800 backdrop-blur">
+            <div class="text-slate-400 text-[8px] md:text-[9px] font-bold uppercase tracking-widest bg-slate-900/80 px-3 md:px-4 py-1.5 rounded-full border border-slate-800 backdrop-blur">
                 Klik area gelap untuk menutup
             </div>
         </div>
@@ -32,12 +35,11 @@
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(20,184,166,0.04),transparent_50%)] pointer-events-none"></div>
 
     <header class="w-full max-w-7xl flex flex-col md:flex-row justify-between items-center gap-4 mb-6 relative z-50 bg-slate-900/40 border border-slate-900 p-4 rounded-2xl backdrop-blur-sm">
-        
-        <div class="flex items-center gap-3 shrink-0">
+        <div class="flex items-center gap-3 shrink-0 w-full md:w-auto justify-center md:justify-start">
             <div class="w-10 h-10 rounded-full bg-teal-500/10 border border-slate-800 flex items-center justify-center text-lg">🦉</div>
             <div>
                 <h1 class="text-xs font-bold tracking-tight text-slate-400">Model Konveksi Owlet</h1>
-                <p class="text-[10px] text-emerald-400 flex items-center gap-1">
+                <p class="text-[10px] text-emerald-400 flex items-center gap-1 justify-center md:justify-start">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> LIVE
                 </p>
             </div>
@@ -51,13 +53,13 @@
         <div class="w-full md:w-72 relative z-50 shrink-0">
             <div class="relative">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-500 text-sm">🔍</span>
-                <input type="text" id="searchInput" oninput="searchModel(this.value)" placeholder="Cari nama model pakaian..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-teal-500/50 transition">
+                <input type="text" id="searchInput" oninput="searchModel(this.value)" placeholder="Cari nama model pakaian..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2.5 md:py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-teal-500/50 transition">
             </div>
             <div id="searchDropdown" class="absolute left-0 right-0 mt-1 bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-2xl hidden z-50 max-h-60 overflow-y-auto divide-y divide-slate-800/60"></div>
         </div>
     </header>
 
-    <div id="slideContainer" class="w-full max-w-7xl bg-slate-900 border border-slate-800/80 rounded-2xl shadow-2xl p-6 relative z-10 min-h-[500px] flex flex-col justify-center">
+    <div id="slideContainer" class="w-full max-w-7xl bg-slate-900 border border-slate-800/80 rounded-2xl shadow-2xl relative z-10 min-h-[400px] md:min-h-[500px] flex flex-col justify-center transition-all duration-300">
         <div class="text-center py-24 text-slate-400 text-sm flex flex-col items-center gap-3">
             <div class="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
             Mendownload & mensinkronisasi data dari Google Sheets Cloud...
@@ -65,26 +67,26 @@
     </div>
 
     <nav class="mt-6 flex items-center gap-4 z-30 bg-slate-900/90 backdrop-blur border border-slate-800/80 p-1.5 rounded-full shadow-2xl sticky bottom-4 transition-all duration-300">
-    <button type="button" onclick="prevSlide()" aria-label="Model Sebelumnya" 
-            class="w-9 h-9 flex items-center justify-center rounded-full border border-slate-800 bg-slate-950 text-slate-400 hover:text-teal-400 hover:border-teal-500/30 active:scale-90 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500/40">
-        <span class="text-base font-bold select-none">←</span>
-    </button>
-    
-    <span class="text-[11px] font-bold text-slate-400 tracking-widest uppercase px-2 select-none" id="slideIndicator">
-        Memuat...
-    </span>
-    
-    <button type="button" onclick="nextSlide()" aria-label="Model Selanjutnya" 
-            class="w-9 h-9 flex items-center justify-center rounded-full border border-slate-800 bg-slate-950 text-slate-400 hover:text-teal-400 hover:border-teal-500/30 active:scale-90 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500/40">
-        <span class="text-base font-bold select-none">→</span>
-    </button>
-</nav>
+        <button type="button" onclick="prevSlide()" aria-label="Model Sebelumnya" 
+                class="w-10 h-10 md:w-9 md:h-9 flex items-center justify-center rounded-full border border-slate-800 bg-slate-950 text-slate-400 hover:text-teal-400 hover:border-teal-500/30 active:scale-90 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500/40">
+            <span class="text-base font-bold select-none">←</span>
+        </button>
+        
+        <span class="text-[11px] font-bold text-slate-400 tracking-widest uppercase px-2 select-none" id="slideIndicator">
+            Memuat...
+        </span>
+        
+        <button type="button" onclick="nextSlide()" aria-label="Model Selanjutnya" 
+                class="w-10 h-10 md:w-9 md:h-9 flex items-center justify-center rounded-full border border-slate-800 bg-slate-950 text-slate-400 hover:text-teal-400 hover:border-teal-500/30 active:scale-90 transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500/40">
+            <span class="text-base font-bold select-none">→</span>
+        </button>
+    </nav>
 
     <script>
         const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1L24DsxwQ0uLxblnKzJ3YzH91gnsXuEhb8OVcRsH3WNo/export?format=csv&gid=0";
 
         let database = [];
-        let highlightedIndex = -1; // Untuk melacak pilihan di dropdown
+        let highlightedIndex = -1;
         let currentSlideIndex = 0;
         const orderedCategories = ["OBRAS", "JAHIT", "KAM", "KARET", "BIS", "NECCI", "PACKING"];
         const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=600&auto=format&fit=crop";
@@ -108,7 +110,6 @@
             const modalImg = document.getElementById('modalImg');
             
             modalImg.src = imgSrc;
-            
             isZoomed = false;
             scaleValue = 1;
             translateX = 0;
@@ -116,24 +117,21 @@
             updateTransform();
             
             modalImg.className = "max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl transition-transform duration-300 cursor-zoom-in relative";
-
             modal.classList.remove('hidden');
             modal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; 
         };
 
         window.closeZoom = function() {
             const modal = document.getElementById('imageModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
+            document.body.style.overflow = ''; 
         };
 
         window.toggleZoom = function(event) {
             event.stopPropagation(); 
-            
-            if (dragMoved) {
-                dragMoved = false;
-                return; 
-            }
+            if (dragMoved) { dragMoved = false; return; }
 
             const modalImg = document.getElementById('modalImg');
             isZoomed = !isZoomed;
@@ -154,12 +152,16 @@
 
         window.startDrag = function(event) {
             if (!isZoomed) return;
-            event.preventDefault(); 
+            if(event.cancelable) event.preventDefault(); 
+            
             isDragging = true;
             dragMoved = false; 
             
-            startX = event.clientX - translateX;
-            startY = event.clientY - translateY;
+            const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+            const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+
+            startX = clientX - translateX;
+            startY = clientY - translateY;
             
             const modalImg = document.getElementById('modalImg');
             modalImg.classList.replace('cursor-grab', 'cursor-grabbing');
@@ -170,8 +172,11 @@
             if (!isDragging || !isZoomed) return;
             dragMoved = true; 
             
-            translateX = event.clientX - startX;
-            translateY = event.clientY - startY;
+            const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+            const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+
+            translateX = clientX - startX;
+            translateY = clientY - startY;
             updateTransform();
         };
 
@@ -203,7 +208,7 @@
             if (url.includes("drive.google.com")) {
                 const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
                 if (match && match[1]) {
-                    return `https://lh3.googleusercontent.com/d/${match[1]}`;
+                    return `https://lh3.googleusercontent.com/d/$${match[1]}`;
                 }
             }
             return url;
@@ -303,7 +308,7 @@
 
             document.getElementById('headerModelTitle').innerHTML = `
                 <span class="text-[9px] font-bold uppercase tracking-widest text-teal-400 block">Nama Model</span>
-                <h2 class="text-xl font-black tracking-tight text-white uppercase mt-0.5">${model.name}</h2>
+                <h2 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase mt-0.5">${model.name}</h2>
             `;
 
             const currentImg = model.image ? model.image : DEFAULT_IMAGE;
@@ -317,47 +322,48 @@
                         catTotal += item.price;
                         rowsHtml += `
                             <tr class="border-b border-slate-800/30 hover:bg-slate-800/10 transition">
-                                <td class="py-2 px-3"><span class="text-[9px] font-bold tracking-wider px-2 py-0.5 rounded ${getCategoryStyle(item.category)}">${item.category}</span></td>
-                                <td class="py-2 px-3 text-xs text-slate-300">${item.details}</td>
-                                <td class="py-2 px-3 text-right font-mono text-slate-300 text-xs">Rp ${item.price.toLocaleString('id-ID')}</td>
+                                <td class="py-2.5 md:py-2 px-2 md:px-3 whitespace-nowrap"><span class="text-[9px] font-bold tracking-wider px-2 py-0.5 rounded ${getCategoryStyle(item.category)}">${item.category}</span></td>
+                                <td class="py-2.5 md:py-2 px-2 md:px-3 text-xs text-slate-300 min-w-[120px]">${item.details}</td>
+                                <td class="py-2.5 md:py-2 px-2 md:px-3 text-right font-mono text-slate-300 text-xs whitespace-nowrap">Rp ${item.price.toLocaleString('id-ID')}</td>
                             </tr>
                         `;
                     });
                     rowsHtml += `
                         <tr class="bg-slate-900/30 border-b border-slate-800/80 font-medium text-slate-400 text-[11px]">
-                            <td colspan="2" class="py-1.5 px-3 italic text-right">Subtotal ${cat} :</td>
-                            <td class="py-1.5 px-3 text-right font-mono text-teal-500/80 font-bold">Rp ${catTotal.toLocaleString('id-ID')}</td>
+                            <td colspan="2" class="py-2 md:py-1.5 px-3 italic text-right">Subtotal ${cat} :</td>
+                            <td class="py-2 md:py-1.5 px-3 text-right font-mono text-teal-500/80 font-bold whitespace-nowrap">Rp ${catTotal.toLocaleString('id-ID')}</td>
                         </tr>
                     `;
                 }
             });
 
-          container.innerHTML = `
-                <div class="w-full h-[500px] bg-slate-900 border border-slate-800 rounded-2xl p-6 flex gap-6 overflow-hidden">
+            container.innerHTML = `
+                <div class="w-full flex flex-col md:flex-row gap-4 md:gap-6 p-4 md:p-6">
                     
-                    <div class="w-2/5 h-full bg-slate-950/50 border border-slate-800 rounded-xl overflow-hidden flex items-center justify-center p-2">
+                    <div class="w-full h-56 md:w-2/5 md:h-[450px] bg-slate-950/50 border border-slate-800 rounded-xl overflow-hidden flex items-center justify-center p-2 shrink-0 relative">
+                        <span class="absolute top-2 right-2 md:hidden bg-slate-900/80 text-slate-400 text-[9px] px-2 py-1 rounded-full border border-slate-700 backdrop-blur z-10">🔍 Tap Zoom</span>
                         <img src="${currentImg}" alt="Foto" onclick="openZoom('${currentImg}')" class="w-full h-full object-contain cursor-zoom-in hover:scale-105 transition duration-500" onerror="this.src='${DEFAULT_IMAGE}'">
                     </div>
 
-                    <div class="w-3/5 h-full flex flex-col gap-3 overflow-hidden">
-                        <h3 class="text-sm font-bold text-slate-200 uppercase tracking-widest shrink-0">List Harga Kerjaan</h3>
+                    <div class="w-full md:w-3/5 flex flex-col gap-3 overflow-hidden">
+                        <h3 class="text-sm font-bold text-slate-200 uppercase tracking-widest shrink-0 text-center md:text-left mt-2 md:mt-0">List Harga Kerjaan</h3>
                         
-                        <div class="flex-1 bg-slate-950/50 border border-slate-800 rounded-xl overflow-y-auto min-h-0">
-                            <table class="w-full text-left border-collapse">
-                                <thead class="bg-slate-900/80 sticky top-0 z-10">
+                        <div class="flex-1 bg-slate-950/50 border border-slate-800 rounded-xl overflow-y-auto overflow-x-auto min-h-[250px] max-h-[350px] md:max-h-[380px]">
+                            <table class="w-full text-left border-collapse min-w-[320px]">
+                                <thead class="bg-slate-900/95 sticky top-0 z-10 backdrop-blur-sm">
                                     <tr class="text-[9px] text-slate-400 uppercase border-b border-slate-800">
-                                        <th class="py-2 px-3">Kategori</th>
-                                        <th class="py-2 px-3">Detail</th>
-                                        <th class="py-2 px-3 text-right">Harga</th>
+                                        <th class="py-2 px-2 md:px-3 whitespace-nowrap">Kategori</th>
+                                        <th class="py-2 px-2 md:px-3">Detail</th>
+                                        <th class="py-2 px-2 md:px-3 text-right whitespace-nowrap">Harga</th>
                                     </tr>
                                 </thead>
                                 <tbody>${rowsHtml}</tbody>
                             </table>
                         </div>
 
-                        <div class="bg-teal-900/20 border border-teal-500/20 p-4 rounded-xl flex justify-between items-center shrink-0">
+                        <div class="bg-teal-900/20 border border-teal-500/20 p-3 md:p-4 rounded-xl flex justify-between items-center shrink-0 mt-auto">
                             <span class="text-[10px] font-black uppercase text-teal-400">Total Keseluruhan</span>
-                            <span class="text-lg font-black text-teal-400 font-mono">Rp ${totalHpp.toLocaleString('id-ID')}</span>
+                            <span class="text-base md:text-lg font-black text-teal-400 font-mono">Rp ${totalHpp.toLocaleString('id-ID')}</span>
                         </div>
                     </div>
                 </div>
@@ -367,7 +373,7 @@
 
         window.searchModel = function(query) {
             const dropdown = document.getElementById('searchDropdown');
-            highlightedIndex = -1; // Reset pilihan
+            highlightedIndex = -1; 
             
             if (!query.trim()) { dropdown.classList.add('hidden'); return; }
 
@@ -388,7 +394,6 @@
             dropdown.classList.remove('hidden');
         }
 
-        // Fungsi bantu untuk memilih model
         function selectModel(model) {
             currentSlideIndex = database.findIndex(m => m.name === model.name);
             document.getElementById('searchDropdown').classList.add('hidden');
@@ -396,7 +401,6 @@
             renderSlide();
         }
 
-        // --- TAMBAHKAN LOGIKA NAVIGASI KEYBOARD ---
         document.getElementById('searchInput').addEventListener('keydown', function(e) {
             const items = document.querySelectorAll('.search-item');
             if (items.length === 0) return;
@@ -421,21 +425,50 @@
                 if (idx === highlightedIndex) item.scrollIntoView({ block: 'nearest' });
             });
         }
-document.addEventListener('keydown', function(event) {
-    if (document.activeElement === document.getElementById('searchInput')) {
-        return; 
-    }
 
-    if (event.key === 'ArrowRight') {
-        nextSlide();
-    } else if (event.key === 'ArrowLeft') {
-        prevSlide();
-    }
-});
+        document.addEventListener('keydown', function(event) {
+            if (document.activeElement === document.getElementById('searchInput')) return; 
+            if (event.key === 'ArrowRight') nextSlide();
+            else if (event.key === 'ArrowLeft') prevSlide();
+        });
+
         window.nextSlide = function() { if (currentSlideIndex < database.length - 1) { currentSlideIndex++; renderSlide(); } }
         window.prevSlide = function() { if (currentSlideIndex > 0) { currentSlideIndex--; renderSlide(); } }
 
         document.addEventListener('click', e => { if (!e.target.closest('#searchInput')) document.getElementById('searchDropdown').classList.add('hidden'); });
+
+        // ==========================================
+        // LOGIKA SWIPE UNTUK HP
+        // ==========================================
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', e => {
+            // Jangan deteksi swipe jika: modal foto terbuka, target adalah tabel (agar bisa geser tabel), atau target adalah input pencarian
+            if (!document.getElementById('imageModal').classList.contains('hidden')) return;
+            if (e.target.closest('table') || e.target.closest('.overflow-x-auto')) return;
+            if (e.target.closest('input')) return; 
+
+            const touchEndX = e.changedTouches[0].screenX;
+            const touchEndY = e.changedTouches[0].screenY;
+            
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+
+            // Pastikan pergerakan mendatar (horizontal) lebih besar dibanding vertikal dan jaraknya cukup (50px)
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                if (deltaX < 0) {
+                    nextSlide(); // Geser layar ke kiri -> Model Selanjutnya
+                } else {
+                    prevSlide(); // Geser layar ke kanan -> Model Sebelumnya
+                }
+            }
+        }, { passive: true });
 
         fetchSheetData();
         setInterval(fetchSheetData, 30000);
