@@ -137,7 +137,7 @@
             isZoomed = !isZoomed;
 
             if (isZoomed) {
-                scaleValue = 2; // Zoom 100%
+                scaleValue = 2;
                 modalImg.classList.remove('cursor-zoom-in');
                 modalImg.classList.add('cursor-grab');
             } else {
@@ -188,7 +188,6 @@
             modalImg.classList.replace('cursor-grabbing', 'cursor-grab');
             modalImg.classList.add('transition-transform', 'duration-300'); 
         };
-        // ==========================================
 
         function getCategoryStyle(cat) {
             const styles = {
@@ -204,15 +203,15 @@
         }
 
         function konversiLinkDrive(url) {
-    if (!url) return "";
-    if (url.includes("drive.google.com")) {
-        const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
-        if (match && match[1]) {
-            return `https://lh3.googleusercontent.com/d/${match[1]}`; 
+            if (!url) return "";
+            if (url.includes("drive.google.com")) {
+                const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+                if (match && match[1]) {
+                    return `https://lh3.googleusercontent.com/d/${match[1]}`; 
+                }
+            }
+            return url;
         }
-    }
-    return url;
-}
 
         function parseCSVToJSON(csvText) {
             const lines = csvText.split(/\r?\n/);
@@ -298,6 +297,46 @@
             }
         }
 
+        // ==========================================
+        // LOGIKA SEND WHATSAPP
+        // ==========================================
+        window.sendToWhatsApp = function() {
+            if (database.length === 0) return;
+            const model = database[currentSlideIndex];
+            const totalHpp = model.items.reduce((sum, item) => sum + item.price, 0);
+
+            // Membuat Susunan Text Rapi untuk WhatsApp (Gaya Bon/Invoice Rinci)
+            let text = `*📋 SPESIFIKASI BIAYA PROXY MODEL*\n`;
+            text += `--------------------------------------------------\n`;
+            text += `*Nama SKU/Model:* _${model.name.toUpperCase()}_\n`;
+            text += `--------------------------------------------------\n\n`;
+
+            orderedCategories.forEach(cat => {
+                const catItems = model.items.filter(item => item.category === cat);
+                if (catItems.length > 0) {
+                    text += `*🔹 KATEGORI: ${cat}*\n`;
+                    let catTotal = 0;
+                    catItems.forEach(item => {
+                        catTotal += item.price;
+                        text += `  • ${item.details} -> Rp ${item.price.toLocaleString('id-ID')}\n`;
+                    });
+                    text += `  *Subtotal ${cat}:* Rp ${catTotal.toLocaleString('id-ID')}\n\n`;
+                }
+            });
+
+            text += `--------------------------------------------------\n`;
+            text += `*💰 TOTAL HPP JASA PRODUKSI:*\n`;
+            text += `*Rp ${totalHpp.toLocaleString('id-ID')}*\n`;
+            text += `--------------------------------------------------\n`;
+            text += `_Dikirim via Aplikasi Model Konveksi Owlet_`;
+
+            // Encode text ke format URI WhatsApp
+            const urlWhatsApp = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+            
+            // Buka WhatsApp di tab baru
+            window.open(urlWhatsApp, '_blank');
+        };
+
         function renderSlide() {
             const container = document.getElementById('slideContainer');
             if (database.length === 0) return;
@@ -348,7 +387,7 @@
                     <div class="w-full md:w-3/5 flex flex-col gap-3 overflow-hidden">
                         <h3 class="text-sm font-bold text-slate-200 uppercase tracking-widest shrink-0 text-center md:text-left mt-2 md:mt-0">List Harga Kerjaan</h3>
                         
-                        <div class="flex-1 bg-slate-950/50 border border-slate-800 rounded-xl overflow-y-auto overflow-x-auto min-h-[250px] max-h-[350px] md:max-h-[380px]">
+                        <div class="flex-1 bg-slate-950/50 border border-slate-800 rounded-xl overflow-y-auto overflow-x-auto min-h-[200px] max-h-[300px] md:max-h-[320px]">
                             <table class="w-full text-left border-collapse min-w-[320px]">
                                 <thead class="bg-slate-900/95 sticky top-0 z-10 backdrop-blur-sm">
                                     <tr class="text-[9px] text-slate-400 uppercase border-b border-slate-800">
@@ -361,10 +400,17 @@
                             </table>
                         </div>
 
-                        <div class="bg-teal-900/20 border border-teal-500/20 p-3 md:p-4 rounded-xl flex justify-between items-center shrink-0 mt-auto">
-                            <span class="text-[10px] font-black uppercase text-teal-400">Total Keseluruhan</span>
-                            <span class="text-base md:text-lg font-black text-teal-400 font-mono">Rp ${totalHpp.toLocaleString('id-ID')}</span>
+                        <div class="flex flex-col gap-2 mt-auto shrink-0">
+                            <div class="bg-teal-900/20 border border-teal-500/20 p-3 md:p-4 rounded-xl flex justify-between items-center">
+                                <span class="text-[10px] font-black uppercase text-teal-400">Total Keseluruhan</span>
+                                <span class="text-base md:text-lg font-black text-teal-400 font-mono">Rp ${totalHpp.toLocaleString('id-ID')}</span>
+                            </div>
+
+                            <button onclick="sendToWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-[0.99] text-white text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-xl shadow-lg shadow-emerald-900/20 transition flex items-center justify-center gap-2 cursor-pointer">
+                                <span>💬</span> Kirim Spesifikasi via WhatsApp
+                            </button>
                         </div>
+
                     </div>
                 </div>
             `;
@@ -437,9 +483,7 @@
 
         document.addEventListener('click', e => { if (!e.target.closest('#searchInput')) document.getElementById('searchDropdown').classList.add('hidden'); });
 
-        // ==========================================
         // LOGIKA SWIPE UNTUK HP
-        // ==========================================
         let touchStartX = 0;
         let touchStartY = 0;
 
@@ -449,9 +493,8 @@
         }, { passive: true });
 
         document.addEventListener('touchend', e => {
-            // Jangan deteksi swipe jika: modal foto terbuka, target adalah tabel (agar bisa geser tabel), atau target adalah input pencarian
             if (!document.getElementById('imageModal').classList.contains('hidden')) return;
-            if (e.target.closest('table') || e.target.closest('.overflow-x-auto')) return;
+            if (e.target.closest('table') || e.target.closest('.overflow-x-auto') || e.target.closest('button')) return;
             if (e.target.closest('input')) return; 
 
             const touchEndX = e.changedTouches[0].screenX;
@@ -460,12 +503,11 @@
             const deltaX = touchEndX - touchStartX;
             const deltaY = touchEndY - touchStartY;
 
-            // Pastikan pergerakan mendatar (horizontal) lebih besar dibanding vertikal dan jaraknya cukup (50px)
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
                 if (deltaX < 0) {
-                    nextSlide(); // Geser layar ke kiri -> Model Selanjutnya
+                    nextSlide();
                 } else {
-                    prevSlide(); // Geser layar ke kanan -> Model Sebelumnya
+                    prevSlide();
                 }
             }
         }, { passive: true });
