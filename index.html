@@ -105,7 +105,7 @@
     </nav>
 
     <script>
-        const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1L24DsxwQ0uLxblnKzJ3YzH91gnsXuEhb8OVcRsH3WNo/export?format=csv&gid=0";
+        const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1L24DsxwQ0uLxblnKzJ3YzH91gnsXuEhb8OVcRsH3WNo/edit?gid=0#gid=0";
 
         let database = [], highlightedIndex = -1, currentSlideIndex = 0, currentTotalHPP = 0;
         const orderedCategories = ["OBRAS", "JAHIT", "KAM", "KARET", "BIS", "NECCI", "PACKING"];
@@ -283,14 +283,14 @@
                 }
             });
             text += `--------------------------------------------------\n`;
-            text += `*🛠️ TOTAL HPP PRODUKSI : Rp ${currentTotalHPP.toLocaleString('id-ID')}*\n`;
+            text += `*🛠️ TOTAL PRODUKSI : Rp ${currentTotalHPP.toLocaleString('id-ID')}*\n`;
             
             if (model.hargaJual > 0) {
-                text += `*🏷️ HARGA JUAL SATUAN : Rp ${model.hargaJual.toLocaleString('id-ID')}*\n`;
+                text += `*🏷️ HARGA JUAL : Rp ${model.hargaJual.toLocaleString('id-ID')}*\n`;
             }
             
             text += `--------------------------------------------------\n`;
-            text += `_Dihasilkan via Aplikasi Owlet Konveksi_`;
+            text += `_Dikirim via Aplikasi Owlet_`;
             
             return text;
         }
