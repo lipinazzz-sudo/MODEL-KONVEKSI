@@ -185,41 +185,59 @@
             const lines = csvText.split(/\r?\n/); const modelsMap = {};
             const delimiter = (lines[0] || "").includes(";") ? ";" : ",";
 
-            for (let i = 1; i < lines.length; i++) {
-                let line = lines[i].trim(); if (!line) continue;
-                let columns = [], inQuotes = false, currentColumn = "";
-                for (let j = 0; j < line.length; j++) {
-                    let char = line[j];
-                    if (char === '"') inQuotes = !inQuotes;
-                    else if (char === delimiter && !inQuotes) { columns.push(currentColumn.trim()); currentColumn = ""; }
-                    else currentColumn += char;
-                }
-                columns.push(currentColumn.trim());
-                if (columns.length < 4) continue;
-
-                const modelName = columns[0].replace(/^"|"$/g, '').trim();
-                const category = columns[1].replace(/^"|"$/g, '').trim().toUpperCase();
-                const details = columns[2].replace(/^"|"$/g, '').trim();
-                const price = parseInt(columns[3].replace(/[^0-9]/g, '')) || 0;
-                let imageUrl = (columns[4] && columns[4].trim()) ? columns[4].replace(/^"|"$/g, '').trim() : "";
-                
-                // MENGAMBIL HARGA JUAL DARI KOLOM KE-6 (Index 5)
-                let hargaJual = parseInt((columns[5] || "").replace(/[^0-9]/g, '')) || 0;
-
-                if (!modelName) continue;
-                if (!modelsMap[modelName]) {
-                    modelsMap[modelName] = { name: modelName, items: [], image: "", hargaJual: hargaJual };
-                } else {
-                    // Update harga jual jika di baris sebelumnya 0, tapi di baris ini ada isinya
-                    if (modelsMap[modelName].hargaJual === 0 && hargaJual > 0) {
-                        modelsMap[modelName].hargaJual = hargaJual;
-                    }
-                }
-                
-                modelsMap[modelName].items.push({ category, details, price });
-                if (imageUrl && !modelsMap[modelName].image) modelsMap[modelName].image = konversiLinkDrive(imageUrl);
+            // 1. PASTIKAN FUNGSI INI ADA DI LUAR parseCSVToJSON
+        function konversiLinkDrive(url) {
+            if (!url) return "";
+            // Jika link adalah Google Drive, ubah ke direct image
+            if (url.includes('drive.google.com/file/d/')) {
+                const id = url.split('/d/')[1].split('/')[0];
+                return `https://drive.google.com/uc?export=view&id=${id}`;
             }
-            return Object.values(modelsMap);
+            return url; // Jika sudah link gambar langsung (jpg/png)
+        }
+
+        // 2. BAGIAN LOOP DI DALAM parseCSVToJSON
+        for (let i = 1; i < lines.length; i++) {
+            let line = lines[i].trim(); if (!line) continue;
+            let columns = [], inQuotes = false, currentColumn = "";
+            for (let j = 0; j < line.length; j++) {
+                let char = line[j];
+                if (char === '"') inQuotes = !inQuotes;
+                else if (char === delimiter && !inQuotes) { columns.push(currentColumn.trim()); currentColumn = ""; }
+                else currentColumn += char;
+            }
+            columns.push(currentColumn.trim());
+            if (columns.length < 4) continue;
+
+            const modelName = columns[0].replace(/^"|"$/g, '').trim();
+            const category = columns[1].replace(/^"|"$/g, '').trim().toUpperCase();
+            const details = columns[2].replace(/^"|"$/g, '').trim();
+            const price = parseInt(columns[3].replace(/[^0-9]/g, '')) || 0;
+            
+            // --- BAGIAN FOTO DARI KOLOM E (Index 4) ---
+            let rawImageUrl = (columns[4] && columns[4].trim()) ? columns[4].replace(/^"|"$/g, '').trim() : "";
+            
+            let hargaJual = parseInt((columns[5] || "").replace(/[^0-9]/g, '')) || 0;
+
+            if (!modelName) continue;
+            
+            if (!modelsMap[modelName]) {
+                // Konversi di sini saat pertama kali model ditemukan
+                modelsMap[modelName] = { 
+                    name: modelName, 
+                    items: [], 
+                    image: konversiLinkDrive(rawImageUrl), // KONVERSI TERJADI DI SINI
+                    hargaJual: hargaJual 
+                };
+            } else {
+                if (modelsMap[modelName].hargaJual === 0 && hargaJual > 0) {
+                    modelsMap[modelName].hargaJual = hargaJual;
+                }
+            }
+            
+            modelsMap[modelName].items.push({ category, details, price });
+        }
+        return Object.values(modelsMap);
         }
 
         async function fetchSheetData(isManual = false) {
