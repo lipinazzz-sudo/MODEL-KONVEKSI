@@ -26,7 +26,6 @@
     
     <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[300] flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- Modal Zoom -->
     <div id="imageModal" class="fixed inset-0 z-[200] hidden bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4 overflow-hidden touch-none" onclick="closeZoom()">
         <img id="modalImg" src="" 
              class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl transition-transform duration-300 cursor-zoom-in relative" 
@@ -40,10 +39,8 @@
         </div>
     </div>
 
-    <!-- Background Ambient -->
     <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(20,184,166,0.06),transparent_50%)] pointer-events-none"></div>
 
-    <!-- Header -->
     <header class="w-full max-w-7xl flex flex-col md:flex-row justify-between items-center gap-4 mb-6 relative z-50 bg-slate-900/70 border border-slate-800 p-4 rounded-2xl backdrop-blur-xl shadow-2xl">
         <div class="flex items-center gap-3 shrink-0 w-full md:w-auto justify-center md:justify-start">
             <div class="w-11 h-11 rounded-full bg-gradient-to-br from-teal-500/20 to-emerald-500/10 border border-teal-500/30 flex items-center justify-center text-xl shadow-[0_0_20px_rgba(20,184,166,0.15)]">🦉</div>
@@ -72,10 +69,8 @@
         </div>
     </header>
 
-    <!-- Kontainer Utama -->
     <div id="slideWrapper" class="w-full max-w-7xl bg-slate-900/60 backdrop-blur-lg border border-slate-800/80 rounded-2xl shadow-2xl relative z-10 min-h-[400px] md:min-h-[500px] flex flex-col justify-center overflow-hidden">
         <div id="slideContainer" class="slide-content w-full h-full transition-all duration-300">
-            <!-- Loading Skeleton -->
             <div class="w-full h-full flex flex-col md:flex-row gap-6 p-6 animate-pulse">
                 <div class="w-full md:w-2/5 h-64 md:h-[450px] bg-slate-800/50 rounded-xl"></div>
                 <div class="w-full md:w-3/5 flex flex-col gap-4">
@@ -87,7 +82,6 @@
         </div>
     </div>
 
-    <!-- Navigasi Bawah -->
     <nav class="mt-6 flex items-center gap-4 z-30 bg-slate-900/80 backdrop-blur-xl border border-slate-800/80 p-1.5 rounded-full shadow-2xl sticky bottom-4 transition-all duration-300">
         <button type="button" onclick="changeSlide('prev')" aria-label="Model Sebelumnya" 
                 class="w-12 h-12 md:w-10 md:h-10 flex items-center justify-center rounded-full border border-slate-700 bg-slate-950 text-slate-300 hover:text-teal-400 hover:border-teal-500/50 hover:bg-slate-800 active:scale-90 transition-all duration-200">
@@ -175,14 +169,12 @@
         return styles[cat] ? `border ${styles[cat]}` : "bg-slate-800 text-slate-400 border border-slate-700";
     }
 
-    // Fungsi konversi dipisah ke luar agar rapi dan tidak duplikat
     function konversiLinkDrive(url) {
         if (!url) return "";
-        // Jika link berupa link share Google Drive biasa atau direct link uc
         if (url.includes("drive.google.com")) {
             let match = url.match(/\/d\/([a-zA-Z0-9-_]+)/) || url.match(/id=([a-zA-Z0-9-_]+)/);
             if (match && match[1]) {
-                return `https://lh3.googleusercontent.com/d/${match[1]}`;
+                return `https://lh3.googleusercontent.com/d/$${match[1]}`;
             }
         }
         return url; 
@@ -225,7 +217,6 @@
                 if (modelsMap[modelName].hargaJual === 0 && hargaJual > 0) {
                     modelsMap[modelName].hargaJual = hargaJual;
                 }
-                // Jika baris baru memiliki foto sedangkan objek utama belum ada fotonya
                 if (!modelsMap[modelName].image && rawImageUrl) {
                     modelsMap[modelName].image = konversiLinkDrive(rawImageUrl);
                 }
@@ -242,7 +233,6 @@
         syncStatus.className = "text-[10px] text-amber-400 font-medium flex items-center gap-1.5 justify-center md:justify-start mt-0.5";
 
         try {
-            // Mengubah URL edit sheet menjadi format ekspor CSV agar data bisa dibaca oleh script
             let csvFetchUrl = GOOGLE_SHEET_CSV_URL;
             if (csvFetchUrl.includes("/edit")) {
                 csvFetchUrl = csvFetchUrl.replace(/\/edit.*/, "/export?format=csv");
@@ -384,10 +374,11 @@
         
         if (model.hargaJual > 0) {
             const profitColor = profitKotor > 0 ? 'text-emerald-400' : (profitKotor === 0 ? 'text-slate-400' : 'text-red-400');
+            // UKURAN PROFIT KOTOR DIBESARKAN
             profitHtml = `
-                <div class="text-[9px] text-slate-400 mt-2 font-medium flex items-center justify-center gap-1.5">
-                    <span>Profit Kotor:</span>
-                    <span class="${profitColor} font-bold font-mono bg-slate-950 px-2 py-0.5 rounded border border-slate-700">Rp ${profitKotor.toLocaleString('id-ID')}</span>
+                <div class="text-xs text-slate-300 mt-3 font-medium flex items-center justify-center gap-2">
+                    <span class="uppercase tracking-wider font-bold text-[10px]">Profit Kotor:</span>
+                    <span class="${profitColor} text-base md:text-lg font-black font-mono bg-slate-950 px-3 py-1 rounded-md border border-slate-700 shadow-md drop-shadow">Rp ${profitKotor.toLocaleString('id-ID')}</span>
                 </div>
             `;
         } else {
@@ -405,7 +396,7 @@
                     <div class="bg-gradient-to-b from-slate-900 to-slate-950 border border-amber-500/30 rounded-xl p-3 shadow-lg relative overflow-hidden group text-center flex flex-col justify-center">
                         <div class="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-amber-500/5 to-amber-500/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                         <span class="text-[10px] font-bold uppercase tracking-widest text-amber-500/80 block mb-1">Harga Jual</span>
-                        <div class="text-2xl font-black text-amber-400 font-mono drop-shadow-md">${textHargaJual}</div>
+                        <div class="text-lg md:text-xl font-bold text-amber-400/90 font-mono drop-shadow-sm">${textHargaJual}</div>
                         ${profitHtml}
                     </div>
                 </div>
@@ -413,7 +404,6 @@
                 <div class="w-full md:w-3/5 flex flex-col gap-3 overflow-hidden">
                     <div class="flex items-center justify-between mt-2 md:mt-0 shrink-0">
                         <h3 class="text-sm font-bold text-slate-200 uppercase tracking-widest flex items-center gap-2 before:content-[''] before:block before:w-2 before:h-2 before:bg-teal-500 before:rounded-full">Rincian HPP Produksi</h3>
-                        <span class="text-xs font-mono font-bold text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-md border border-teal-500/20 shadow-sm">Total HPP: Rp ${currentTotalHPP.toLocaleString('id-ID')}</span>
                     </div>
                     
                     <div class="flex-1 bg-slate-950/60 border border-slate-800 rounded-2xl overflow-y-auto overflow-x-auto min-h-[200px] max-h-[300px] md:max-h-[380px] shadow-inner">
@@ -429,13 +419,19 @@
                         </table>
                     </div>
 
-                    <div class="flex gap-2 mt-auto shrink-0 pt-2">
-                        <button onclick="copyDataToClipboard()" class="w-1/4 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 text-sm font-bold rounded-xl shadow-lg transition-all flex items-center justify-center border border-slate-700" title="Salin Rincian">
-                            📋
-                        </button>
-                        <button onclick="sendToWhatsApp()" class="w-3/4 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 active:scale-[0.98] text-white text-[11px] font-bold uppercase tracking-wider py-3.5 px-4 rounded-xl shadow-[0_4px_15px_rgba(16,185,129,0.3)] transition-all flex items-center justify-center gap-2 border border-emerald-400/30">
-                            <span class="text-base">💬</span> Kirim SPK ke WhatsApp
-                        </button>
+                    <div class="mt-auto shrink-0 pt-2 flex flex-col gap-3">
+                        <div class="flex justify-between items-center bg-teal-500/10 px-4 py-2.5 rounded-xl border border-teal-500/20 shadow-sm">
+                            <span class="text-xs font-bold text-slate-300 uppercase tracking-widest">Total HPP Produksi</span>
+                            <span class="text-sm md:text-base font-mono font-bold text-teal-400">Rp ${currentTotalHPP.toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="copyDataToClipboard()" class="w-1/4 bg-slate-800 hover:bg-slate-700 active:scale-95 text-slate-300 text-sm font-bold rounded-xl shadow-lg transition-all flex items-center justify-center border border-slate-700" title="Salin Rincian">
+                                📋
+                            </button>
+                            <button onclick="sendToWhatsApp()" class="w-3/4 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 active:scale-[0.98] text-white text-[11px] font-bold uppercase tracking-wider py-3.5 px-4 rounded-xl shadow-[0_4px_15px_rgba(16,185,129,0.3)] transition-all flex items-center justify-center gap-2 border border-emerald-400/30">
+                                <span class="text-base">💬</span> Kirim SPK ke WhatsApp
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -499,20 +495,29 @@
     document.addEventListener('click', e => { if (!e.target.closest('#searchInput')) document.getElementById('searchDropdown').classList.add('hidden'); });
 
     let touchStartX = 0, touchStartY = 0;
-    document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY; }, { passive: true });
+    document.addEventListener('touchstart', e => { 
+        touchStartX = e.changedTouches[0].screenX; 
+        touchStartY = e.changedTouches[0].screenY; 
+    }, { passive: true });
+    
+    // MELENGKAPI KODE TOUCHEND YANG TERPOTONG
     document.addEventListener('touchend', e => {
         if (!document.getElementById('imageModal').classList.contains('hidden')) return;
-        if (e.target.closest('table') || e.target.closest('.overflow-x-auto') || e.target.closest('button') || e.target.closest('input')) return; 
-        const deltaX = e.changedTouches[0].screenX - touchStartX;
-        const deltaY = e.changedTouches[0].screenY - touchStartY;
-        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
-            if (deltaX < 0) changeSlide('next'); else changeSlide('prev');
+        
+        let touchEndX = e.changedTouches[0].screenX;
+        let touchEndY = e.changedTouches[0].screenY;
+        
+        // Deteksi Swipe Kiri/Kanan
+        if (touchEndX < touchStartX - 50) {
+            changeSlide('next');
+        }
+        if (touchEndX > touchStartX + 50) {
+            changeSlide('prev');
         }
     }, { passive: true });
 
-    // Inisialisasi awal
+    // Panggilan pertama untuk mengambil data dari google sheet saat aplikasi dibuka
     fetchSheetData();
-    setInterval(() => fetchSheetData(true), 180000);
-</script>
+    </script>
 </body>
 </html>
