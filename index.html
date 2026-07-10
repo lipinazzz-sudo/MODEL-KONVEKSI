@@ -244,7 +244,7 @@
             if (!csvText.trim() || csvText.includes("<!DOCTYPE html>")) throw new Error("Akses ditolak");
 
             const oldModelName = database[currentSlideIndex]?.name;
-            database = parseCSVToJSON(csvText).sort((a, b) => a.name.localeCompare(b.name));
+            database = parseCSVToJSON(csvText);
 
             if (database.length > 0) {
                 if (oldModelName) {
@@ -275,7 +275,7 @@
         if (database.length === 0) return "";
         const model = database[currentSlideIndex];
         
-        let text = `*📋 RINCIAN HARGA PRODUKSI*\n`;
+        let text = `*📋 HARGA PRODUKSI*\n`;
         text += `--------------------------------------------------\n`;
         text += `*Nama SKU/Model:* _${model.name.toUpperCase()}_\n`;
         text += `--------------------------------------------------\n\n`;
