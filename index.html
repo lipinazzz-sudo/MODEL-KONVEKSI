@@ -174,7 +174,7 @@
         if (url.includes("drive.google.com")) {
             let match = url.match(/\/d\/([a-zA-Z0-9-_]+)/) || url.match(/id=([a-zA-Z0-9-_]+)/);
             if (match && match[1]) {
-                return `https://lh3.googleusercontent.com/d/$${match[1]}`;
+                return `https://lh3.googleusercontent.com/d/{match[1]}`;
             }
         }
         return url; 
@@ -338,7 +338,7 @@
         currentTotalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
 
         document.getElementById('headerModelTitle').innerHTML = `
-            <span class="text-[9px] font-bold uppercase tracking-widest text-teal-400 block">Identitas Model</span>
+            <span class="text-[9px] font-bold uppercase tracking-widest text-teal-400 block">Nama Model</span>
             <h2 class="text-xl md:text-2xl font-black tracking-tight text-white uppercase mt-0.5 drop-shadow-md">${model.name}</h2>
         `;
 
