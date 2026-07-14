@@ -262,7 +262,7 @@
             const price = parseInt(columns[3].replace(/[^0-9]/g, '')) || 0;
             
             let rawImageUrl = (columns[4] && columns[4].trim()) ? columns[4].replace(/^"|"$/g, '').trim() : "";
-            let hargaJual = parseInt((columns[5] || "").replace(/[^0-9]/g, '')) || 0;
+            let hargaCMT = parseInt((columns[5] || "").replace(/[^0-9]/g, '')) || 0;
 
             if (!modelName) continue;
             
@@ -271,11 +271,11 @@
                     name: modelName, 
                     items: [], 
                     image: konversiLinkDrive(rawImageUrl), 
-                    hargaJual: hargaJual 
+                    hargaCMT: hargaCMT 
                 };
             } else {
-                if (modelsMap[modelName].hargaJual === 0 && hargaJual > 0) {
-                    modelsMap[modelName].hargaJual = hargaJual;
+                if (modelsMap[modelName].hargaCMT === 0 && hargaCMT > 0) {
+                    modelsMap[modelName].hargaCMT = hargaCMT;
                 }
                 if (!modelsMap[modelName].image && rawImageUrl) {
                     modelsMap[modelName].image = konversiLinkDrive(rawImageUrl);
@@ -355,8 +355,8 @@
         text += `=========================\n`;
         text += `*💖 TOTAL PRODUKSI : Rp ${currentTotalHPP.toLocaleString('id-ID')}*\n`;
         
-        if (model.hargaJual > 0) {
-            text += `*🎀 HARGA CMT : Rp ${model.hargaJual.toLocaleString('id-ID')}*\n`;
+        if (model.hargaCMT > 0) {
+            text += `*🎀 HARGA CMT : Rp ${model.hargaCMT.toLocaleString('id-ID')}*\n`;
         }
         
         text += `=========================\n`;
@@ -429,11 +429,11 @@
             }
         });
 
-        const textHargaJual = model.hargaJual > 0 ? `Rp ${model.hargaJual.toLocaleString('id-ID')}` : "Belum Set";
-        const profitKotor = model.hargaJual - currentTotalHPP;
+        const textHargaCMT = model.hargaCMT > 0 ? `Rp ${model.hargaCMT.toLocaleString('id-ID')}` : "Belum Set";
+        const profitKotor = model.hargaCMT - currentTotalHPP;
         let profitHtml = '';
         
-        if (model.hargaJual > 0) {
+        if (model.hargaCMT > 0) {
             const profitColor = profitKotor > 0 ? 'text-emerald-700 bg-emerald-100 border-emerald-300' : (profitKotor === 0 ? 'text-gray-700 bg-gray-100 border-gray-300' : 'text-red-700 bg-red-100 border-red-300');
             profitHtml = `
                 <div class="mt-4 flex flex-col items-center justify-center gap-1">
