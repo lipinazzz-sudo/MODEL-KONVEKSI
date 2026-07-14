@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Owlet Kids - Harga CMT</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Menggunakan font bulat dan lucu (Fredoka & Nunito) -->
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Nunito', sans-serif; }
@@ -24,7 +23,6 @@
         .toast-enter { transform: translateY(100%); opacity: 0; }
         .toast-show { transform: translateY(0); opacity: 1; }
 
-        /* Animasi Awan & Bintang Melayang */
         @keyframes floatSlow {
             0% { transform: translateY(0px) translateX(0px); }
             50% { transform: translateY(-15px) translateX(15px); }
@@ -38,20 +36,13 @@
         .animate-float-slow { animation: floatSlow 8s ease-in-out infinite; }
         .animate-float-fast { animation: floatFast 5s ease-in-out infinite; }
 
-        /* Efek Tombol 3D Mainan */
-        .btn-3d {
-            transition: all 0.1s;
-        }
-        .btn-3d:active {
-            transform: translateY(4px);
-            box-shadow: 0 0 0 transparent !important;
-        }
+        .btn-3d { transition: all 0.1s; }
+        .btn-3d:active { transform: translateY(4px); box-shadow: 0 0 0 transparent !important; }
     </style>
 </head>
-<!-- Background gradasi malam cerah / twilight pastel -->
 <body class="bg-gradient-to-br from-indigo-300 via-purple-300 to-blue-200 text-indigo-950 min-h-screen flex flex-col justify-start items-center p-4 md:p-6 overflow-x-hidden relative selection:bg-pink-300 selection:text-pink-900">
     
-    <!-- Dekorasi Background Malam Terang (Awan, Bintang, Bulan) Lebih Banyak -->
+    <!-- Background Dekorasi -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div class="absolute top-8 right-8 text-7xl drop-shadow-[0_0_30px_rgba(253,224,71,1)] animate-pulse">🌕</div>
         <div class="absolute top-16 left-12 text-3xl animate-ping" style="animation-duration: 3s">✨</div>
@@ -60,8 +51,6 @@
         <div class="absolute top-20 left-[-20px] text-8xl opacity-80 animate-float-slow drop-shadow-lg">☁️</div>
         <div class="absolute top-1/4 right-[-30px] text-7xl opacity-90 animate-float-slow" style="animation-delay: 2s;">☁️</div>
         <div class="absolute bottom-20 right-10 text-6xl opacity-70 animate-float-fast drop-shadow-lg">☁️</div>
-        
-        <!-- Tambahan Bintang dan Awan -->
         <div class="absolute top-10 left-1/3 text-2xl animate-pulse" style="animation-duration: 1.5s">⭐</div>
         <div class="absolute top-1/2 left-10 text-3xl animate-ping" style="animation-duration: 4s">✨</div>
         <div class="absolute bottom-1/4 right-1/4 text-2xl animate-float-slow">⭐</div>
@@ -70,16 +59,10 @@
         <div class="absolute top-5 right-1/3 text-4xl opacity-70 animate-float-fast" style="animation-delay: 0.5s;">☁️</div>
     </div>
 
-    <!-- Toast Notifikasi -->
     <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[300] flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- Modal Zoom -->
     <div id="imageModal" class="fixed inset-0 z-[200] hidden bg-indigo-950/90 backdrop-blur-sm flex items-center justify-center p-4 overflow-hidden touch-none" onclick="closeZoom()">
-        <img id="modalImg" src="" 
-             class="max-w-full max-h-[90vh] object-contain rounded-3xl shadow-[0_0_50px_rgba(255,255,255,0.3)] border-4 border-white transition-transform duration-300 cursor-zoom-in relative bg-white" 
-             onclick="toggleZoom(event)" onmousedown="startDrag(event)" onmousemove="onDrag(event)" onmouseup="endDrag()" onmouseleave="endDrag()"
-             ontouchstart="startDrag(event)" ontouchmove="onDrag(event)" ontouchend="endDrag()">
-        
+        <img id="modalImg" src="" class="max-w-full max-h-[90vh] object-contain rounded-3xl shadow-[0_0_50px_rgba(255,255,255,0.3)] border-4 border-white transition-transform duration-300 cursor-zoom-in relative bg-white" onclick="toggleZoom(event)" onmousedown="startDrag(event)" onmousemove="onDrag(event)" onmouseup="endDrag()" onmouseleave="endDrag()" ontouchstart="startDrag(event)" ontouchmove="onDrag(event)" ontouchend="endDrag()">
         <div class="absolute top-5 right-5 flex flex-col gap-2 items-end pointer-events-none">
             <div class="text-indigo-900 text-[11px] font-cute font-bold tracking-widest bg-yellow-300 px-4 py-2 rounded-full border-2 border-yellow-500 shadow-[0_4px_0_#ca8a04]">
                 🔍 Klik untuk Zoom | Tahan & Geser
@@ -104,15 +87,21 @@
             <h2 class="text-[26px] md:text-[32px] font-cute font-black text-indigo-900 mt-0.5">- MEMUAT -</h2>
         </div>
         
-        <div class="w-full md:w-80 relative z-50 shrink-0 flex gap-2">
+        <div class="w-full md:w-[380px] relative z-50 shrink-0 flex gap-2">
             <div class="relative w-full group">
                 <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-indigo-400 text-lg">🔍</span>
-                <input type="text" id="searchInput" oninput="searchModel(this.value)" placeholder="Cari model baju..." class="w-full bg-indigo-50 border-2 border-indigo-200 rounded-2xl pl-10 pr-4 py-3 text-sm font-bold text-indigo-900 placeholder-indigo-300 focus:outline-none focus:border-yellow-400 focus:ring-4 focus:ring-yellow-200/50 transition-all shadow-inner">
+                <input type="text" id="searchInput" oninput="searchModel(this.value)" placeholder="Cari model..." class="w-full bg-indigo-50 border-2 border-indigo-200 rounded-2xl pl-10 pr-4 py-3 text-sm font-bold text-indigo-900 placeholder-indigo-300 focus:outline-none focus:border-yellow-400 focus:ring-4 focus:ring-yellow-200/50 transition-all shadow-inner">
             </div>
+            
+            <!-- TOMBOL FITUR BARU: Toggle Mode Master Table -->
+            <button onclick="toggleViewMode()" class="btn-3d w-12 h-12 md:h-auto shrink-0 flex items-center justify-center bg-purple-200 border-2 border-purple-400 rounded-2xl text-purple-800 hover:bg-purple-300 shadow-[0_4px_0_#9333ea] transition-all text-xl" title="Mode Master Tabel">
+                📊
+            </button>
+            
             <button onclick="manualRefresh()" aria-label="Refresh Data" class="btn-3d w-12 h-12 md:h-auto shrink-0 flex items-center justify-center bg-yellow-300 border-2 border-yellow-400 rounded-2xl text-yellow-800 hover:bg-yellow-400 shadow-[0_4px_0_#ca8a04] transition-all text-xl" title="Sinkronisasi Ulang">
                 🔄
             </button>
-            <div id="searchDropdown" class="absolute left-0 right-14 mt-14 bg-white border-2 border-indigo-100 rounded-2xl overflow-hidden shadow-[0_15px_40px_rgba(49,46,129,0.2)] hidden z-50 max-h-60 overflow-y-auto divide-y divide-indigo-50 font-cute"></div>
+            <div id="searchDropdown" class="absolute left-0 right-[110px] mt-14 bg-white border-2 border-indigo-100 rounded-2xl overflow-hidden shadow-[0_15px_40px_rgba(49,46,129,0.2)] hidden z-50 max-h-60 overflow-y-auto divide-y divide-indigo-50 font-cute"></div>
         </div>
     </header>
 
@@ -132,7 +121,7 @@
     </div>
 
     <!-- Navigasi Bawah -->
-    <nav class="mt-8 flex items-center gap-5 z-30 bg-white/90 backdrop-blur-lg border-4 border-white p-2 rounded-full shadow-[0_10px_20px_rgba(49,46,129,0.15)] sticky bottom-4">
+    <nav class="mt-8 flex items-center gap-5 z-30 bg-white/90 backdrop-blur-lg border-4 border-white p-2 rounded-full shadow-[0_10px_20px_rgba(49,46,129,0.15)] sticky bottom-4 transition-all duration-300">
         <button type="button" onclick="changeSlide('prev')" class="btn-3d w-14 h-14 md:w-12 md:h-12 flex items-center justify-center rounded-full border-2 border-indigo-200 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 shadow-[0_4px_0_#c7d2fe] transition-all">
             <span class="text-2xl font-bold select-none">👈</span>
         </button>
@@ -150,6 +139,8 @@
     const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1L24DsxwQ0uLxblnKzJ3YzH91gnsXuEhb8OVcRsH3WNo/edit?gid=0#gid=0";
 
     let database = [], highlightedIndex = -1, currentSlideIndex = 0, currentTotalHPP = 0;
+    let isTableView = false; // State untuk Mode Master Tabel
+    
     const orderedCategories = ["OBRAS", "JAHIT", "KAM", "KARET", "BIS", "NECCI", "PACKING"];
     const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=600&auto=format&fit=crop"; 
 
@@ -198,7 +189,7 @@
         isDragging = true; dragMoved = false; 
         const clientX = event.touches ? event.touches[0].clientX : event.clientX;
         const clientY = event.touches ? event.touches[0].clientY : event.clientY;
-        startX = clientX - translateX; startY = clientY - translateY; 
+        startX = clientX - translateX; startY = clientY - startY; 
         document.getElementById('modalImg').classList.replace('cursor-grab', 'cursor-grabbing');
         document.getElementById('modalImg').classList.remove('transition-transform', 'duration-300'); 
     };
@@ -233,9 +224,7 @@
         if (!url) return "";
         if (url.includes("drive.google.com")) {
             let match = url.match(/\/d\/([a-zA-Z0-9-_]+)/) || url.match(/id=([a-zA-Z0-9-_]+)/);
-            if (match && match[1]) {
-                return `https://lh3.googleusercontent.com/d/${match[1]}`;
-            }
+            if (match && match[1]) { return `https://lh3.googleusercontent.com/d/${match[1]}`; }
         }
         return url; 
     }
@@ -260,28 +249,16 @@
             const category = columns[1].replace(/^"|"$/g, '').trim().toUpperCase();
             const details = columns[2].replace(/^"|"$/g, '').trim();
             const price = parseInt(columns[3].replace(/[^0-9]/g, '')) || 0;
-            
             let rawImageUrl = (columns[4] && columns[4].trim()) ? columns[4].replace(/^"|"$/g, '').trim() : "";
             let hargaCMT = parseInt((columns[5] || "").replace(/[^0-9]/g, '')) || 0;
 
             if (!modelName) continue;
-            
             if (!modelsMap[modelName]) {
-                modelsMap[modelName] = { 
-                    name: modelName, 
-                    items: [], 
-                    image: konversiLinkDrive(rawImageUrl), 
-                    hargaCMT: hargaCMT 
-                };
+                modelsMap[modelName] = { name: modelName, items: [], image: konversiLinkDrive(rawImageUrl), hargaCMT: hargaCMT };
             } else {
-                if (modelsMap[modelName].hargaCMT === 0 && hargaCMT > 0) {
-                    modelsMap[modelName].hargaCMT = hargaCMT;
-                }
-                if (!modelsMap[modelName].image && rawImageUrl) {
-                    modelsMap[modelName].image = konversiLinkDrive(rawImageUrl);
-                }
+                if (modelsMap[modelName].hargaCMT === 0 && hargaCMT > 0) modelsMap[modelName].hargaCMT = hargaCMT;
+                if (!modelsMap[modelName].image && rawImageUrl) modelsMap[modelName].image = konversiLinkDrive(rawImageUrl);
             }
-            
             modelsMap[modelName].items.push({ category, details, price });
         }
         return Object.values(modelsMap);
@@ -294,9 +271,7 @@
 
         try {
             let csvFetchUrl = GOOGLE_SHEET_CSV_URL;
-            if (csvFetchUrl.includes("/edit")) {
-                csvFetchUrl = csvFetchUrl.replace(/\/edit.*/, "/export?format=csv");
-            }
+            if (csvFetchUrl.includes("/edit")) { csvFetchUrl = csvFetchUrl.replace(/\/edit.*/, "/export?format=csv"); }
 
             const response = await fetch(csvFetchUrl + "&cache_buster=" + Date.now());
             if (!response.ok) throw new Error("Gagal mengambil data");
@@ -312,9 +287,10 @@
                     if (newIndex !== -1) currentSlideIndex = newIndex;
                 }
                 if(isManual) {
-                    changeSlide('none');
+                    if(!isTableView) changeSlide('none');
+                    else renderMasterTable();
                     showToast("Yay! Data terupdate!", "success");
-                } else renderSlide(false); 
+                } else renderSlide(); 
             } else {
                 document.getElementById('slideContainer').innerHTML = '<div class="text-center py-24 font-cute text-pink-500 text-lg font-bold">Ups! Tabel data kosong 🥺</div>';
             }
@@ -330,6 +306,88 @@
     }
 
     window.manualRefresh = function() { fetchSheetData(true); };
+
+    // ======= LOGIKA MASTER TABLE (BARU) =======
+    window.toggleViewMode = function() {
+        if (database.length === 0) return;
+        isTableView = !isTableView;
+        const nav = document.querySelector('nav'); 
+
+        const container = document.getElementById('slideContainer');
+        container.classList.add('slide-hidden');
+        
+        setTimeout(() => {
+            if (isTableView) {
+                nav.classList.add('hidden'); // Sembunyikan navigasi bawah saat mode tabel
+                renderMasterTable();
+            } else {
+                nav.classList.remove('hidden'); // Tampilkan navigasi saat mode slide
+                renderSlide(); 
+            }
+            container.classList.remove('slide-hidden');
+        }, 300);
+    };
+
+    function renderMasterTable() {
+        const container = document.getElementById('slideContainer');
+        
+        document.getElementById('headerModelTitle').innerHTML = `
+            <span class="text-[10px] font-bold uppercase tracking-widest text-purple-500 block mb-1">📊 Mode Ringkasan</span>
+            <h2 class="text-[26px] md:text-[32px] font-cute font-bold text-indigo-900 drop-shadow-sm">Semua Model (${database.length})</h2>
+        `;
+
+        let rows = database.map((model, idx) => {
+            const totalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
+            const selisih = model.hargaCMT - totalHPP;
+            
+            const statusSelisih = model.hargaCMT === 0 ? 
+                '<span class="text-gray-400 italic">Belum Set</span>' : 
+                (selisih > 0 ? `<span class="text-emerald-600 font-bold bg-emerald-100 px-2 py-1 rounded-lg">Rp ${selisih.toLocaleString('id-ID')}</span>` : `<span class="text-red-500 font-bold bg-red-100 px-2 py-1 rounded-lg">Rp ${selisih.toLocaleString('id-ID')}</span>`);
+            
+            const hargaCMTText = model.hargaCMT === 0 ? '<span class="text-gray-400 italic bg-gray-100 px-2 py-1 rounded-lg">0</span>' : `Rp ${model.hargaCMT.toLocaleString('id-ID')}`;
+
+            return `
+                <tr class="border-b-2 border-indigo-50 bg-white hover:bg-yellow-50 cursor-pointer transition-colors" onclick="selectModelFromTable(${idx})">
+                    <td class="py-3 px-4 font-bold text-indigo-900 rounded-l-xl">${model.name}</td>
+                    <td class="py-3 px-4 text-purple-700 font-bold font-cute whitespace-nowrap">Rp ${totalHPP.toLocaleString('id-ID')}</td>
+                    <td class="py-3 px-4 text-yellow-800 font-bold font-cute whitespace-nowrap">${hargaCMTText}</td>
+                    <td class="py-3 px-4 font-cute whitespace-nowrap rounded-r-xl">${statusSelisih}</td>
+                </tr>
+            `;
+        }).join('');
+
+        container.innerHTML = `
+            <div class="w-full h-full p-4 md:p-8 flex flex-col items-center">
+                <div class="w-full max-w-4xl bg-indigo-50/50 border-4 border-indigo-100 rounded-[2rem] overflow-hidden shadow-inner flex-1 flex flex-col min-h-[350px] max-h-[60vh]">
+                    <div class="overflow-x-auto overflow-y-auto p-2">
+                        <table class="w-full text-left border-collapse min-w-[600px]">
+                            <thead class="bg-indigo-100/90 sticky top-0 z-10 backdrop-blur-md shadow-sm rounded-xl">
+                                <tr class="text-[11px] font-cute text-indigo-800 uppercase tracking-wider">
+                                    <th class="py-4 px-4 rounded-tl-xl w-[40%]">Nama Model</th>
+                                    <th class="py-4 px-4 w-[20%]">Total HPP</th>
+                                    <th class="py-4 px-4 w-[20%]">Harga CMT</th>
+                                    <th class="py-4 px-4 rounded-tr-xl w-[20%]">Selisih</th>
+                                </tr>
+                            </thead>
+                            <tbody class="space-y-1">${rows}</tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="mt-5 text-center bg-indigo-50 px-5 py-2 rounded-full border-2 border-indigo-100 shadow-sm">
+                    <span class="text-xs font-cute text-indigo-500 font-bold">💡 Klik baris tabel model untuk melihat rincian produksinya</span>
+                </div>
+            </div>
+        `;
+    }
+
+    window.selectModelFromTable = function(index) {
+        currentSlideIndex = index;
+        isTableView = false;
+        const nav = document.querySelector('nav');
+        nav.classList.remove('hidden');
+        changeSlide('none'); 
+    };
+    // ==========================================
 
     function generateTextSummary() {
         if (database.length === 0) return "";
@@ -355,9 +413,7 @@
         text += `=========================\n`;
         text += `*💖 TOTAL PRODUKSI : Rp ${currentTotalHPP.toLocaleString('id-ID')}*\n`;
         
-        if (model.hargaCMT > 0) {
-            text += `*🎀 HARGA CMT : Rp ${model.hargaCMT.toLocaleString('id-ID')}*\n`;
-        }
+        if (model.hargaCMT > 0) { text += `*🎀 HARGA CMT : Rp ${model.hargaCMT.toLocaleString('id-ID')}*\n`; }
         
         text += `=========================\n`;
         text += `_Dikirim via Aplikasi Owlet Kids_ 🦉`;
@@ -378,7 +434,8 @@
     };
 
     window.changeSlide = function(direction) {
-        if (database.length === 0) return;
+        if (database.length === 0 || isTableView) return; // Mencegah panah bereaksi jika sedang di mode tabel
+        
         if (direction === 'next' && currentSlideIndex < database.length - 1) currentSlideIndex++;
         else if (direction === 'prev' && currentSlideIndex > 0) currentSlideIndex--;
         else if (direction === 'none') { /* Just Re-render */ }
@@ -419,7 +476,6 @@
                         </tr>
                     `;
                 });
-                // Update text subtotal agar ukurannya lebih besar
                 rowsHtml += `
                     <tr class="bg-indigo-50/80 border-b-2 border-indigo-100 font-bold text-indigo-800">
                         <td colspan="2" class="py-2.5 px-2 md:px-3 text-right text-sm">Subtotal ${cat} :</td>
@@ -445,10 +501,8 @@
             profitHtml = `<div class="text-xs text-yellow-800/60 mt-3 font-bold bg-yellow-100 px-3 py-1 rounded-full inline-block">Harga belum di set 🥺</div>`;
         }
 
-        // overflow-x-hidden mematikan geseran di HP
         container.innerHTML = `
             <div class="w-full h-full flex flex-col md:flex-row gap-6 p-5 md:p-8">
-                
                 <!-- Kiri: Gambar & Harga CMT -->
                 <div class="w-full md:w-2/5 flex flex-col gap-4">
                     <div class="w-full h-64 md:h-[380px] bg-indigo-50 border-4 border-indigo-100 rounded-[2rem] overflow-hidden flex items-center justify-center p-3 relative shadow-inner">
@@ -533,6 +587,10 @@
         currentSlideIndex = database.findIndex(m => m.name === model.name);
         document.getElementById('searchDropdown').classList.add('hidden');
         document.getElementById('searchInput').value = '';
+        
+        // Memastikan kembali ke mode slide saat mencari
+        isTableView = false; 
+        document.querySelector('nav').classList.remove('hidden');
         changeSlide('none'); 
     }
 
@@ -552,9 +610,9 @@
         });
     }
 
-    // Hanya panah keyboard yang tersisa untuk navigasi, fungsi sentuh/swipe telah dihapus
     document.addEventListener('keydown', function(event) {
-        if (document.activeElement === document.getElementById('searchInput')) return; 
+        // Blokir jika input yang sedang aktif, atau jika sedang dalam mode Master Tabel
+        if (document.activeElement === document.getElementById('searchInput') || isTableView) return; 
         if (event.key === 'ArrowRight') changeSlide('next');
         else if (event.key === 'ArrowLeft') changeSlide('prev');
     });
