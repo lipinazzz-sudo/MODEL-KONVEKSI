@@ -140,6 +140,7 @@
 
     let database = [], highlightedIndex = -1, currentSlideIndex = 0, currentTotalHPP = 0;
     let isTableView = false; // State untuk Mode Master Tabel
+    let compareSlideIndex = null; // State untuk Split View Perbandingan (null jika tidak aktif)
     
     const orderedCategories = ["OBRAS", "JAHIT", "KAM", "KARET", "BIS", "NECCI", "PACKING"];
     const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=600&auto=format&fit=crop"; 
@@ -288,7 +289,7 @@
                 }
                 if(isManual) {
                     if(!isTableView) changeSlide('none');
-                    else renderMasterTable();
+                    else renderMasterTable(document.getElementById('searchInput').value);
                     showToast("Yay! Data terupdate!", "success");
                 } else renderSlide(); 
             } else {
@@ -307,36 +308,48 @@
 
     window.manualRefresh = function() { fetchSheetData(true); };
 
-    // ======= LOGIKA MASTER TABLE (BARU) =======
+    // ======= LOGIKA MASTER TABLE & SEARCH REALTIME =======
     window.toggleViewMode = function() {
         if (database.length === 0) return;
         isTableView = !isTableView;
+        compareSlideIndex = null; // Tutup split view saat berganti mode
         const nav = document.querySelector('nav'); 
 
         const container = document.getElementById('slideContainer');
         container.classList.add('slide-hidden');
         
         setTimeout(() => {
+            const currentSearchValue = document.getElementById('searchInput').value;
             if (isTableView) {
                 nav.classList.add('hidden'); // Sembunyikan navigasi bawah saat mode tabel
-                renderMasterTable();
+                renderMasterTable(currentSearchValue);
             } else {
                 nav.classList.remove('hidden'); // Tampilkan navigasi saat mode slide
                 renderSlide(); 
             }
             container.classList.remove('slide-hidden');
+            
+            // Fokus otomatis ke input pencarian
+            const searchInput = document.getElementById('searchInput');
+            searchInput.focus();
         }, 300);
     };
 
-    function renderMasterTable() {
+    function renderMasterTable(searchQuery = '') {
         const container = document.getElementById('slideContainer');
         
+        let filteredDatabase = database;
+        if (searchQuery.trim()) {
+            filteredDatabase = database.filter(m => m.name.toLowerCase().includes(searchQuery.toLowerCase()));
+        }
+
         document.getElementById('headerModelTitle').innerHTML = `
             <span class="text-[10px] font-bold uppercase tracking-widest text-purple-500 block mb-1">📊 Mode Ringkasan</span>
-            <h2 class="text-[26px] md:text-[32px] font-cute font-bold text-indigo-900 drop-shadow-sm">Semua Model (${database.length})</h2>
+            <h2 class="text-[26px] md:text-[32px] font-cute font-bold text-indigo-900 drop-shadow-sm">Semua Model (${filteredDatabase.length})</h2>
         `;
 
-        let rows = database.map((model, idx) => {
+        let rows = filteredDatabase.map((model) => {
+            const originalIndex = database.findIndex(m => m.name === model.name);
             const totalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
             const selisih = model.hargaCMT - totalHPP;
             
@@ -347,7 +360,7 @@
             const hargaCMTText = model.hargaCMT === 0 ? '<span class="text-gray-400 italic bg-gray-100 px-2 py-1 rounded-lg">0</span>' : `Rp ${model.hargaCMT.toLocaleString('id-ID')}`;
 
             return `
-                <tr class="border-b-2 border-indigo-50 bg-white hover:bg-yellow-50 cursor-pointer transition-colors" onclick="selectModelFromTable(${idx})">
+                <tr class="border-b-2 border-indigo-50 bg-white hover:bg-yellow-50 cursor-pointer transition-colors" onclick="selectModelFromTable(${originalIndex})">
                     <td class="py-3 px-4 font-bold text-indigo-900 rounded-l-xl">${model.name}</td>
                     <td class="py-3 px-4 text-purple-700 font-bold font-cute whitespace-nowrap">Rp ${totalHPP.toLocaleString('id-ID')}</td>
                     <td class="py-3 px-4 text-yellow-800 font-bold font-cute whitespace-nowrap">${hargaCMTText}</td>
@@ -383,6 +396,8 @@
     window.selectModelFromTable = function(index) {
         currentSlideIndex = index;
         isTableView = false;
+        compareSlideIndex = null;
+        document.getElementById('searchInput').value = '';
         const nav = document.querySelector('nav');
         nav.classList.remove('hidden');
         changeSlide('none'); 
@@ -436,6 +451,10 @@
     window.changeSlide = function(direction) {
         if (database.length === 0 || isTableView) return; // Mencegah panah bereaksi jika sedang di mode tabel
         
+        if (direction !== 'none') {
+            compareSlideIndex = null; // Keluar dari mode perbandingan jika navigasi manual di klik
+        }
+
         if (direction === 'next' && currentSlideIndex < database.length - 1) currentSlideIndex++;
         else if (direction === 'prev' && currentSlideIndex > 0) currentSlideIndex--;
         else if (direction === 'none') { /* Just Re-render */ }
@@ -446,6 +465,93 @@
         setTimeout(() => { renderSlide(); container.classList.remove('slide-hidden'); }, 400); 
     };
 
+    // ======= LOGIKA PEMBUATAN COLUMN COMPACT UNTUK SPLIT VIEW =======
+    function renderSingleModelBlock(model, isCompareColumn = false) {
+        const totalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
+        const currentImg = model.image ? model.image : DEFAULT_IMAGE;
+        
+        let rowsHtml = '';
+        orderedCategories.forEach(cat => {
+            const catItems = model.items.filter(item => item.category === cat);
+            if (catItems.length > 0) {
+                let catTotal = 0;
+                catItems.forEach(item => {
+                    catTotal += item.price;
+                    rowsHtml += `
+                        <tr class="border-b border-indigo-50 bg-white">
+                            <td class="py-1 px-1.5 whitespace-nowrap"><span class="text-[8px] md:text-[9px] font-cute font-bold px-1.5 py-0.5 rounded-lg ${getCategoryStyle(item.category)}">${item.category}</span></td>
+                            <td class="py-1 px-1.5 text-[10px] md:text-xs text-indigo-800 font-bold leading-tight break-words">${item.details}</td>
+                            <td class="py-1 px-1.5 text-right font-cute font-bold text-indigo-900 text-[10px] md:text-xs whitespace-nowrap">Rp ${item.price.toLocaleString('id-ID')}</td>
+                        </tr>
+                    `;
+                });
+                rowsHtml += `
+                    <tr class="bg-indigo-50/50 font-bold text-indigo-800 text-[10px] md:text-xs">
+                        <td colspan="2" class="py-1 px-1.5 text-right">Sub ${cat}:</td>
+                        <td class="py-1 px-1.5 text-right font-cute text-pink-600">Rp ${catTotal.toLocaleString('id-ID')}</td>
+                    </tr>
+                `;
+            }
+        });
+
+        const textHargaCMT = model.hargaCMT > 0 ? `Rp ${model.hargaCMT.toLocaleString('id-ID')}` : "Belum Set";
+        const profitKotor = model.hargaCMT - totalHPP;
+        let profitHtml = '';
+        if (model.hargaCMT > 0) {
+            const profitColor = profitKotor > 0 ? 'text-emerald-700 bg-emerald-100 border-emerald-300' : (profitKotor === 0 ? 'text-gray-700 bg-gray-100 border-gray-300' : 'text-red-700 bg-red-100 border-red-300');
+            profitHtml = `<span class="${profitColor} text-[10px] md:text-xs font-cute font-bold px-2 py-0.5 rounded-full border shadow-sm">Selisih: Rp ${profitKotor.toLocaleString('id-ID')}</span>`;
+        } else {
+            profitHtml = `<span class="text-[9px] text-yellow-800 bg-yellow-100 px-2 py-0.5 rounded-full">Belum set</span>`;
+        }
+
+        return `
+            <div class="flex-1 min-w-0 bg-indigo-50/30 border-2 border-indigo-100 rounded-[1.5rem] p-2 md:p-4 flex flex-col gap-2 relative">
+                ${isCompareColumn ? `
+                    <button onclick="closeSplitView()" class="absolute top-2 right-2 z-20 bg-red-500 hover:bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-md transition-all">
+                        ❌ Tutup
+                    </button>
+                ` : ''}
+                
+                <div class="text-center bg-white/80 py-1 rounded-xl border border-indigo-100 shadow-sm">
+                    <h4 class="text-xs md:text-sm font-cute font-black text-indigo-900 uppercase tracking-wide truncate px-1">${model.name}</h4>
+                </div>
+
+                <div class="w-full h-32 md:h-52 bg-white border-2 border-indigo-100 rounded-xl overflow-hidden flex items-center justify-center p-1 relative shadow-inner shrink-0">
+                    <img src="${currentImg}" loading="lazy" alt="Foto Baju" onclick="openZoom('${currentImg}')" class="w-full h-full object-contain cursor-zoom-in rounded-lg" onerror="this.src='${DEFAULT_IMAGE}'">
+                </div>
+
+                <div class="bg-gradient-to-b from-yellow-100 to-yellow-300 border-2 border-yellow-200 rounded-xl p-2 text-center shrink-0 flex flex-col items-center justify-center gap-1">
+                    <span class="text-[9px] font-bold uppercase tracking-wider text-yellow-800">Harga CMT</span>
+                    <div class="text-sm md:text-base font-cute font-bold text-yellow-900">${textHargaCMT}</div>
+                    ${profitHtml}
+                </div>
+
+                <div class="flex-1 bg-white border-2 border-indigo-100 rounded-xl overflow-y-auto min-h-[140px] max-h-[220px] md:max-h-[300px] shadow-inner p-0.5">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-indigo-100 sticky top-0 z-10 shadow-sm">
+                            <tr class="text-[8px] md:text-[9px] font-cute text-indigo-800 uppercase">
+                                <th class="py-1 px-1.5 w-[25%]">Proses</th>
+                                <th class="py-1 px-1.5 w-[50%]">Detail</th>
+                                <th class="py-1 px-1.5 text-right w-[25%]">Tarif</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rowsHtml}</tbody>
+                    </table>
+                </div>
+
+                <div class="bg-purple-100 px-3 py-2 rounded-xl border-2 border-purple-200 shadow-sm flex justify-between items-center shrink-0">
+                    <span class="text-[9px] font-cute font-bold text-purple-800 uppercase">Total</span>
+                    <span class="text-xs md:text-sm font-cute font-bold text-purple-900 bg-white px-2 py-0.5 rounded-md border shadow-sm">Rp ${totalHPP.toLocaleString('id-ID')}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    window.closeSplitView = function() {
+        compareSlideIndex = null;
+        changeSlide('none');
+    };
+
     function renderSlide() {
         const container = document.getElementById('slideContainer');
         if (database.length === 0) return;
@@ -454,6 +560,29 @@
         const model = database[currentSlideIndex];
         currentTotalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
 
+        // JIKA SEDANG AKTIF MODE SPLIT VIEW (PERBANDINGAN)
+        if (compareSlideIndex !== null && compareSlideIndex < database.length) {
+            const compareModel = database[compareSlideIndex];
+            
+            document.getElementById('headerModelTitle').innerHTML = `
+                <span class="text-[10px] font-bold uppercase tracking-widest text-pink-500 block mb-1">⚖️ Perbandingan Model</span>
+                <h2 class="text-xl md:text-2xl font-cute font-bold text-indigo-900 drop-shadow-sm">${model.name} vs ${compareModel.name}</h2>
+            `;
+
+            container.innerHTML = `
+                <div class="w-full h-full flex flex-row gap-2 md:gap-4 p-2 md:p-6 overflow-x-hidden">
+                    ${renderSingleModelBlock(model, false)}
+                    ${renderSingleModelBlock(compareModel, true)}
+                </div>
+            `;
+            
+            document.getElementById('slideIndicator').innerHTML = `
+                <span class="bg-pink-100 text-pink-800 px-3 py-1 rounded-lg border-2 border-pink-200 shadow-sm font-cute text-xs">Mode Banding ✨</span>
+            `;
+            return;
+        }
+
+        // TAMPILAN STANDAR (SINGLE VIEW)
         document.getElementById('headerModelTitle').innerHTML = `
             <span class="text-[10px] font-bold uppercase tracking-widest text-indigo-400 block mb-1">🎀 Nama Model</span>
             <h2 class="text-[26px] md:text-[32px] font-cute font-bold text-indigo-900 drop-shadow-sm">${model.name}</h2>
@@ -563,6 +692,12 @@
     }
 
     window.searchModel = function(query) {
+        // Jika sedang dalam mode Master Table, lakukan pencarian realtime di tabel
+        if (isTableView) {
+            renderMasterTable(query);
+            return;
+        }
+
         const dropdown = document.getElementById('searchDropdown');
         highlightedIndex = -1; 
         if (!query.trim()) { dropdown.classList.add('hidden'); return; }
@@ -584,11 +719,18 @@
     }
 
     function selectModel(model) {
-        currentSlideIndex = database.findIndex(m => m.name === model.name);
+        const newIndex = database.findIndex(m => m.name === model.name);
         document.getElementById('searchDropdown').classList.add('hidden');
         document.getElementById('searchInput').value = '';
         
-        // Memastikan kembali ke mode slide saat mencari
+        // JIKA sedang di single view, klik barang baru akan langsung MENGAKTIFKAN split view perbandingan
+        if (!isTableView && newIndex !== currentSlideIndex) {
+            compareSlideIndex = newIndex;
+        } else {
+            currentSlideIndex = newIndex;
+            compareSlideIndex = null;
+        }
+
         isTableView = false; 
         document.querySelector('nav').classList.remove('hidden');
         changeSlide('none'); 
