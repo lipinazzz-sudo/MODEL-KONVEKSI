@@ -42,21 +42,35 @@
 </head>
 <body class="bg-gradient-to-br from-indigo-300 via-purple-300 to-blue-200 text-indigo-950 min-h-screen flex flex-col justify-start items-center p-4 md:p-6 overflow-x-hidden relative selection:bg-pink-300 selection:text-pink-900">
     
-    <!-- Background Dekorasi -->
+    <!-- Background Dekorasi (Lebih banyak Bintang, Awan, dan Bulan Lebih Besar) -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div class="absolute top-8 right-8 text-7xl drop-shadow-[0_0_30px_rgba(253,224,71,1)] animate-pulse">🌕</div>
+        <!-- Bulan Diperbesar (dari text-7xl ke text-[110px]) -->
+        <div class="absolute top-8 right-8 text-[110px] drop-shadow-[0_0_40px_rgba(253,224,71,0.8)] animate-pulse">🌕</div>
+        
+        <!-- Bintang -->
         <div class="absolute top-16 left-12 text-3xl animate-ping" style="animation-duration: 3s">✨</div>
         <div class="absolute top-48 right-32 text-2xl animate-pulse" style="animation-duration: 2s">⭐</div>
         <div class="absolute bottom-32 left-8 text-4xl animate-float-fast drop-shadow-md">🌟</div>
-        <div class="absolute top-20 left-[-20px] text-8xl opacity-80 animate-float-slow drop-shadow-lg">☁️</div>
-        <div class="absolute top-1/4 right-[-30px] text-7xl opacity-90 animate-float-slow" style="animation-delay: 2s;">☁️</div>
-        <div class="absolute bottom-20 right-10 text-6xl opacity-70 animate-float-fast drop-shadow-lg">☁️</div>
         <div class="absolute top-10 left-1/3 text-2xl animate-pulse" style="animation-duration: 1.5s">⭐</div>
         <div class="absolute top-1/2 left-10 text-3xl animate-ping" style="animation-duration: 4s">✨</div>
         <div class="absolute bottom-1/4 right-1/4 text-2xl animate-float-slow">⭐</div>
+        <div class="absolute top-1/4 left-1/2 text-2xl animate-pulse" style="animation-duration: 2.5s">✨</div>
+        <div class="absolute bottom-1/3 right-10 text-3xl animate-ping" style="animation-duration: 3.5s">⭐</div>
+        <div class="absolute top-2/3 left-1/4 text-xl animate-pulse" style="animation-duration: 1.8s">🌟</div>
+        <div class="absolute top-20 right-1/2 text-2xl animate-float-fast">✨</div>
+        <div class="absolute bottom-10 right-1/2 text-4xl animate-ping" style="animation-duration: 4.5s">⭐</div>
+
+        <!-- Awan -->
+        <div class="absolute top-20 left-[-20px] text-8xl opacity-80 animate-float-slow drop-shadow-lg">☁️</div>
+        <div class="absolute top-1/4 right-[-30px] text-7xl opacity-90 animate-float-slow" style="animation-delay: 2s;">☁️</div>
+        <div class="absolute bottom-20 right-10 text-6xl opacity-70 animate-float-fast drop-shadow-lg">☁️</div>
         <div class="absolute top-1/3 left-1/4 text-6xl opacity-60 animate-float-fast" style="animation-delay: 1s;">☁️</div>
         <div class="absolute bottom-10 left-1/3 text-5xl opacity-80 animate-float-slow" style="animation-delay: 3s;">☁️</div>
         <div class="absolute top-5 right-1/3 text-4xl opacity-70 animate-float-fast" style="animation-delay: 0.5s;">☁️</div>
+        <div class="absolute top-1/2 right-1/4 text-7xl opacity-60 animate-float-slow" style="animation-delay: 1.5s;">☁️</div>
+        <div class="absolute bottom-1/2 left-10 text-5xl opacity-75 animate-float-fast" style="animation-delay: 2.2s;">☁️</div>
+        <div class="absolute top-3/4 left-1/2 text-6xl opacity-65 animate-float-slow" style="animation-delay: 0.8s;">☁️</div>
+        <div class="absolute top-1/3 right-10 text-8xl opacity-50 animate-float-fast" style="animation-delay: 1.2s;">☁️</div>
     </div>
 
     <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[300] flex flex-col gap-2 pointer-events-none"></div>
@@ -160,7 +174,7 @@
         setTimeout(() => { toast.classList.remove('toast-show'); toast.classList.add('toast-enter'); setTimeout(() => toast.remove(), 300); }, 3000);
     };
 
-    // ======= PERBAIKAN DRAG & ZOOM =======
+    // LOGIKA DRAG & ZOOM
     let isZoomed = false, scaleValue = 1, isDragging = false, dragMoved = false; 
     let startX, startY, translateX = 0, translateY = 0;
 
@@ -192,11 +206,8 @@
         isDragging = true; dragMoved = false; 
         const clientX = event.touches ? event.touches[0].clientX : event.clientX;
         const clientY = event.touches ? event.touches[0].clientY : event.clientY;
-        
-        // [FIXED] Perbaikan matematika drag, menggunakan translateY alih-alih startY
         startX = clientX - translateX; 
         startY = clientY - translateY; 
-        
         document.getElementById('modalImg').classList.replace('cursor-grab', 'cursor-grabbing');
         document.getElementById('modalImg').classList.remove('transition-transform', 'duration-300'); 
     };
@@ -213,7 +224,6 @@
         const modalImg = document.getElementById('modalImg');
         modalImg.classList.replace('cursor-grabbing', 'cursor-grab'); modalImg.classList.add('transition-transform', 'duration-300'); 
     };
-    // ===================================
 
     function getCategoryStyle(cat) {
         const styles = { 
@@ -474,7 +484,7 @@
         setTimeout(() => { renderSlide(); container.classList.remove('slide-hidden'); }, 400); 
     };
 
-    // ======= TAMPILAN COLUMN COMPACT (MODE BANDING) =======
+    // ======= TAMPILAN COLUMN COMPACT (MODE BANDING) - HANYA SUBTOTAL =======
     function renderSingleModelBlock(model, isCompareColumn = false) {
         const totalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
         const currentImg = model.image ? model.image : DEFAULT_IMAGE;
@@ -484,20 +494,12 @@
             const catItems = model.items.filter(item => item.category === cat);
             if (catItems.length > 0) {
                 let catTotal = 0;
-                catItems.forEach(item => {
-                    catTotal += item.price;
-                    rowsHtml += `
-                        <tr class="border-b border-indigo-50 bg-white">
-                            <td class="py-1 px-1.5 whitespace-nowrap"><span class="text-[8px] md:text-[9px] font-cute font-bold px-1.5 py-0.5 rounded-lg ${getCategoryStyle(item.category)}">${item.category}</span></td>
-                            <td class="py-1 px-1.5 text-[10px] md:text-xs text-indigo-800 font-bold leading-tight break-words">${item.details}</td>
-                            <td class="py-1 px-1.5 text-right font-cute font-bold text-indigo-900 text-[10px] md:text-xs whitespace-nowrap">Rp ${item.price.toLocaleString('id-ID')}</td>
-                        </tr>
-                    `;
-                });
+                catItems.forEach(item => { catTotal += item.price; });
+                // Di Mode Banding, hanya munculkan satu baris per kategori (Subtotal)
                 rowsHtml += `
-                    <tr class="bg-indigo-50/50 font-bold text-indigo-800 text-[10px] md:text-xs">
-                        <td colspan="2" class="py-1 px-1.5 text-right">Sub ${cat}:</td>
-                        <td class="py-1 px-1.5 text-right font-cute text-pink-600">Rp ${catTotal.toLocaleString('id-ID')}</td>
+                    <tr class="border-b border-indigo-50 bg-white hover:bg-indigo-50/50 transition-colors">
+                        <td class="py-2.5 px-2 whitespace-nowrap w-[40%]"><span class="text-[9px] md:text-[10px] font-cute font-bold px-2 py-1 rounded-lg ${getCategoryStyle(cat)}">${cat}</span></td>
+                        <td class="py-2.5 px-2 text-right font-cute font-bold text-pink-600 text-[11px] md:text-xs whitespace-nowrap w-[60%]">Rp ${catTotal.toLocaleString('id-ID')}</td>
                     </tr>
                 `;
             }
@@ -513,7 +515,6 @@
             profitHtml = `<span class="text-[9px] text-yellow-800 bg-yellow-100 px-2 py-0.5 rounded-full">Belum set</span>`;
         }
 
-        // [FIXED] Gambar pada mode split view dihapus 'onclick' dan tidak menggunakan class zoom, tidak ada interaksi di gambar.
         return `
             <div class="flex-1 min-w-0 bg-indigo-50/30 border-2 border-indigo-100 rounded-[1.5rem] p-2 md:p-4 flex flex-col gap-2 relative">
                 ${isCompareColumn ? `
@@ -526,7 +527,7 @@
                     <h4 class="text-xs md:text-sm font-cute font-black text-indigo-900 uppercase tracking-wide truncate px-1">${model.name}</h4>
                 </div>
 
-                <div class="w-full h-32 md:h-52 bg-white border-2 border-indigo-100 rounded-xl overflow-hidden flex items-center justify-center p-1 relative shadow-inner shrink-0">
+                <div class="w-full h-32 md:h-48 bg-white border-2 border-indigo-100 rounded-xl overflow-hidden flex items-center justify-center p-1 relative shadow-inner shrink-0">
                     <img src="${currentImg}" loading="lazy" alt="Foto Baju" class="w-full h-full object-contain rounded-lg" onerror="this.src='${DEFAULT_IMAGE}'">
                 </div>
 
@@ -536,21 +537,20 @@
                     ${profitHtml}
                 </div>
 
-                <div class="flex-1 bg-white border-2 border-indigo-100 rounded-xl overflow-y-auto min-h-[140px] max-h-[220px] md:max-h-[300px] shadow-inner p-0.5">
+                <div class="flex-1 bg-white border-2 border-indigo-100 rounded-xl overflow-y-auto min-h-[120px] max-h-[180px] md:max-h-[220px] shadow-inner p-0.5">
                     <table class="w-full text-left border-collapse">
                         <thead class="bg-indigo-100 sticky top-0 z-10 shadow-sm">
-                            <tr class="text-[8px] md:text-[9px] font-cute text-indigo-800 uppercase">
-                                <th class="py-1 px-1.5 w-[25%]">Proses</th>
-                                <th class="py-1 px-1.5 w-[50%]">Detail</th>
-                                <th class="py-1 px-1.5 text-right w-[25%]">Tarif</th>
+                            <tr class="text-[9px] md:text-[10px] font-cute text-indigo-800 uppercase">
+                                <th class="py-1.5 px-2 w-[40%]">Proses</th>
+                                <th class="py-1.5 px-2 text-right w-[60%]">Subtotal</th>
                             </tr>
                         </thead>
                         <tbody>${rowsHtml}</tbody>
                     </table>
                 </div>
 
-                <div class="bg-purple-100 px-3 py-2 rounded-xl border-2 border-purple-200 shadow-sm flex justify-between items-center shrink-0">
-                    <span class="text-[9px] font-cute font-bold text-purple-800 uppercase">Total</span>
+                <div class="bg-purple-100 px-3 py-2 rounded-xl border-2 border-purple-200 shadow-sm flex justify-between items-center shrink-0 mt-auto">
+                    <span class="text-[9px] font-cute font-bold text-purple-800 uppercase">Total HPP</span>
                     <span class="text-xs md:text-sm font-cute font-bold text-purple-900 bg-white px-2 py-0.5 rounded-md border shadow-sm">Rp ${totalHPP.toLocaleString('id-ID')}</span>
                 </div>
             </div>
@@ -677,7 +677,6 @@
                 <div class="w-full md:w-2/5 flex flex-col gap-4">
                     <div class="w-full h-64 md:h-[380px] bg-indigo-50 border-4 border-indigo-100 rounded-[2rem] overflow-hidden flex items-center justify-center p-3 relative shadow-inner">
                         <span class="absolute top-4 right-4 bg-white/90 text-pink-500 text-[10px] font-cute font-bold tracking-widest px-4 py-2 rounded-full border-2 border-pink-200 backdrop-blur-md z-10 shadow-md">🔍 TAP ZOOM</span>
-                        <!-- Di Tampilan Normal, Zoom tetap aktif -->
                         <img src="${currentImg}" loading="lazy" alt="Foto Baju" onclick="openZoom('${currentImg}')" class="w-full h-full object-contain cursor-zoom-in hover:scale-105 transition duration-500 rounded-xl" onerror="this.src='${DEFAULT_IMAGE}'">
                     </div>
                     
