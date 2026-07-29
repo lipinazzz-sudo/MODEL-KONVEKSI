@@ -65,11 +65,16 @@
         <div class="absolute bottom-20 right-10 text-6xl opacity-70 animate-float-fast drop-shadow-lg">☁️</div>
         <div class="absolute top-1/3 left-1/4 text-6xl opacity-60 animate-float-fast" style="animation-delay: 1s;">☁️</div>
         <div class="absolute bottom-10 left-1/3 text-5xl opacity-80 animate-float-slow" style="animation-delay: 3s;">☁️</div>
+        <div class="absolute bottom-1/2 left-10 text-5xl opacity-75 animate-float-fast" style="animation-delay: 2.2s;">☁️</div>
+        <div class="absolute top-3/4 left-1/2 text-6xl opacity-65 animate-float-slow" style="animation-delay: 0.8s;">☁️</div>
+        <div class="absolute top-1/3 right-10 text-8xl opacity-50 animate-float-fast" style="animation-delay: 1.2s;">☁️</div>
         <div class="absolute top-5 right-1/3 text-4xl opacity-70 animate-float-fast" style="animation-delay: 0.5s;">☁️</div>
         <div class="absolute top-1/2 right-1/4 text-7xl opacity-60 animate-float-slow" style="animation-delay: 1.5s;">☁️</div>
         <div class="absolute bottom-1/2 left-10 text-5xl opacity-75 animate-float-fast" style="animation-delay: 2.2s;">☁️</div>
         <div class="absolute top-3/4 left-1/2 text-6xl opacity-65 animate-float-slow" style="animation-delay: 0.8s;">☁️</div>
         <div class="absolute top-1/3 right-10 text-8xl opacity-50 animate-float-fast" style="animation-delay: 1.2s;">☁️</div>
+        <div class="absolute bottom-20 right-10 text-6xl opacity-70 animate-float-fast drop-shadow-lg">☁️</div>
+        <div class="absolute top-1/3 left-1/4 text-6xl opacity-60 animate-float-fast" style="animation-delay: 1s;">☁️</div>
     </div>
 
     <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[300] flex flex-col gap-2 pointer-events-none"></div>
@@ -811,8 +816,7 @@ function renderSlide() {
     document.addEventListener('click', e => { if (!e.target.closest('#searchInput')) document.getElementById('searchDropdown').classList.add('hidden'); });
 
     fetchSheetData();
-       function shareScreenshotToWA() {
-    // 1. Muat library html2canvas secara otomatis jika belum ada
+      function shareScreenshotToWA() {
     if (typeof html2canvas === 'undefined') {
         const btn = event.currentTarget;
         const originalText = btn.innerHTML;
@@ -835,14 +839,13 @@ function renderSlide() {
     const profitKotor = model.hargaCMT - currentTotalHPP;
     const profitColor = profitKotor > 0 ? '#047857' : (profitKotor === 0 ? '#374151' : '#b91c1c');
 
-    // 2. Buat "Kartu Rahasia" sesuai susunan yang Anda minta
     const tempDiv = document.createElement('div');
     tempDiv.style.width = '450px';
     tempDiv.style.padding = '24px';
-    tempDiv.style.backgroundColor = '#e0e7ff'; // Warna indigo super muda
+    tempDiv.style.backgroundColor = '#e0e7ff';
     tempDiv.style.borderRadius = '24px';
     tempDiv.style.position = 'absolute';
-    tempDiv.style.left = '-9999px'; // Sembunyikan dari layar
+    tempDiv.style.left = '-9999px';
     tempDiv.style.top = '0';
     tempDiv.style.display = 'flex';
     tempDiv.style.flexDirection = 'column';
@@ -852,19 +855,16 @@ function renderSlide() {
     tempDiv.innerHTML = `
         <h2 style="margin: 0; color: #312e81; font-size: 28px; font-weight: 800; text-align: center; text-transform: capitalize;">${model.name}</h2>
         
-        <!-- Bagian Foto -->
         <div style="width: 100%; height: 400px; background: #ffffff; border-radius: 20px; padding: 12px; box-sizing: border-box; border: 4px solid #c7d2fe;">
             <img src="${model.image || DEFAULT_IMAGE}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 12px;">
         </div>
         
-        <!-- Kotak Hasil: Harga CMT -> Total Produksi -> Selisih -->
         <div style="background: linear-gradient(to bottom, #fef08a, #facc15); border: 4px solid #fde047; border-radius: 20px; padding: 20px; text-align: center;">
             <span style="font-size: 14px; font-weight: 800; color: #854d0e; letter-spacing: 1px; text-transform: uppercase;">🏷️ Harga CMT</span>
             <div style="font-size: 36px; font-weight: 900; color: #713f12; margin-top: 4px;">
                 Rp ${model.hargaCMT > 0 ? model.hargaCMT.toLocaleString('id-ID') : '0'}
             </div>
             
-            <!-- TOTAL PRODUKSI DI TENGAH -->
             <div style="margin: 20px 0; background: #ffffff; padding: 16px; border-radius: 16px; border: 2px dashed #ca8a04; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
                 <span style="font-size: 13px; font-weight: 800; color: #6b21a8; letter-spacing: 1px; text-transform: uppercase;">🧵 Total Produksi</span>
                 <div style="font-size: 26px; font-weight: 900; color: #581c87; margin-top: 4px;">
@@ -872,7 +872,6 @@ function renderSlide() {
                 </div>
             </div>
 
-            <!-- SELISIH -->
             <div style="background: rgba(255,255,255,0.4); padding: 12px; border-radius: 16px;">
                 <span style="font-size: 13px; font-weight: 800; color: #854d0e; letter-spacing: 1px; text-transform: uppercase;">💖 Selisih</span>
                 <div style="font-size: 26px; font-weight: 900; margin-top: 4px; color: ${profitColor};">
@@ -884,14 +883,12 @@ function renderSlide() {
 
     document.body.appendChild(tempDiv);
 
-    // 3. Ubah menjadi gambar
     html2canvas(tempDiv, { scale: 2, useCORS: true, backgroundColor: '#e0e7ff' }).then(canvas => {
-        document.body.removeChild(tempDiv); // Hapus kartu rahasia
+        document.body.removeChild(tempDiv);
         
         canvas.toBlob(async (blob) => {
             const file = new File([blob], `${model.name}.png`, { type: 'image/png' });
             
-            // Skenario A: Untuk Pengguna HP (Buka menu Share asli bawaan HP)
             if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                 try {
                     await navigator.share({
@@ -905,20 +902,18 @@ function renderSlide() {
                 }
             }
             
-            // Skenario B: Untuk Laptop / PC (Copy otomatis ke clipboard)
+            // Langsung copy & buka WA tanpa pesan popup alert
             try {
                 await navigator.clipboard.write([
                     new ClipboardItem({ 'image/png': blob })
                 ]);
-                alert("✅ Gambar berhasil di-Copy!\n\nWhatsApp akan terbuka, silakan klik kanan 'Paste' (atau Ctrl+V) di kolom chat untuk mengirim gambarnya.");
                 window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('Berikut foto rincian untuk model: ' + model.name), '_blank');
             } catch (err) {
-                alert("Browser tidak mendukung salin gambar otomatis. Silakan screenshot manual.");
+                window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('Berikut foto rincian untuk model: ' + model.name), '_blank');
             }
         });
     }).catch(err => {
         if(document.body.contains(tempDiv)) document.body.removeChild(tempDiv);
-        alert("Gagal membuat gambar.");
         console.error(err);
     });
 }
