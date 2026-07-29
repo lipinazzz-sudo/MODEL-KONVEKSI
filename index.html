@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- PERBAIKAN MOBILE: Mencegah zoom otomatis saat klik input di HP -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Owlet Kids - Harga CMT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -10,10 +11,11 @@
         body { font-family: 'Nunito', sans-serif; }
         .font-cute { font-family: 'Fredoka', sans-serif; }
         
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        /* Kustomisasi Scrollbar agar imut */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: rgba(224, 231, 255, 0.5); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #a5b4fc; border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
-        ::-webkit-scrollbar-thumb:hover { background: #818cf8; border: 2px solid transparent; background-clip: padding-box; }
+        ::-webkit-scrollbar-thumb { background: #a5b4fc; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #818cf8; }
 
         .slide-content {
             transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -40,10 +42,10 @@
         .btn-3d:active { transform: translateY(4px); box-shadow: 0 0 0 transparent !important; }
     </style>
 </head>
-<body class="bg-gradient-to-b from-blue-400 via-blue-200 to-orange-100 text-indigo-950 min-h-screen flex flex-col justify-start items-center p-4 md:p-6 overflow-x-hidden relative selection:bg-pink-300 selection:text-pink-900">
-    <!-- Background Dekorasi (Lebih banyak Bintang, Awan, dan Bulan Lebih Besar) -->
+<body class="bg-gradient-to-b from-blue-400 via-blue-200 to-orange-100 text-indigo-950 min-h-screen flex flex-col justify-start items-center p-3 md:p-6 overflow-x-hidden relative selection:bg-pink-300 selection:text-pink-900">
+    
+    <!-- Background Dekorasi (Bintang & Awan) -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <!-- Bulan Diperbesar (dari text-7xl ke text-[110px]) -->
         <div class="absolute top-8 right-8 text-[110px] drop-shadow-[0_0_40px_rgba(253,224,71,0.8)] animate-pulse">🌕</div>
         
         <!-- Bintang -->
@@ -57,27 +59,29 @@
         <div class="absolute bottom-1/3 right-10 text-3xl animate-ping" style="animation-duration: 3.5s">⭐</div>
         <div class="absolute top-2/3 left-1/4 text-xl animate-pulse" style="animation-duration: 1.8s">🌟</div>
         <div class="absolute top-20 right-1/2 text-2xl animate-float-fast">✨</div>
+        <div class="absolute top-2/3 left-1/4 text-xl animate-pulse" style="animation-duration: 1.8s">🌟</div>
+        <div class="absolute top-20 right-1/2 text-2xl animate-float-fast">✨</div>
+        <div class="absolute top-20 right-1/2 text-2xl animate-float-fast">✨</div>
         <div class="absolute bottom-10 right-1/2 text-4xl animate-ping" style="animation-duration: 4.5s">⭐</div>
 
         <!-- Awan -->
         <div class="absolute top-20 left-[-20px] text-8xl opacity-80 animate-float-slow drop-shadow-lg">☁️</div>
+        <div class="absolute bottom-10 left-1/3 text-5xl opacity-80 animate-float-slow" style="animation-delay: 3s;">☁️</div>
+        <div class="absolute top-5 right-1/3 text-4xl opacity-70 animate-float-fast" style="animation-delay: 0.5s;">☁️</div>
+        <div class="absolute top-1/2 right-1/4 text-7xl opacity-60 animate-float-slow" style="animation-delay: 1.5s;">☁️</div>
+        <div class="absolute bottom-1/2 left-10 text-5xl opacity-75 animate-float-fast" style="animation-delay: 2.2s;">☁️</div>
         <div class="absolute top-1/4 right-[-30px] text-7xl opacity-90 animate-float-slow" style="animation-delay: 2s;">☁️</div>
         <div class="absolute bottom-20 right-10 text-6xl opacity-70 animate-float-fast drop-shadow-lg">☁️</div>
         <div class="absolute top-1/3 left-1/4 text-6xl opacity-60 animate-float-fast" style="animation-delay: 1s;">☁️</div>
         <div class="absolute bottom-10 left-1/3 text-5xl opacity-80 animate-float-slow" style="animation-delay: 3s;">☁️</div>
-        <div class="absolute bottom-1/2 left-10 text-5xl opacity-75 animate-float-fast" style="animation-delay: 2.2s;">☁️</div>
-        <div class="absolute top-3/4 left-1/2 text-6xl opacity-65 animate-float-slow" style="animation-delay: 0.8s;">☁️</div>
-        <div class="absolute top-1/3 right-10 text-8xl opacity-50 animate-float-fast" style="animation-delay: 1.2s;">☁️</div>
         <div class="absolute top-5 right-1/3 text-4xl opacity-70 animate-float-fast" style="animation-delay: 0.5s;">☁️</div>
         <div class="absolute top-1/2 right-1/4 text-7xl opacity-60 animate-float-slow" style="animation-delay: 1.5s;">☁️</div>
         <div class="absolute bottom-1/2 left-10 text-5xl opacity-75 animate-float-fast" style="animation-delay: 2.2s;">☁️</div>
         <div class="absolute top-3/4 left-1/2 text-6xl opacity-65 animate-float-slow" style="animation-delay: 0.8s;">☁️</div>
         <div class="absolute top-1/3 right-10 text-8xl opacity-50 animate-float-fast" style="animation-delay: 1.2s;">☁️</div>
-        <div class="absolute bottom-20 right-10 text-6xl opacity-70 animate-float-fast drop-shadow-lg">☁️</div>
-        <div class="absolute top-1/3 left-1/4 text-6xl opacity-60 animate-float-fast" style="animation-delay: 1s;">☁️</div>
     </div>
 
-    <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[300] flex flex-col gap-2 pointer-events-none"></div>
+    <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[300] flex flex-col gap-2 pointer-events-none w-max"></div>
 
     <!-- Modal Zoom -->
     <div id="imageModal" class="fixed inset-0 z-[200] hidden bg-indigo-950/90 backdrop-blur-sm flex items-center justify-center p-4 overflow-hidden touch-none" onclick="closeZoom()">
@@ -90,66 +94,68 @@
     </div>
 
     <!-- Header -->
-    <header class="w-full max-w-7xl flex flex-col md:flex-row justify-between items-center gap-4 mb-6 relative z-50 bg-white/85 border-4 border-white p-4 rounded-[2rem] backdrop-blur-lg shadow-[0_10px_30px_rgba(49,46,129,0.15)]">
+    <header class="w-full max-w-7xl flex flex-col md:flex-row justify-between items-center gap-4 mb-4 md:mb-6 relative z-50 bg-white/85 border-4 border-white p-3 md:p-4 rounded-[2rem] backdrop-blur-lg shadow-[0_10px_30px_rgba(49,46,129,0.15)]">
         <div class="flex items-center gap-3 shrink-0 w-full md:w-auto justify-center md:justify-start">
-            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-pink-300 to-purple-300 border-4 border-white flex items-center justify-center text-3xl shadow-lg animate-bounce" style="animation-duration: 2s;">🦉</div>
+            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-pink-300 to-purple-300 border-4 border-white flex items-center justify-center text-2xl md:text-3xl shadow-lg animate-bounce" style="animation-duration: 2s;">🦉</div>
             <div>
-                <h1 class="text-xl font-cute font-bold tracking-tight text-indigo-900 drop-shadow-sm">Owlet Kids</h1>
-                <p id="syncStatus" class="text-xs font-cute text-emerald-600 font-bold flex items-center gap-1.5 justify-center md:justify-start transition-colors mt-0.5 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200 inline-flex">
+                <h1 class="text-lg md:text-xl font-cute font-bold tracking-tight text-indigo-900 drop-shadow-sm">Owlet Kids</h1>
+                <p id="syncStatus" class="text-[10px] md:text-xs font-cute text-emerald-600 font-bold flex items-center gap-1.5 justify-center md:justify-start transition-colors mt-0.5 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200 inline-flex">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> ONLINE
                 </p>
             </div>
         </div>
 
-        <div class="text-center md:flex-1 px-4" id="headerModelTitle">
-            <span class="text-xs font-bold uppercase tracking-widest text-pink-500 block">Tunggu Sebentar...</span>
-            <h2 class="text-[26px] md:text-[32px] font-cute font-black text-indigo-900 mt-0.5">- MEMUAT -</h2>
+        <div class="text-center w-full md:flex-1 px-2 md:px-4 order-3 md:order-2 mt-2 md:mt-0" id="headerModelTitle">
+            <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-pink-500 block">Tunggu Sebentar...</span>
+            <h2 class="text-xl md:text-[32px] font-cute font-black text-indigo-900 mt-0.5">- MEMUAT -</h2>
         </div>
         
-        <div class="w-full md:w-[380px] relative z-50 shrink-0 flex gap-2">
+        <div class="w-full md:w-[380px] relative z-50 shrink-0 flex gap-2 order-2 md:order-3">
             <div class="relative w-full group">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-indigo-400 text-lg">🔍</span>
-                <input type="text" id="searchInput" oninput="searchModel(this.value)" placeholder="Cari model..." class="w-full bg-indigo-50 border-2 border-indigo-200 rounded-2xl pl-10 pr-4 py-3 text-sm font-bold text-indigo-900 placeholder-indigo-300 focus:outline-none focus:border-yellow-400 focus:ring-4 focus:ring-yellow-200/50 transition-all shadow-inner">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 md:pl-4 text-indigo-400 text-base md:text-lg">🔍</span>
+                <input type="text" id="searchInput" oninput="searchModel(this.value)" placeholder="Cari model..." class="w-full bg-indigo-50 border-2 border-indigo-200 rounded-2xl pl-9 md:pl-10 pr-3 md:pr-4 py-2.5 md:py-3 text-sm font-bold text-indigo-900 placeholder-indigo-300 focus:outline-none focus:border-yellow-400 focus:ring-4 focus:ring-yellow-200/50 transition-all shadow-inner">
             </div>
             
-            <button onclick="toggleViewMode()" class="btn-3d w-12 h-12 md:h-auto shrink-0 flex items-center justify-center bg-purple-200 border-2 border-purple-400 rounded-2xl text-purple-800 hover:bg-purple-300 shadow-[0_4px_0_#9333ea] transition-all text-xl" title="Mode Master Tabel">
+            <button onclick="toggleViewMode()" class="btn-3d w-11 h-11 md:w-12 md:h-auto shrink-0 flex items-center justify-center bg-purple-200 border-2 border-purple-400 rounded-2xl text-purple-800 hover:bg-purple-300 shadow-[0_4px_0_#9333ea] transition-all text-lg md:text-xl" title="Mode Master Tabel">
                 📊
             </button>
             
-            <button onclick="manualRefresh()" aria-label="Refresh Data" class="btn-3d w-12 h-12 md:h-auto shrink-0 flex items-center justify-center bg-yellow-300 border-2 border-yellow-400 rounded-2xl text-yellow-800 hover:bg-yellow-400 shadow-[0_4px_0_#ca8a04] transition-all text-xl" title="Sinkronisasi Ulang">
+            <button onclick="manualRefresh()" aria-label="Refresh Data" class="btn-3d w-11 h-11 md:w-12 md:h-auto shrink-0 flex items-center justify-center bg-yellow-300 border-2 border-yellow-400 rounded-2xl text-yellow-800 hover:bg-yellow-400 shadow-[0_4px_0_#ca8a04] transition-all text-lg md:text-xl" title="Sinkronisasi Ulang">
                 🔄
             </button>
-            <div id="searchDropdown" class="absolute left-0 right-[110px] mt-14 bg-white border-2 border-indigo-100 rounded-2xl overflow-hidden shadow-[0_15px_40px_rgba(49,46,129,0.2)] hidden z-50 max-h-60 overflow-y-auto divide-y divide-indigo-50 font-cute"></div>
+            
+            <!-- Dropdown Pencarian -->
+            <div id="searchDropdown" class="absolute left-0 right-[100px] md:right-[110px] mt-12 md:mt-14 bg-white border-2 border-indigo-100 rounded-2xl overflow-hidden shadow-[0_15px_40px_rgba(49,46,129,0.2)] hidden z-50 max-h-60 overflow-y-auto divide-y divide-indigo-50 font-cute"></div>
         </div>
     </header>
 
-    <!-- Kontainer Utama -->
-    <div id="slideWrapper" class="w-full max-w-7xl bg-white/90 backdrop-blur-lg border-4 border-white rounded-[2.5rem] shadow-[0_15px_40px_rgba(49,46,129,0.15)] relative z-10 min-h-[400px] md:min-h-[500px] flex flex-col justify-center overflow-hidden">
+    <!-- Kontainer Utama: Dibuat lebih adaptif untuk HP -->
+    <div id="slideWrapper" class="w-full max-w-7xl bg-white/90 backdrop-blur-lg border-4 border-white rounded-[2rem] md:rounded-[2.5rem] shadow-[0_15px_40px_rgba(49,46,129,0.15)] relative z-10 h-auto min-h-[400px] flex flex-col justify-center overflow-hidden mb-8 md:mb-0">
         <div id="slideContainer" class="slide-content w-full h-full transition-all duration-300">
             <!-- Loading Skeleton -->
-            <div class="w-full h-full flex flex-col md:flex-row gap-6 p-6 animate-pulse">
-                <div class="w-full md:w-2/5 h-64 md:h-[450px] bg-indigo-100 rounded-[2rem]"></div>
+            <div class="w-full h-full flex flex-col md:flex-row gap-6 p-4 md:p-6 animate-pulse">
+                <div class="w-full md:w-2/5 h-48 md:h-[450px] bg-indigo-100 rounded-[2rem]"></div>
                 <div class="w-full md:w-3/5 flex flex-col gap-4">
-                    <div class="h-8 w-1/3 bg-indigo-100 rounded-xl"></div>
-                    <div class="flex-1 bg-indigo-50 rounded-[2rem] min-h-[200px]"></div>
-                    <div class="h-24 bg-indigo-100 rounded-[2rem]"></div>
+                    <div class="h-6 md:h-8 w-1/3 bg-indigo-100 rounded-xl"></div>
+                    <div class="flex-1 bg-indigo-50 rounded-[2rem] min-h-[150px] md:min-h-[200px]"></div>
+                    <div class="h-20 md:h-24 bg-indigo-100 rounded-[2rem]"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Navigasi Bawah -->
-    <nav class="mt-8 flex items-center gap-5 z-30 bg-white/90 backdrop-blur-lg border-4 border-white p-2 rounded-full shadow-[0_10px_20px_rgba(49,46,129,0.15)] sticky bottom-4 transition-all duration-300">
-        <button type="button" onclick="changeSlide('prev')" class="btn-3d w-14 h-14 md:w-12 md:h-12 flex items-center justify-center rounded-full border-2 border-indigo-200 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 shadow-[0_4px_0_#c7d2fe] transition-all">
-            <span class="text-2xl font-bold select-none">👈</span>
+    <nav class="fixed md:sticky bottom-4 left-1/2 md:left-auto transform -translate-x-1/2 md:translate-x-0 md:mt-8 flex items-center gap-3 md:gap-5 z-40 bg-white/95 backdrop-blur-lg border-4 border-white p-2 rounded-full shadow-[0_10px_25px_rgba(49,46,129,0.2)] transition-all duration-300 w-max">
+        <button type="button" onclick="changeSlide('prev')" class="btn-3d w-12 h-12 flex items-center justify-center rounded-full border-2 border-indigo-200 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 shadow-[0_4px_0_#c7d2fe] transition-all">
+            <span class="text-xl md:text-2xl font-bold select-none">👈</span>
         </button>
         
-        <span class="text-sm font-cute font-bold text-indigo-500 tracking-wider px-2 select-none flex items-center gap-2" id="slideIndicator">
+        <span class="text-xs md:text-sm font-cute font-bold text-indigo-500 tracking-wider px-1 md:px-2 select-none flex items-center gap-2" id="slideIndicator">
             Memuat...
         </span>
         
-        <button type="button" onclick="changeSlide('next')" class="btn-3d w-14 h-14 md:w-12 md:h-12 flex items-center justify-center rounded-full border-2 border-indigo-200 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 shadow-[0_4px_0_#c7d2fe] transition-all">
-            <span class="text-2xl font-bold select-none">👉</span>
+        <button type="button" onclick="changeSlide('next')" class="btn-3d w-12 h-12 flex items-center justify-center rounded-full border-2 border-indigo-200 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 shadow-[0_4px_0_#c7d2fe] transition-all">
+            <span class="text-xl md:text-2xl font-bold select-none">👉</span>
         </button>
     </nav>
 
@@ -170,8 +176,8 @@
         const icon = type === "success" ? "✨" : (type === "sync" ? "🔄" : "⚠️");
         const bgColor = type === "success" ? "bg-pink-400 border-pink-500" : (type === "sync" ? "bg-blue-400 border-blue-500" : "bg-red-400 border-red-500");
         
-        toast.className = `flex items-center gap-2 px-5 py-3 rounded-full border-2 ${bgColor} text-white font-cute text-sm font-bold shadow-xl backdrop-blur-md toast-enter transition-all duration-300`;
-        toast.innerHTML = `<span class="text-lg">${icon}</span> <span>${message}</span>`;
+        toast.className = `flex items-center gap-2 px-4 md:px-5 py-2.5 md:py-3 rounded-full border-2 ${bgColor} text-white font-cute text-[11px] md:text-sm font-bold shadow-xl backdrop-blur-md toast-enter transition-all duration-300 whitespace-nowrap`;
+        toast.innerHTML = `<span class="text-base md:text-lg">${icon}</span> <span>${message}</span>`;
         
         container.appendChild(toast);
         setTimeout(() => { toast.classList.remove('toast-enter'); toast.classList.add('toast-show'); }, 10);
@@ -289,7 +295,7 @@
     async function fetchSheetData(isManual = false) {
         const syncStatus = document.getElementById('syncStatus');
         syncStatus.innerHTML = `TUNGGU YA...`;
-        syncStatus.className = "text-xs font-cute text-amber-700 font-bold bg-amber-200 px-3 py-1 rounded-full border-2 border-amber-400 mt-1 inline-block animate-pulse";
+        syncStatus.className = "text-[10px] md:text-xs font-cute text-amber-700 font-bold bg-amber-200 px-2 py-0.5 md:px-3 md:py-1 rounded-full border border-amber-400 mt-0.5 inline-block animate-pulse";
 
         try {
             let csvFetchUrl = GOOGLE_SHEET_CSV_URL;
@@ -318,11 +324,11 @@
             }
             
             syncStatus.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> ONLINE`;
-            syncStatus.className = "text-xs font-cute text-emerald-700 font-bold flex items-center gap-1.5 justify-center md:justify-start transition-colors mt-0.5 bg-emerald-100 px-3 py-1 rounded-full border-2 border-emerald-300 inline-flex shadow-sm";
+            syncStatus.className = "text-[10px] md:text-xs font-cute text-emerald-700 font-bold flex items-center gap-1.5 justify-center md:justify-start transition-colors mt-0.5 bg-emerald-100 px-2 md:px-3 py-0.5 md:py-1 rounded-full border border-emerald-300 inline-flex shadow-sm";
         } catch (error) {
             console.error(error);
             syncStatus.innerHTML = `YAHH OFFLINE 😢`;
-            syncStatus.className = "text-xs font-cute text-red-700 font-bold flex items-center gap-1.5 justify-center md:justify-start transition-colors mt-0.5 bg-red-100 px-3 py-1 rounded-full border-2 border-red-300 inline-flex shadow-sm";
+            syncStatus.className = "text-[10px] md:text-xs font-cute text-red-700 font-bold flex items-center gap-1.5 justify-center md:justify-start transition-colors mt-0.5 bg-red-100 px-2 md:px-3 py-0.5 md:py-1 rounded-full border border-red-300 inline-flex shadow-sm";
             if(isManual) showToast("Yahh gagal sinkron.", "error");
         }
     }
@@ -353,7 +359,10 @@
             
             const searchInput = document.getElementById('searchInput');
             searchInput.placeholder = "Cari model...";
-            searchInput.focus();
+            // Jangan auto-focus di Mobile agar keyboard tidak langsung muncul
+            if (window.innerWidth > 768) {
+                searchInput.focus();
+            }
         }, 300);
     };
 
@@ -366,8 +375,8 @@
         }
 
         document.getElementById('headerModelTitle').innerHTML = `
-            <span class="text-[10px] font-bold uppercase tracking-widest text-purple-500 block mb-1">📊 Mode Ringkasan</span>
-            <h2 class="text-[26px] md:text-[32px] font-cute font-bold text-indigo-900 drop-shadow-sm">Semua Model (${filteredDatabase.length})</h2>
+            <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-purple-500 block mb-0.5 md:mb-1">📊 Mode Ringkasan</span>
+            <h2 class="text-xl md:text-[32px] font-cute font-bold text-indigo-900 drop-shadow-sm">Semua Model (${filteredDatabase.length})</h2>
         `;
 
         let rows = filteredDatabase.map((model) => {
@@ -376,32 +385,40 @@
             const selisih = model.hargaCMT - totalHPP;
             
             const statusSelisih = model.hargaCMT === 0 ? 
-                '<span class="text-gray-400 italic">Belum Set</span>' : 
-                (selisih > 0 ? `<span class="text-emerald-600 font-bold bg-emerald-100 px-2 py-1 rounded-lg">Rp ${selisih.toLocaleString('id-ID')}</span>` : `<span class="text-red-500 font-bold bg-red-100 px-2 py-1 rounded-lg">Rp ${selisih.toLocaleString('id-ID')}</span>`);
+                '<span class="text-gray-400 italic text-[10px] md:text-sm">Belum Set</span>' : 
+                (selisih > 0 ? `<span class="text-emerald-600 font-bold bg-emerald-100 px-2 py-1 rounded-lg text-[10px] md:text-sm">Rp ${selisih.toLocaleString('id-ID')}</span>` : `<span class="text-red-500 font-bold bg-red-100 px-2 py-1 rounded-lg text-[10px] md:text-sm">Rp ${selisih.toLocaleString('id-ID')}</span>`);
             
-            const hargaCMTText = model.hargaCMT === 0 ? '<span class="text-gray-400 italic bg-gray-100 px-2 py-1 rounded-lg">0</span>' : `Rp ${model.hargaCMT.toLocaleString('id-ID')}`;
+            const hargaCMTText = model.hargaCMT === 0 ? '<span class="text-gray-400 italic bg-gray-100 px-2 py-1 rounded-lg text-[10px] md:text-sm">0</span>' : `Rp ${model.hargaCMT.toLocaleString('id-ID')}`;
 
             return `
                 <tr class="border-b-2 border-indigo-50 bg-white hover:bg-yellow-50 cursor-pointer transition-colors" onclick="selectModelFromTable(${originalIndex})">
-                    <td class="py-3 px-4 font-bold text-indigo-900 rounded-l-xl">${model.name}</td>
-                    <td class="py-3 px-4 text-purple-700 font-bold font-cute whitespace-nowrap">Rp ${totalHPP.toLocaleString('id-ID')}</td>
-                    <td class="py-3 px-4 text-yellow-800 font-bold font-cute whitespace-nowrap">${hargaCMTText}</td>
-                    <td class="py-3 px-4 font-cute whitespace-nowrap rounded-r-xl">${statusSelisih}</td>
+                    <td class="py-2.5 px-3 md:px-4 font-bold text-indigo-900 text-xs md:text-base rounded-l-xl">${model.name}</td>
+                    <td class="py-2.5 px-3 md:px-4 text-purple-700 font-bold font-cute whitespace-nowrap text-[11px] md:text-sm">Rp ${totalHPP.toLocaleString('id-ID')}</td>
+                    <td class="py-2.5 px-3 md:px-4 text-yellow-800 font-bold font-cute whitespace-nowrap text-[11px] md:text-sm">${hargaCMTText}</td>
+                    <td class="py-2.5 px-3 md:px-4 font-cute whitespace-nowrap rounded-r-xl">${statusSelisih}</td>
                 </tr>
             `;
         }).join('');
 
         container.innerHTML = `
-            <div class="w-full h-full p-4 md:p-8 flex flex-col items-center">
-                <div class="w-full max-w-4xl bg-indigo-50/50 border-4 border-indigo-100 rounded-[2rem] overflow-hidden shadow-inner flex-1 flex flex-col min-h-[350px] max-h-[60vh]">
-                    <div class="overflow-x-auto overflow-y-auto p-2">
-                        <table class="w-full text-left border-collapse min-w-[600px]">
+            <div class="w-full h-full p-2 md:p-6 flex flex-col items-center">
+                <div class="w-full max-w-4xl bg-indigo-50/50 border-4 border-indigo-100 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden shadow-inner flex-1 flex flex-col min-h-[350px] max-h-[70vh]">
+                    <div class="overflow-x-auto overflow-y-auto p-1 md:p-2">
+                        <table class="w-full text-left border-collapse min-w-[450px] md:min-w-[600px]">
+                            <thead class="bg-indigo-100/80 sticky top-0 backdrop-blur-sm z-10 text-[10px] md:text-xs text-indigo-800 uppercase font-bold tracking-wider">
+                                <tr>
+                                    <th class="py-2 px-3 md:px-4 rounded-tl-xl">Nama Model</th>
+                                    <th class="py-2 px-3 md:px-4">Total HPP</th>
+                                    <th class="py-2 px-3 md:px-4">Harga CMT</th>
+                                    <th class="py-2 px-3 md:px-4 rounded-tr-xl">Status</th>
+                                </tr>
+                            </thead>
                             <tbody class="space-y-1">${rows}</tbody>
                         </table>
                     </div>
                 </div>
-                <div class="mt-5 text-center bg-indigo-50 px-5 py-2 rounded-full border-2 border-indigo-100 shadow-sm">
-                    <span class="text-xs font-cute text-indigo-500 font-bold">💡 Klik baris model untuk menjadikannya pilihan banding pertama</span>
+                <div class="mt-4 md:mt-5 text-center bg-indigo-50 px-4 md:px-5 py-2 rounded-full border-2 border-indigo-100 shadow-sm">
+                    <span class="text-[10px] md:text-xs font-cute text-indigo-500 font-bold">💡 Klik baris model untuk menjadikannya pilihan banding pertama</span>
                 </div>
             </div>
         `;
@@ -421,7 +438,7 @@
         setTimeout(() => {
             const searchInput = document.getElementById('searchInput');
             searchInput.placeholder = "Cari model kedua...";
-            searchInput.focus();
+            if (window.innerWidth > 768) searchInput.focus();
         }, 400);
     };
 
@@ -488,7 +505,7 @@
         setTimeout(() => { renderSlide(); container.classList.remove('slide-hidden'); }, 400); 
     };
 
-    // ======= TAMPILAN COLUMN COMPACT (MODE BANDING) - HANYA SUBTOTAL =======
+    // ======= TAMPILAN COLUMN COMPACT (MODE BANDING) =======
     function renderSingleModelBlock(model, isCompareColumn = false) {
         const totalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
         const currentImg = model.image ? model.image : DEFAULT_IMAGE;
@@ -499,11 +516,10 @@
             if (catItems.length > 0) {
                 let catTotal = 0;
                 catItems.forEach(item => { catTotal += item.price; });
-                // Di Mode Banding, hanya munculkan satu baris per kategori (Subtotal)
                 rowsHtml += `
                     <tr class="border-b border-indigo-50 bg-white hover:bg-indigo-50/50 transition-colors">
-                        <td class="py-2.5 px-2 whitespace-nowrap w-[40%]"><span class="text-[9px] md:text-[10px] font-cute font-bold px-2 py-1 rounded-lg ${getCategoryStyle(cat)}">${cat}</span></td>
-                        <td class="py-2.5 px-2 text-right font-cute font-bold text-pink-600 text-[11px] md:text-xs whitespace-nowrap w-[60%]">Rp ${catTotal.toLocaleString('id-ID')}</td>
+                        <td class="py-2 px-1 md:px-2 whitespace-nowrap w-[40%]"><span class="text-[8px] md:text-[10px] font-cute font-bold px-2 py-1 rounded-lg ${getCategoryStyle(cat)}">${cat}</span></td>
+                        <td class="py-2 px-1 md:px-2 text-right font-cute font-bold text-pink-600 text-[10px] md:text-xs whitespace-nowrap w-[60%]">Rp ${catTotal.toLocaleString('id-ID')}</td>
                     </tr>
                 `;
             }
@@ -514,48 +530,48 @@
         let profitHtml = '';
         if (model.hargaCMT > 0) {
             const profitColor = profitKotor > 0 ? 'text-emerald-700 bg-emerald-100 border-emerald-300' : (profitKotor === 0 ? 'text-gray-700 bg-gray-100 border-gray-300' : 'text-red-700 bg-red-100 border-red-300');
-            profitHtml = `<span class="${profitColor} text-[10px] md:text-xs font-cute font-bold px-2 py-0.5 rounded-full border shadow-sm">Selisih: Rp ${profitKotor.toLocaleString('id-ID')}</span>`;
+            profitHtml = `<span class="${profitColor} text-[9px] md:text-[11px] font-cute font-bold px-2 py-0.5 rounded-full border shadow-sm mt-1 inline-block">Selisih: Rp ${profitKotor.toLocaleString('id-ID')}</span>`;
         } else {
-            profitHtml = `<span class="text-[9px] text-yellow-800 bg-yellow-100 px-2 py-0.5 rounded-full">Belum set</span>`;
+            profitHtml = `<span class="text-[8px] md:text-[9px] text-yellow-800 bg-yellow-100 px-2 py-0.5 rounded-full mt-1 inline-block">Belum set</span>`;
         }
 
         return `
-            <div class="flex-1 min-w-0 bg-indigo-50/30 border-2 border-indigo-100 rounded-[1.5rem] p-2 md:p-4 flex flex-col gap-2 relative">
+            <div class="flex-1 min-w-[140px] md:min-w-0 bg-indigo-50/30 border-2 border-indigo-100 rounded-[1.5rem] p-2 md:p-4 flex flex-col gap-2 relative">
                 ${isCompareColumn ? `
-                    <button onclick="closeSplitView()" class="absolute top-2 right-2 z-20 bg-red-500 hover:bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-md transition-all">
-                        ❌ Tutup
+                    <button onclick="closeSplitView()" class="absolute -top-2 -right-2 md:top-2 md:right-2 z-20 bg-red-500 hover:bg-red-600 text-white text-[9px] md:text-[10px] font-bold px-2 py-1 md:px-2.5 rounded-full shadow-md transition-all">
+                        ❌ Batal
                     </button>
                 ` : ''}
                 
-                <div class="text-center bg-white/80 py-1 rounded-xl border border-indigo-100 shadow-sm">
-                    <h4 class="text-xs md:text-sm font-cute font-black text-indigo-900 uppercase tracking-wide truncate px-1">${model.name}</h4>
+                <div class="text-center bg-white/80 py-1.5 rounded-xl border border-indigo-100 shadow-sm mt-1 md:mt-0">
+                    <h4 class="text-[10px] md:text-sm font-cute font-black text-indigo-900 uppercase tracking-wide truncate px-1">${model.name}</h4>
                 </div>
 
-                <div class="w-full h-32 md:h-48 bg-white border-2 border-indigo-100 rounded-xl overflow-hidden flex items-center justify-center p-1 relative shadow-inner shrink-0">
+                <div class="w-full h-24 md:h-48 bg-white border-2 border-indigo-100 rounded-xl overflow-hidden flex items-center justify-center p-1 relative shadow-inner shrink-0">
                     <img src="${currentImg}" loading="lazy" alt="Foto Baju" class="w-full h-full object-contain rounded-lg" onerror="this.src='${DEFAULT_IMAGE}'">
                 </div>
 
-                <div class="bg-gradient-to-b from-yellow-100 to-yellow-300 border-2 border-yellow-200 rounded-xl p-2 text-center shrink-0 flex flex-col items-center justify-center gap-1">
-                    <span class="text-[9px] font-bold uppercase tracking-wider text-yellow-800">Harga CMT</span>
-                    <div class="text-sm md:text-base font-cute font-bold text-yellow-900">${textHargaCMT}</div>
+                <div class="bg-gradient-to-b from-yellow-100 to-yellow-300 border-2 border-yellow-200 rounded-xl p-1.5 md:p-2 text-center shrink-0 flex flex-col items-center justify-center">
+                    <span class="text-[8px] md:text-[9px] font-bold uppercase tracking-wider text-yellow-800 block mb-0.5">Harga CMT</span>
+                    <div class="text-[11px] md:text-base font-cute font-bold text-yellow-900">${textHargaCMT}</div>
                     ${profitHtml}
                 </div>
 
-                <div class="flex-1 bg-white border-2 border-indigo-100 rounded-xl overflow-y-auto min-h-[120px] max-h-[180px] md:max-h-[220px] shadow-inner p-0.5">
+                <div class="flex-1 bg-white border-2 border-indigo-100 rounded-xl overflow-y-auto min-h-[100px] max-h-[160px] md:max-h-[220px] shadow-inner p-0.5">
                     <table class="w-full text-left border-collapse">
                         <thead class="bg-indigo-100 sticky top-0 z-10 shadow-sm">
-                            <tr class="text-[9px] md:text-[10px] font-cute text-indigo-800 uppercase">
-                                <th class="py-1.5 px-2 w-[40%]">Proses</th>
-                                <th class="py-1.5 px-2 text-right w-[60%]">Subtotal</th>
+                            <tr class="text-[8px] md:text-[10px] font-cute text-indigo-800 uppercase">
+                                <th class="py-1 px-1.5 md:px-2 w-[40%]">Proses</th>
+                                <th class="py-1 px-1.5 md:px-2 text-right w-[60%]">Subtotal</th>
                             </tr>
                         </thead>
                         <tbody>${rowsHtml}</tbody>
                     </table>
                 </div>
 
-                <div class="bg-purple-100 px-3 py-2 rounded-xl border-2 border-purple-200 shadow-sm flex justify-between items-center shrink-0 mt-auto">
-                    <span class="text-[9px] font-cute font-bold text-purple-800 uppercase">Total HPP</span>
-                    <span class="text-xs md:text-sm font-cute font-bold text-purple-900 bg-white px-2 py-0.5 rounded-md border shadow-sm">Rp ${totalHPP.toLocaleString('id-ID')}</span>
+                <div class="bg-purple-100 p-1.5 md:p-2 rounded-xl border-2 border-purple-200 shadow-sm flex flex-col md:flex-row justify-between items-center text-center md:text-left shrink-0 mt-auto gap-1">
+                    <span class="text-[8px] md:text-[9px] font-cute font-bold text-purple-800 uppercase">Total HPP</span>
+                    <span class="text-[10px] md:text-sm font-cute font-bold text-purple-900 bg-white px-2 py-0.5 rounded-md border shadow-sm whitespace-nowrap">Rp ${totalHPP.toLocaleString('id-ID')}</span>
                 </div>
             </div>
         `;
@@ -568,7 +584,7 @@
         changeSlide('none');
     };
 
-function renderSlide() {
+    function renderSlide() {
         const container = document.getElementById('slideContainer');
         if (database.length === 0) return;
         if (currentSlideIndex >= database.length) currentSlideIndex = database.length - 1;
@@ -580,28 +596,27 @@ function renderSlide() {
         if (compareActive) {
             if (compareSlideIndex === -1) {
                 document.getElementById('headerModelTitle').innerHTML = `
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-pink-500 block mb-1">⚖️ Mode Banding</span>
-                    <h2 class="text-xl md:text-2xl font-cute font-bold text-indigo-900 drop-shadow-sm">${model.name} vs ...</h2>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-pink-500 block mb-0.5 md:mb-1">⚖️ Mode Banding</span>
+                    <h2 class="text-lg md:text-2xl font-cute font-bold text-indigo-900 drop-shadow-sm truncate">${model.name} vs ...</h2>
                 `;
 
                 container.innerHTML = `
-                    <div class="w-full h-full flex flex-row gap-2 md:gap-4 p-2 md:p-6 overflow-x-hidden">
-                        ${renderSingleModelBlock(model, false)}
+                    <div class="w-full h-full flex flex-row gap-2 md:gap-4 p-2 md:p-6 overflow-x-auto md:overflow-hidden snap-x">
+                        <div class="snap-center shrink-0 w-[48%] md:w-auto md:flex-1">${renderSingleModelBlock(model, false)}</div>
                         
-                        <!-- Placeholder Pembanding -->
-                        <div class="flex-1 min-w-0 bg-white border-4 border-dashed border-indigo-200 rounded-[1.5rem] p-6 flex flex-col items-center justify-center text-center gap-4 relative shadow-inner">
-                            <button onclick="closeSplitView()" class="absolute top-3 right-3 z-20 bg-red-500 hover:bg-red-600 text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-md transition-all">
+                        <div class="snap-center shrink-0 w-[48%] md:w-auto md:flex-1 min-w-[140px] bg-white border-4 border-dashed border-indigo-200 rounded-[1.5rem] p-4 flex flex-col items-center justify-center text-center gap-3 relative shadow-inner">
+                            <button onclick="closeSplitView()" class="absolute -top-2 -right-2 md:top-3 md:right-3 z-20 bg-red-500 hover:bg-red-600 text-white text-[9px] md:text-[11px] font-bold px-2 py-1 md:px-3 md:py-1.5 rounded-full shadow-md transition-all">
                                 ❌ Batal
                             </button>
-                            <div class="text-5xl animate-bounce" style="animation-duration: 2s">🔍</div>
-                            <h4 class="text-sm md:text-base font-cute font-black text-indigo-900 uppercase">Cari Model Kedua</h4>
-                            <p class="text-xs text-indigo-500 font-cute font-bold max-w-[220px] leading-relaxed">Ketik nama model kedua pada kolom pencarian di kanan atas untuk membandingkan!</p>
+                            <div class="text-3xl md:text-5xl animate-bounce" style="animation-duration: 2s">🔍</div>
+                            <h4 class="text-[10px] md:text-base font-cute font-black text-indigo-900 uppercase">Cari Model Kedua</h4>
+                            <p class="text-[8px] md:text-xs text-indigo-500 font-cute font-bold max-w-[220px] leading-relaxed hidden md:block">Ketik nama model kedua pada kolom pencarian di kanan atas untuk membandingkan!</p>
                         </div>
                     </div>
                 `;
                 
                 document.getElementById('slideIndicator').innerHTML = `
-                    <span class="bg-pink-100 text-pink-800 px-3 py-1 rounded-lg border-2 border-pink-200 shadow-sm font-cute text-xs">Pilih Pembanding... ⚖️</span>
+                    <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-lg border-2 border-pink-200 shadow-sm font-cute text-[10px] md:text-xs whitespace-nowrap">Pilih Pembanding... ⚖️</span>
                 `;
                 return;
             } 
@@ -609,19 +624,19 @@ function renderSlide() {
                 const compareModel = database[compareSlideIndex];
                 
                 document.getElementById('headerModelTitle').innerHTML = `
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-pink-500 block mb-1">⚖️ Perbandingan Model</span>
-                    <h2 class="text-xl md:text-2xl font-cute font-bold text-indigo-900 drop-shadow-sm">${model.name} vs ${compareModel.name}</h2>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-pink-500 block mb-0.5 md:mb-1">⚖️ Perbandingan Model</span>
+                    <h2 class="text-sm md:text-2xl font-cute font-bold text-indigo-900 drop-shadow-sm truncate">${model.name} vs ${compareModel.name}</h2>
                 `;
 
                 container.innerHTML = `
-                    <div class="w-full h-full flex flex-row gap-2 md:gap-4 p-2 md:p-6 overflow-x-hidden">
-                        ${renderSingleModelBlock(model, false)}
-                        ${renderSingleModelBlock(compareModel, true)}
+                    <div class="w-full h-full flex flex-row gap-2 md:gap-4 p-2 md:p-6 overflow-x-auto md:overflow-hidden snap-x">
+                        <div class="snap-center shrink-0 w-[48%] md:w-auto md:flex-1">${renderSingleModelBlock(model, false)}</div>
+                        <div class="snap-center shrink-0 w-[48%] md:w-auto md:flex-1">${renderSingleModelBlock(compareModel, true)}</div>
                     </div>
                 `;
                 
                 document.getElementById('slideIndicator').innerHTML = `
-                    <span class="bg-pink-100 text-pink-800 px-3 py-1 rounded-lg border-2 border-pink-200 shadow-sm font-cute text-xs">Mode Banding ✨</span>
+                    <span class="bg-pink-100 text-pink-800 px-2 py-1 rounded-lg border-2 border-pink-200 shadow-sm font-cute text-[10px] md:text-xs whitespace-nowrap">Mode Banding ✨</span>
                 `;
                 return;
             }
@@ -629,8 +644,8 @@ function renderSlide() {
 
         // ==== TAMPILAN SINGLE (NORMAL) ====
         document.getElementById('headerModelTitle').innerHTML = `
-            <span class="text-[10px] font-bold uppercase tracking-widest text-indigo-400 block mb-1">🎀 Nama Model</span>
-            <h2 class="text-[26px] md:text-[32px] font-cute font-bold text-indigo-900 drop-shadow-sm">${model.name}</h2>
+            <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-indigo-400 block mb-0.5 md:mb-1">🎀 Nama Model</span>
+            <h2 class="text-xl md:text-[32px] font-cute font-bold text-indigo-900 drop-shadow-sm">${model.name}</h2>
         `;
 
         const currentImg = model.image ? model.image : DEFAULT_IMAGE;
@@ -644,16 +659,16 @@ function renderSlide() {
                     catTotal += item.price;
                     rowsHtml += `
                         <tr class="border-b border-indigo-50 hover:bg-indigo-50/50 transition-colors bg-white">
-                            <td class="py-3 px-3 md:px-4 align-middle"><span class="text-[9px] md:text-[10px] font-cute font-bold tracking-wider px-2.5 py-1 rounded-xl shadow-sm ${getCategoryStyle(item.category)}">${item.category}</span></td>
-                            <td class="py-3 px-3 md:px-4 text-xs md:text-sm text-indigo-800 font-bold leading-snug break-words align-middle">${item.details}</td>
-                            <td class="py-3 px-3 md:px-4 text-right font-cute font-bold text-indigo-900 text-xs md:text-sm whitespace-nowrap align-middle">Rp ${item.price.toLocaleString('id-ID')}</td>
+                            <td class="py-2.5 md:py-3 px-2 md:px-4 align-middle"><span class="text-[8px] md:text-[10px] font-cute font-bold tracking-wider px-2 md:px-2.5 py-1 rounded-xl shadow-sm ${getCategoryStyle(item.category)}">${item.category}</span></td>
+                            <td class="py-2.5 md:py-3 px-2 md:px-4 text-[11px] md:text-sm text-indigo-800 font-bold leading-snug break-words align-middle">${item.details}</td>
+                            <td class="py-2.5 md:py-3 px-2 md:px-4 text-right font-cute font-bold text-indigo-900 text-[11px] md:text-sm whitespace-nowrap align-middle">Rp ${item.price.toLocaleString('id-ID')}</td>
                         </tr>
                     `;
                 });
                 rowsHtml += `
                     <tr class="bg-indigo-50/60 border-b-2 border-indigo-100 font-bold text-indigo-800">
-                        <td colspan="2" class="py-2.5 px-3 md:px-4 text-right text-xs">Subtotal ${cat} :</td>
-                        <td class="py-2.5 px-3 md:px-4 text-right font-cute text-pink-600 font-bold whitespace-nowrap text-sm md:text-base">Rp ${catTotal.toLocaleString('id-ID')}</td>
+                        <td colspan="2" class="py-2 px-2 md:px-4 text-right text-[10px] md:text-xs">Subtotal ${cat} :</td>
+                        <td class="py-2 px-2 md:px-4 text-right font-cute text-pink-600 font-bold whitespace-nowrap text-xs md:text-base">Rp ${catTotal.toLocaleString('id-ID')}</td>
                     </tr>
                 `;
             }
@@ -666,257 +681,234 @@ function renderSlide() {
         if (model.hargaCMT > 0) {
             const profitColor = profitKotor > 0 ? 'text-emerald-700 bg-emerald-100 border-emerald-300' : (profitKotor === 0 ? 'text-gray-700 bg-gray-100 border-gray-300' : 'text-red-700 bg-red-100 border-red-300');
             profitHtml = `
-                <div class="mt-4 flex flex-col items-center justify-center gap-1">
-                    <span class="uppercase tracking-widest font-bold text-xs text-yellow-900/70">💖 Selisih</span>
-                    <span class="${profitColor} text-lg md:text-xl font-cute font-bold px-4 py-1.5 rounded-full border-2 shadow-sm">Rp ${profitKotor.toLocaleString('id-ID')}</span>
+                <div class="mt-2 md:mt-4 flex flex-col items-center justify-center gap-1">
+                    <span class="uppercase tracking-widest font-bold text-[10px] md:text-xs text-yellow-900/70">💖 Selisih</span>
+                    <span class="${profitColor} text-sm md:text-xl font-cute font-bold px-3 py-1 md:px-4 md:py-1.5 rounded-full border-2 shadow-sm">Rp ${profitKotor.toLocaleString('id-ID')}</span>
                 </div>
             `;
         } else {
-            profitHtml = `<div class="text-xs text-yellow-800/60 mt-3 font-bold bg-yellow-100 px-3 py-1 rounded-full inline-block">Harga belum di set 🥺</div>`;
+            profitHtml = `<div class="text-[10px] md:text-xs text-yellow-800/60 mt-2 md:mt-3 font-bold bg-yellow-100 px-3 py-1 rounded-full inline-block">Harga belum di set 🥺</div>`;
         }
 
         container.innerHTML = `
-            <div class="w-full h-full flex flex-col md:flex-row gap-6 p-5 md:p-8">
+            <div class="w-full h-full flex flex-col md:flex-row gap-4 md:gap-6 p-3 md:p-8">
                 <!-- Kiri: Gambar & Harga CMT -->
-                <div class="w-full md:w-2/5 flex flex-col gap-4">
-                    <div class="w-full h-64 md:h-[380px] bg-indigo-50 border-4 border-indigo-100 rounded-[2rem] overflow-hidden flex items-center justify-center p-3 relative shadow-inner">
-                        <span class="absolute top-4 right-4 bg-white/90 text-pink-500 text-[10px] font-cute font-bold tracking-widest px-4 py-2 rounded-full border-2 border-pink-200 backdrop-blur-md z-10 shadow-md">🔍 TAP ZOOM</span>
+                <div class="w-full md:w-2/5 flex flex-col gap-3 md:gap-4 shrink-0">
+                    <div class="w-full h-48 md:h-[380px] bg-indigo-50 border-4 border-indigo-100 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden flex items-center justify-center p-2 md:p-3 relative shadow-inner">
+                        <span class="absolute top-2 right-2 md:top-4 md:right-4 bg-white/90 text-pink-500 text-[9px] md:text-[10px] font-cute font-bold tracking-widest px-3 py-1.5 md:px-4 md:py-2 rounded-full border-2 border-pink-200 backdrop-blur-md z-10 shadow-md pointer-events-none">🔍 ZOOM</span>
                         <img src="${currentImg}" loading="lazy" alt="Foto Baju" onclick="openZoom('${currentImg}')" class="w-full h-full object-contain cursor-zoom-in hover:scale-105 transition duration-500 rounded-xl" onerror="this.src='${DEFAULT_IMAGE}'">
                     </div>
                     
-                    <div class="bg-gradient-to-b from-yellow-200 to-yellow-400 border-4 border-yellow-300 rounded-[2rem] p-5 shadow-[0_8px_0_#ca8a04] relative overflow-hidden text-center flex flex-col justify-center transform transition hover:-translate-y-1">
-                        <span class="text-xs font-bold uppercase tracking-widest text-yellow-800 block mb-1">🏷️ Harga CMT</span>
-                        <div class="text-2xl md:text-3xl font-cute font-bold text-yellow-900 drop-shadow-sm">${textHargaCMT}</div>
+                    <div class="bg-gradient-to-b from-yellow-200 to-yellow-400 border-4 border-yellow-300 rounded-[1.5rem] md:rounded-[2rem] p-3 md:p-5 shadow-[0_6px_0_#ca8a04] md:shadow-[0_8px_0_#ca8a04] relative overflow-hidden text-center flex flex-col justify-center transform transition hover:-translate-y-1">
+                        <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-yellow-800/80 mb-1">🎀 Harga CMT</span>
+                        <div class="text-2xl md:text-[40px] font-cute font-black text-yellow-950 drop-shadow-sm leading-none">${textHargaCMT}</div>
                         ${profitHtml}
                     </div>
                 </div>
-
-                <!-- Kanan: Tabel Rincian -->
-                <div class="w-full md:w-3/5 flex flex-col gap-4 overflow-hidden">
-                    <div class="flex items-center justify-between shrink-0">
-                        <h3 class="text-sm font-cute font-bold text-indigo-800 uppercase tracking-widest flex items-center gap-2 bg-indigo-100 px-4 py-2 rounded-full border-2 border-indigo-200">
-                            🧵 Rincian Produksi
-                        </h3>
-                    </div>
+                
+                <!-- Kanan: Rincian Produksi -->
+                <div class="w-full md:w-3/5 flex flex-col h-full bg-white/50 rounded-[1.5rem] md:rounded-[2.5rem] md:p-2">
+                    <h3 class="text-[11px] md:text-sm font-cute font-bold text-indigo-900 bg-indigo-100 px-4 md:px-5 py-2 md:py-2.5 rounded-full inline-block w-max border-2 border-indigo-200 shadow-sm mx-auto md:mx-0 mb-3 md:mb-4 uppercase tracking-widest">🧵 Rincian Produksi</h3>
                     
-                    <!-- PERBAIKAN: Hapus p-1, ubah flex col, tambah overflow-hidden agar menempel sempurna di lengkungan border -->
-                    <div class="flex-1 bg-white border-4 border-indigo-100 rounded-[2rem] overflow-hidden min-h-[220px] max-h-[300px] md:max-h-[360px] shadow-inner flex flex-col">
-                        <div class="overflow-y-auto w-full h-full">
-                            <table class="w-full text-left border-collapse relative">
-                                <!-- PERBAIKAN: Thead Solid Background dan Proporsi Lebar Kolom 25% - 50% - 25% -->
-                                <thead class="bg-indigo-100 sticky top-0 z-10 shadow-sm border-b-2 border-indigo-200">
-                                    <tr class="text-[10px] md:text-[11px] font-cute text-indigo-800 uppercase tracking-wider">
-                                        <th class="py-3 px-3 md:px-4 w-[25%] md:w-1/4">Proses</th>
-                                        <th class="py-3 px-3 md:px-4 w-[50%] md:w-1/2">Spesifikasi Detail</th>
-                                        <th class="py-3 px-3 md:px-4 text-right w-[25%] md:w-1/4">Tarif</th>
+                    <div class="flex-1 bg-white border-4 border-indigo-100 rounded-[1.5rem] md:rounded-[2rem] overflow-hidden min-h-[220px] max-h-[300px] md:max-h-[360px] shadow-inner flex flex-col" id="rincianContent">
+                        <div class="overflow-y-auto w-full h-full p-1 md:p-2">
+                            <table class="w-full text-left border-collapse">
+                                <thead class="bg-indigo-50/80 sticky top-0 backdrop-blur-sm z-10">
+                                    <tr class="text-[9px] md:text-[11px] text-indigo-800 uppercase font-cute font-bold tracking-wider">
+                                        <th class="py-2.5 px-2 md:px-4 rounded-tl-xl w-[20%]">Proses</th>
+                                        <th class="py-2.5 px-2 md:px-4 w-[50%]">Spesifikasi Detail</th>
+                                        <th class="py-2.5 px-2 md:px-4 text-right rounded-tr-xl w-[30%]">Tarif</th>
                                     </tr>
                                 </thead>
-                                <tbody>${rowsHtml}</tbody>
+                                <tbody class="divide-y divide-indigo-50">${rowsHtml}</tbody>
                             </table>
                         </div>
                     </div>
+                    
+                    <div class="mt-3 md:mt-4 bg-purple-100 border-4 border-purple-200 rounded-[1.5rem] p-3 md:p-5 flex flex-row justify-between items-center shadow-sm">
+                        <span class="text-xs md:text-sm font-cute font-bold uppercase tracking-widest text-purple-900">Total Produksi</span>
+                        <span class="text-lg md:text-[28px] font-cute font-black text-purple-900 bg-white px-3 py-1 md:px-4 md:py-1.5 rounded-xl md:rounded-2xl border-2 border-purple-300 shadow-sm whitespace-nowrap">Rp ${currentTotalHPP.toLocaleString('id-ID')}</span>
+                    </div>
 
-                    <div class="mt-auto shrink-0 pt-2 flex flex-col gap-3">
-                        <div class="flex justify-between items-center bg-purple-100 px-5 py-3 md:py-4 rounded-[2rem] border-4 border-purple-200 shadow-sm">
-                            <span class="text-sm font-cute font-bold text-purple-800 uppercase tracking-widest">Total Produksi</span>
-                            <span class="text-xl md:text-2xl font-cute font-bold text-purple-900 bg-white px-4 py-1 rounded-full border-2 border-purple-200 shadow-sm">Rp ${currentTotalHPP.toLocaleString('id-ID')}</span>
-                        </div>
-                        
-<div class="flex gap-2 pb-1">
-    <button onclick="copyDataToClipboard()" class="w-[28%] bg-blue-100 hover:bg-blue-200 active:scale-95 text-blue-900 text-[10px] md:text-xs font-cute font-extrabold uppercase tracking-wider rounded-[1.5rem] shadow-md transition-all flex items-center justify-center border-2 border-blue-300 py-3.5 px-1 whitespace-nowrap" title="Salin Rincian">
-        📄 COPY
-    </button>
-    <button onclick="sendToWhatsApp()" class="flex-1 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white text-[10px] md:text-xs font-cute font-extrabold uppercase tracking-wider py-3.5 px-2 rounded-[1.5rem] shadow-md transition-all flex items-center justify-center gap-1 border-2 border-emerald-600 whitespace-nowrap">
-        💬 Teks WA
-    </button>
-    <button onclick="shareScreenshotToWA()" class="flex-1 bg-pink-500 hover:bg-pink-600 active:scale-95 text-white text-[10px] md:text-xs font-cute font-extrabold uppercase tracking-wider py-3.5 px-2 rounded-[1.5rem] shadow-md transition-all flex items-center justify-center gap-1 border-2 border-pink-600 whitespace-nowrap">
-        📸 Foto WA
-    </button>
-</div>
+                    <div class="flex gap-2 md:gap-3 mt-3 md:mt-4">
+                        <button onclick="copyDataToClipboard()" class="btn-3d flex-1 bg-blue-100 hover:bg-blue-200 text-blue-800 font-cute font-bold py-2 md:py-3 px-2 md:px-4 rounded-xl border-2 border-blue-300 shadow-[0_4px_0_#93c5fd] flex items-center justify-center gap-1.5 text-[10px] md:text-xs tracking-wider uppercase transition-all">
+                            <span class="text-sm md:text-base">📄</span> COPY
+                        </button>
+                        <button onclick="sendToWhatsApp()" class="btn-3d flex-[1.5] bg-emerald-500 hover:bg-emerald-600 text-white font-cute font-bold py-2 md:py-3 px-2 md:px-4 rounded-xl border-2 border-emerald-600 shadow-[0_4px_0_#059669] flex items-center justify-center gap-1.5 text-[10px] md:text-xs tracking-wider uppercase transition-all">
+                            <span class="text-sm md:text-base">💬</span> TEKS WA
+                        </button>
+                        <button onclick="shareAsImage()" class="btn-3d flex-[1.5] bg-pink-500 hover:bg-pink-600 text-white font-cute font-bold py-2 md:py-3 px-2 md:px-4 rounded-xl border-2 border-pink-600 shadow-[0_4px_0_#db2777] flex items-center justify-center gap-1.5 text-[10px] md:text-xs tracking-wider uppercase transition-all" id="btnShareImg">
+                            <span class="text-sm md:text-base">📸</span> FOTO WA
+                        </button>
                     </div>
                 </div>
             </div>
         `;
+        
         document.getElementById('slideIndicator').innerHTML = `
-            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-lg border-2 border-indigo-200 shadow-sm">${currentSlideIndex + 1}</span> 
-            <span class="text-indigo-400 mx-1">dari</span> 
-            <span class="bg-white text-indigo-600 px-3 py-1 rounded-lg border-2 border-indigo-200 shadow-sm">${database.length}</span>
+            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-lg border border-indigo-200 w-8 md:w-10 text-center font-bold shadow-inner">${currentSlideIndex + 1}</span> 
+            <span class="text-indigo-400">dari</span> 
+            <span class="bg-white text-indigo-800 px-3 py-1 rounded-lg border border-indigo-200 w-8 md:w-10 text-center font-bold shadow-sm">${database.length}</span>
         `;
     }
 
-    window.searchModel = function(query) {
-        if (isTableView) {
-            renderMasterTable(query);
-            return;
-        }
-
+    // ======= LOGIKA PENCARIAN & DROPDOWN =======
+    function searchModel(query) {
         const dropdown = document.getElementById('searchDropdown');
-        highlightedIndex = -1; 
-        if (!query.trim()) { dropdown.classList.add('hidden'); return; }
-
-        const results = database.filter(m => m.name.toLowerCase().includes(query.toLowerCase()));
         dropdown.innerHTML = '';
-        if (results.length === 0) {
-            dropdown.innerHTML = '<div class="p-5 text-sm font-cute text-pink-500 font-bold text-center">Yahh.. Model tidak ditemukan 🥺</div>';
-        } else {
-            results.forEach((model) => {
+        
+        if (!query.trim()) { dropdown.classList.add('hidden'); return; }
+        
+        const results = database.map((model, index) => ({ model, index }))
+            .filter(item => item.model.name.toLowerCase().includes(query.toLowerCase()));
+            
+        if (results.length > 0) {
+            results.forEach(result => {
                 const div = document.createElement('div');
-                div.className = "search-item p-4 text-sm font-bold text-indigo-800 hover:bg-yellow-100 hover:text-yellow-900 cursor-pointer transition-colors flex justify-between items-center";
-                div.innerHTML = `<span class="uppercase tracking-wide">${model.name}</span> <span class="text-[10px] font-cute bg-indigo-100 px-3 py-1 rounded-full border border-indigo-200 text-indigo-700">Pilih ✨</span>`;
-                div.onclick = () => { selectModel(model); };
+                div.className = "px-3 md:px-4 py-2 md:py-3 hover:bg-indigo-50 cursor-pointer text-[11px] md:text-sm font-bold text-indigo-900 transition-colors flex justify-between items-center";
+                div.innerHTML = `<span>${result.model.name}</span> <span class="text-[9px] md:text-[10px] text-pink-500 bg-pink-50 px-2 py-0.5 rounded-md">Pilih</span>`;
+                div.onclick = () => {
+                    document.getElementById('searchInput').value = result.model.name;
+                    dropdown.classList.add('hidden');
+                    if (isTableView) {
+                        isTableView = false;
+                        compareActive = false;
+                        currentSlideIndex = result.index;
+                        const nav = document.querySelector('nav');
+                        nav.classList.remove('hidden');
+                        document.getElementById('searchInput').placeholder = "Cari model...";
+                        changeSlide('none');
+                    } else if (compareActive && compareSlideIndex === -1) {
+                        compareSlideIndex = result.index;
+                        changeSlide('none');
+                    } else {
+                        currentSlideIndex = result.index;
+                        compareActive = false;
+                        compareSlideIndex = null;
+                        document.getElementById('searchInput').placeholder = "Cari model...";
+                        changeSlide('none');
+                    }
+                };
                 dropdown.appendChild(div);
             });
-        }
-        dropdown.classList.remove('hidden');
-    }
-
-    function selectModel(model) {
-        const newIndex = database.findIndex(m => m.name === model.name);
-        document.getElementById('searchDropdown').classList.add('hidden');
-        
-        const searchInput = document.getElementById('searchInput');
-        searchInput.value = '';
-        searchInput.placeholder = "Cari model..."; 
-
-        if (compareActive) {
-            compareSlideIndex = newIndex;
+            dropdown.classList.remove('hidden');
         } else {
-            currentSlideIndex = newIndex;
-            compareSlideIndex = null;
-            compareActive = false;
+            dropdown.innerHTML = '<div class="px-3 md:px-4 py-2 md:py-3 text-[11px] md:text-sm text-indigo-400 font-bold text-center">Yahh.. tidak ditemukan 🥺</div>';
+            dropdown.classList.remove('hidden');
         }
-
-        isTableView = false; 
-        document.querySelector('nav').classList.remove('hidden');
-        changeSlide('none'); 
     }
 
-    document.getElementById('searchInput').addEventListener('keydown', function(e) {
-        const items = document.querySelectorAll('.search-item');
-        if (items.length === 0) return;
-        if (e.key === 'ArrowDown') { e.preventDefault(); highlightedIndex = (highlightedIndex + 1) % items.length; updateHighlight(items); } 
-        else if (e.key === 'ArrowUp') { e.preventDefault(); highlightedIndex = (highlightedIndex - 1 + items.length) % items.length; updateHighlight(items); } 
-        else if (e.key === 'Enter') { e.preventDefault(); if (highlightedIndex >= 0) items[highlightedIndex].click(); }
+    document.addEventListener('click', (e) => {
+        const searchInput = document.getElementById('searchInput');
+        const dropdown = document.getElementById('searchDropdown');
+        if (e.target !== searchInput && e.target !== dropdown) { dropdown.classList.add('hidden'); }
     });
 
-    function updateHighlight(items) {
-        items.forEach((item, idx) => {
-            item.classList.toggle('bg-yellow-100', idx === highlightedIndex);
-            item.classList.toggle('text-yellow-900', idx === highlightedIndex);
-            if (idx === highlightedIndex) item.scrollIntoView({ block: 'nearest' });
-        });
-    }
-
-    document.addEventListener('keydown', function(event) {
-        if (document.activeElement === document.getElementById('searchInput') || isTableView) return; 
-        if (event.key === 'ArrowRight') changeSlide('next');
-        else if (event.key === 'ArrowLeft') changeSlide('prev');
-    });
-    
-    document.addEventListener('click', e => { if (!e.target.closest('#searchInput')) document.getElementById('searchDropdown').classList.add('hidden'); });
-
-    fetchSheetData();
-      function shareScreenshotToWA() {
-    if (typeof html2canvas === 'undefined') {
-        const btn = event.currentTarget;
+    // ======= LOGIKA SHARE SEBAGAI GAMBAR =======
+    async function shareAsImage() {
+        if(database.length === 0) return;
+        const btn = document.getElementById('btnShareImg');
         const originalText = btn.innerHTML;
-        btn.innerHTML = "⏳ Memuat...";
-        
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-        script.onload = () => {
-            btn.innerHTML = originalText;
-            shareScreenshotToWA();
-        };
-        document.head.appendChild(script);
-        return;
+        btn.innerHTML = `<span class="animate-spin text-sm md:text-base">⏳</span> TUNGGU...`;
+        btn.classList.add('opacity-80', 'pointer-events-none');
+        showToast("Sedang menyiapkan foto...", "sync");
+
+        try {
+            if (!window.html2canvas) {
+                const script = document.createElement('script');
+                script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+                document.head.appendChild(script);
+                await new Promise(resolve => script.onload = resolve);
+            }
+
+            const model = database[currentSlideIndex];
+            const currentImg = model.image ? model.image : DEFAULT_IMAGE;
+            const textHargaCMT = model.hargaCMT > 0 ? `Rp ${model.hargaCMT.toLocaleString('id-ID')}` : "Belum Set";
+
+            let rowsHtml = '';
+            orderedCategories.forEach(cat => {
+                const catItems = model.items.filter(item => item.category === cat);
+                if (catItems.length > 0) {
+                    let catTotal = 0;
+                    catItems.forEach(item => { catTotal += item.price; });
+                    rowsHtml += `
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px; border-bottom:1px dashed #e0e7ff; padding-bottom:4px;">
+                            <span style="font-weight:700; color:#3730a3; font-size:12px;">${cat}</span>
+                            <span style="font-weight:700; color:#db2777; font-size:12px;">Rp ${catTotal.toLocaleString('id-ID')}</span>
+                        </div>
+                    `;
+                }
+            });
+
+            const captureDiv = document.createElement('div');
+            captureDiv.style.position = 'absolute'; captureDiv.style.left = '-9999px'; captureDiv.style.top = '0';
+            captureDiv.style.width = '600px'; captureDiv.style.backgroundColor = '#ffffff'; 
+            captureDiv.style.padding = '20px'; captureDiv.style.borderRadius = '24px';
+            captureDiv.style.fontFamily = "'Nunito', sans-serif";
+            
+            captureDiv.innerHTML = `
+                <div style="background: linear-gradient(to bottom, #60a5fa, #bfdbfe, #ffedd5); padding: 24px; border-radius: 20px; text-align:center;">
+                    <h2 style="font-family: 'Fredoka', sans-serif; font-size: 28px; font-weight: 900; color: #312e81; margin: 0; text-transform: uppercase;">${model.name}</h2>
+                    <p style="margin:4px 0 16px 0; font-size:14px; color:#4338ca; font-weight:bold;">Owlet Kids - Rincian Produksi</p>
+                    
+                    <div style="background:white; border-radius:16px; padding:12px; margin-bottom:16px; box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+                        <img src="${currentImg}" style="width:100%; height:250px; object-fit:contain; border-radius:12px;" crossorigin="anonymous">
+                    </div>
+
+                    <div style="background: white; border-radius:16px; padding:16px; text-align:left; box-shadow:0 4px 6px rgba(0,0,0,0.1); margin-bottom:16px;">
+                        <h4 style="margin:0 0 12px 0; font-family:'Fredoka', sans-serif; color:#4338ca; font-size:16px; text-align:center;">RINGKASAN BIAYA</h4>
+                        ${rowsHtml}
+                        <div style="display:flex; justify-content:space-between; margin-top:12px; padding-top:12px; border-top:2px solid #e0e7ff;">
+                            <span style="font-weight:800; color:#312e81; font-size:14px;">TOTAL HPP</span>
+                            <span style="font-weight:900; color:#312e81; font-size:16px;">Rp ${currentTotalHPP.toLocaleString('id-ID')}</span>
+                        </div>
+                    </div>
+
+                    <div style="background: #fde047; border-radius:16px; padding:16px; box-shadow:0 4px 0 #ca8a04;">
+                        <span style="font-size:12px; font-weight:bold; color:#854d0e; text-transform:uppercase;">Harga CMT</span>
+                        <div style="font-family:'Fredoka', sans-serif; font-size:32px; font-weight:900; color:#422006; margin-top:4px;">${textHargaCMT}</div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(captureDiv);
+
+            const canvas = await html2canvas(captureDiv, { scale: 2, useCORS: true, logging: false, backgroundColor: null });
+            document.body.removeChild(captureDiv);
+
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], `Owlet_${model.name}.png`, { type: 'image/png' });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file], title: 'Rincian Produksi Owlet',
+                            text: `Rincian CMT untuk model: ${model.name}`
+                        });
+                        showToast("Berhasil dibagikan! 📸", "success");
+                    } catch (error) {
+                        console.log('Share dibatalkan atau gagal', error);
+                        showToast("Share dibatalkan.", "sync");
+                    }
+                } else {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = `Owlet_${model.name}.png`;
+                    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    showToast("Foto berhasil diunduh! 📸", "success");
+                }
+                
+                btn.innerHTML = originalText; btn.classList.remove('opacity-80', 'pointer-events-none');
+            }, 'image/png');
+
+        } catch (error) {
+            console.error("Error share image:", error);
+            showToast("Gagal membuat foto 😢", "error");
+            btn.innerHTML = originalText; btn.classList.remove('opacity-80', 'pointer-events-none');
+        }
     }
 
-    const model = database[currentSlideIndex];
-    if (!model) return;
-    
-    const currentTotalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
-    const profitKotor = model.hargaCMT - currentTotalHPP;
-    const profitColor = profitKotor > 0 ? '#047857' : (profitKotor === 0 ? '#374151' : '#b91c1c');
-
-    const tempDiv = document.createElement('div');
-    tempDiv.style.width = '450px';
-    tempDiv.style.padding = '24px';
-    tempDiv.style.backgroundColor = '#e0e7ff';
-    tempDiv.style.borderRadius = '24px';
-    tempDiv.style.position = 'absolute';
-    tempDiv.style.left = '-9999px';
-    tempDiv.style.top = '0';
-    tempDiv.style.display = 'flex';
-    tempDiv.style.flexDirection = 'column';
-    tempDiv.style.gap = '20px';
-    tempDiv.style.fontFamily = 'system-ui, -apple-system, sans-serif';
-
-    tempDiv.innerHTML = `
-        <h2 style="margin: 0; color: #312e81; font-size: 28px; font-weight: 800; text-align: center; text-transform: capitalize;">${model.name}</h2>
-        
-        <div style="width: 100%; height: 400px; background: #ffffff; border-radius: 20px; padding: 12px; box-sizing: border-box; border: 4px solid #c7d2fe;">
-            <img src="${model.image || DEFAULT_IMAGE}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 12px;">
-        </div>
-        
-        <div style="background: linear-gradient(to bottom, #fef08a, #facc15); border: 4px solid #fde047; border-radius: 20px; padding: 20px; text-align: center;">
-            <span style="font-size: 14px; font-weight: 800; color: #854d0e; letter-spacing: 1px; text-transform: uppercase;">🏷️ Harga CMT</span>
-            <div style="font-size: 36px; font-weight: 900; color: #713f12; margin-top: 4px;">
-                Rp ${model.hargaCMT > 0 ? model.hargaCMT.toLocaleString('id-ID') : '0'}
-            </div>
-            
-            <div style="margin: 20px 0; background: #ffffff; padding: 16px; border-radius: 16px; border: 2px dashed #ca8a04; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
-                <span style="font-size: 13px; font-weight: 800; color: #6b21a8; letter-spacing: 1px; text-transform: uppercase;">🧵 Total Produksi</span>
-                <div style="font-size: 26px; font-weight: 900; color: #581c87; margin-top: 4px;">
-                    Rp ${currentTotalHPP.toLocaleString('id-ID')}
-                </div>
-            </div>
-
-            <div style="background: rgba(255,255,255,0.4); padding: 12px; border-radius: 16px;">
-                <span style="font-size: 13px; font-weight: 800; color: #854d0e; letter-spacing: 1px; text-transform: uppercase;">💖 Selisih</span>
-                <div style="font-size: 26px; font-weight: 900; margin-top: 4px; color: ${profitColor};">
-                    Rp ${profitKotor.toLocaleString('id-ID')}
-                </div>
-            </div>
-        </div>
-    `;
-
-    document.body.appendChild(tempDiv);
-
-    html2canvas(tempDiv, { scale: 2, useCORS: true, backgroundColor: '#e0e7ff' }).then(canvas => {
-        document.body.removeChild(tempDiv);
-        
-        canvas.toBlob(async (blob) => {
-            const file = new File([blob], `${model.name}.png`, { type: 'image/png' });
-            
-            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                try {
-                    await navigator.share({
-                        files: [file],
-                        title: model.name,
-                        text: 'Rincian: ' + model.name
-                    });
-                    return;
-                } catch (err) {
-                    console.log("Share dibatalkan", err);
-                }
-            }
-            
-            // Langsung copy & buka WA tanpa pesan popup alert
-            try {
-                await navigator.clipboard.write([
-                    new ClipboardItem({ 'image/png': blob })
-                ]);
-                window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('Berikut foto rincian untuk model: ' + model.name), '_blank');
-            } catch (err) {
-                window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('Berikut foto rincian untuk model: ' + model.name), '_blank');
-            }
-        });
-    }).catch(err => {
-        if(document.body.contains(tempDiv)) document.body.removeChild(tempDiv);
-        console.error(err);
-    });
-}
-</script>
+    // Eksekusi awal
+    fetchSheetData();
+   </script>
 </body>
 </html>
