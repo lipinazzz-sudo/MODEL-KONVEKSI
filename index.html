@@ -450,6 +450,13 @@
         }, 400);
     };
 
+    // Fungsi Baru untuk Langsung Memilih dari List Dropdown saat Mode Banding
+    window.selectCompareModel = function(idx) {
+        compareSlideIndex = idx;
+        document.getElementById('searchInput').placeholder = "Cari model...";
+        changeSlide('none');
+    };
+
     function generateTextSummary() {
         if (database.length === 0) return "";
         const model = database[currentSlideIndex];
@@ -646,18 +653,35 @@
                     <h2 class="text-xl md:text-2xl font-cute font-bold text-indigo-900 drop-shadow-sm">${model.name} vs ...</h2>
                 `;
 
+                // --- Generate HTML untuk List Semua Model (Kecuali Model yang Sedang Dipilih) ---
+                let allModelsListHtml = '<div class="w-full mt-2 flex flex-col gap-2 overflow-y-auto pr-1" style="scrollbar-width: thin;">';
+                database.forEach((m, idx) => {
+                    if (idx !== currentSlideIndex) {
+                        allModelsListHtml += `
+                            <button onclick="selectCompareModel(${idx})" class="w-full text-left bg-indigo-50 hover:bg-yellow-100 border-2 border-indigo-100 hover:border-yellow-400 rounded-xl p-3 flex justify-between items-center transition-all group shadow-sm shrink-0">
+                                <span class="text-xs md:text-sm font-bold text-indigo-900 group-hover:text-yellow-900 truncate pr-2">${idx + 1}. ${m.name}</span>
+                                <span class="text-[9px] md:text-[10px] bg-white px-2 py-1 rounded-md text-indigo-500 font-cute group-hover:bg-yellow-200 group-hover:text-yellow-800 border border-indigo-100 shrink-0">Pilih ✨</span>
+                            </button>
+                        `;
+                    }
+                });
+                allModelsListHtml += '</div>';
+
                 container.innerHTML = `
                     <div class="w-full h-full flex flex-row gap-2 md:gap-4 p-2 md:p-6 overflow-x-hidden">
                         ${renderSingleModelBlock(model, false)}
                         
-                        <!-- Placeholder Pembanding -->
-                        <div class="flex-1 min-w-0 bg-white border-4 border-dashed border-indigo-200 rounded-[1.5rem] p-6 flex flex-col items-center justify-center text-center gap-4 relative shadow-inner">
-                            <button onclick="closeSplitView()" class="absolute top-3 right-3 z-20 bg-red-500 hover:bg-red-600 text-white text-[11px] font-bold px-3 py-1.5 rounded-full shadow-md transition-all">
-                                ❌ Batal
-                            </button>
-                            <div class="text-5xl animate-bounce" style="animation-duration: 2s">🔍</div>
-                            <h4 class="text-sm md:text-base font-cute font-black text-indigo-900 uppercase">Cari Model Kedua</h4>
-                            <p class="text-xs text-indigo-500 font-cute font-bold max-w-[220px] leading-relaxed">Ketik nama model kedua pada kolom pencarian di kanan atas untuk membandingkan!</p>
+                        <!-- Placeholder Pembanding (Tampilan Scroll Model) -->
+                        <div class="flex-1 min-w-0 bg-white border-4 border-dashed border-indigo-200 rounded-[1.5rem] p-3 md:p-5 flex flex-col relative shadow-inner max-h-full">
+                            <div class="flex justify-between items-center mb-2 pb-2 border-b-2 border-indigo-50 shrink-0">
+                                <h4 class="text-xs md:text-sm font-cute font-black text-indigo-900 uppercase flex items-center gap-2">🔍 Pilih Model Kedua</h4>
+                                <button onclick="closeSplitView()" class="bg-red-500 hover:bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-md transition-all">
+                                    ❌ Batal
+                                </button>
+                            </div>
+                            <p class="text-[10px] text-indigo-500 font-cute font-bold mb-2 shrink-0">Cari model di kolom pencarian atas, atau klik langsung dari daftar ini:</p>
+                            
+                            ${allModelsListHtml}
                         </div>
                     </div>
                 `;
@@ -778,7 +802,9 @@
                         ` : ''}
                     </div>
                     
-                    <div class="bg-gradient-to-b from-yellow-200 to-yellow-400 border-4 border-yellow-300 rounded-[2rem] p-5 shadow-[0_8px_0_#ca8a04] relative overflow-hidden text-center flex flex-col justify-center transform transition hover:-translate-y-1">
+                    <!-- KOTAK HARGA CMT BISA DIKLIK -->
+                    <div onclick="selectModelFromTable(${currentSlideIndex})" class="bg-gradient-to-b from-yellow-200 to-yellow-400 border-4 border-yellow-300 rounded-[2rem] p-5 shadow-[0_8px_0_#ca8a04] relative overflow-hidden text-center flex flex-col justify-center transform transition hover:-translate-y-1 cursor-pointer group" title="Bandingkan Model Ini">
+                        <span class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] bg-white/90 px-2 py-0.5 rounded-full text-yellow-800 font-cute font-bold shadow-sm backdrop-blur-sm z-10 border border-yellow-200">⚖️ Bandingkan</span>
                         <span class="text-xs font-bold uppercase tracking-widest text-yellow-800 block mb-1">🏷️ Harga CMT</span>
                         <div class="text-2xl md:text-3xl font-cute font-bold text-yellow-900 drop-shadow-sm">${textHargaCMT}</div>
                         ${profitHtml}
