@@ -38,6 +38,9 @@
 
         .btn-3d { transition: all 0.1s; }
         .btn-3d:active { transform: translateY(4px); box-shadow: 0 0 0 transparent !important; }
+        
+        /* Transisi halus untuk titik indikator slider */
+        .img-dot { transition: all 0.3s ease; }
     </style>
 </head>
 <body class="bg-gradient-to-b from-blue-400 via-blue-200 to-orange-100 text-indigo-950 min-h-screen flex flex-col justify-start items-center p-4 md:p-6 overflow-x-hidden relative selection:bg-pink-300 selection:text-pink-900">
@@ -70,11 +73,6 @@
         <div class="absolute top-1/3 right-10 text-8xl opacity-50 animate-float-fast" style="animation-delay: 1.2s;">☁️</div>
         <div class="absolute top-5 right-1/3 text-4xl opacity-70 animate-float-fast" style="animation-delay: 0.5s;">☁️</div>
         <div class="absolute top-1/2 right-1/4 text-7xl opacity-60 animate-float-slow" style="animation-delay: 1.5s;">☁️</div>
-        <div class="absolute bottom-1/2 left-10 text-5xl opacity-75 animate-float-fast" style="animation-delay: 2.2s;">☁️</div>
-        <div class="absolute top-3/4 left-1/2 text-6xl opacity-65 animate-float-slow" style="animation-delay: 0.8s;">☁️</div>
-        <div class="absolute top-1/3 right-10 text-8xl opacity-50 animate-float-fast" style="animation-delay: 1.2s;">☁️</div>
-        <div class="absolute bottom-20 right-10 text-6xl opacity-70 animate-float-fast drop-shadow-lg">☁️</div>
-        <div class="absolute top-1/3 left-1/4 text-6xl opacity-60 animate-float-fast" style="animation-delay: 1s;">☁️</div>
     </div>
 
     <div id="toastContainer" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[300] flex flex-col gap-2 pointer-events-none"></div>
@@ -160,6 +158,10 @@
     let isTableView = false; 
     let compareSlideIndex = null; 
     let compareActive = false; 
+    
+    // Variabel untuk Slider Gambar Produk
+    let autoPlayInterval = null;
+    let currentImageIndex = 0;
     
     const orderedCategories = ["OBRAS", "JAHIT", "KAM", "KARET", "BIS", "NECCI", "PACKING"];
     const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=600&auto=format&fit=crop"; 
@@ -274,12 +276,18 @@
             let rawImageUrl = (columns[4] && columns[4].trim()) ? columns[4].replace(/^"|"$/g, '').trim() : "";
             let hargaCMT = parseInt((columns[5] || "").replace(/[^0-9]/g, '')) || 0;
 
+            // Memisahkan URL gambar jika ada lebih dari 1 yang dipisahkan koma
+            let imgLinks = rawImageUrl.split(',').map(url => konversiLinkDrive(url.trim())).filter(url => url !== "");
+
             if (!modelName) continue;
             if (!modelsMap[modelName]) {
-                modelsMap[modelName] = { name: modelName, items: [], image: konversiLinkDrive(rawImageUrl), hargaCMT: hargaCMT };
+                modelsMap[modelName] = { name: modelName, items: [], images: imgLinks.length > 0 ? imgLinks : [], hargaCMT: hargaCMT };
             } else {
                 if (modelsMap[modelName].hargaCMT === 0 && hargaCMT > 0) modelsMap[modelName].hargaCMT = hargaCMT;
-                if (!modelsMap[modelName].image && rawImageUrl) modelsMap[modelName].image = konversiLinkDrive(rawImageUrl);
+                // Gabungkan foto tanpa ada duplikat
+                imgLinks.forEach(img => {
+                    if(!modelsMap[modelName].images.includes(img)) modelsMap[modelName].images.push(img);
+                });
             }
             modelsMap[modelName].items.push({ category, details, price });
         }
@@ -335,6 +343,8 @@
         isTableView = !isTableView;
         compareSlideIndex = null; 
         compareActive = false; 
+        stopAutoPlay(); // Hentikan autoplay saat pindah mode
+        
         const nav = document.querySelector('nav'); 
 
         const container = document.getElementById('slideContainer');
@@ -482,6 +492,8 @@
         else if (direction === 'prev' && currentSlideIndex > 0) currentSlideIndex--;
         else if (direction === 'none') { /* Just Re-render */ }
         else return; 
+        
+        stopAutoPlay(); // Hentikan autoplay saat ganti model utamanya
 
         const container = document.getElementById('slideContainer');
         container.classList.add('slide-hidden');
@@ -491,7 +503,8 @@
     // ======= TAMPILAN COLUMN COMPACT (MODE BANDING) - HANYA SUBTOTAL =======
     function renderSingleModelBlock(model, isCompareColumn = false) {
         const totalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
-        const currentImg = model.image ? model.image : DEFAULT_IMAGE;
+        // Tampilkan gambar pertama untuk mode banding
+        const currentImg = (model.images && model.images.length > 0) ? model.images[0] : DEFAULT_IMAGE;
         
         let rowsHtml = '';
         orderedCategories.forEach(cat => {
@@ -499,7 +512,6 @@
             if (catItems.length > 0) {
                 let catTotal = 0;
                 catItems.forEach(item => { catTotal += item.price; });
-                // Di Mode Banding, hanya munculkan satu baris per kategori (Subtotal)
                 rowsHtml += `
                     <tr class="border-b border-indigo-50 bg-white hover:bg-indigo-50/50 transition-colors">
                         <td class="py-2.5 px-2 whitespace-nowrap w-[40%]"><span class="text-[9px] md:text-[10px] font-cute font-bold px-2 py-1 rounded-lg ${getCategoryStyle(cat)}">${cat}</span></td>
@@ -568,7 +580,46 @@
         changeSlide('none');
     };
 
-function renderSlide() {
+    // Fungsi Pengatur Slider Foto Produk
+    window.changeProductImage = function(index) {
+        const model = database[currentSlideIndex];
+        if (!model || !model.images || model.images.length === 0) return;
+        
+        const totalImages = model.images.length;
+        if (index >= totalImages) currentImageIndex = 0;
+        else if (index < 0) currentImageIndex = totalImages - 1;
+        else currentImageIndex = index;
+
+        const track = document.getElementById('imageTrack');
+        if(track) track.style.transform = `translateX(-${currentImageIndex * 100}%)`;
+
+        // Update tampilan titik-titik indikator
+        document.querySelectorAll('.img-dot').forEach((dot, i) => {
+            if(i === currentImageIndex) {
+                dot.classList.add('bg-pink-500', 'w-6');
+                dot.classList.remove('bg-indigo-300', 'w-2');
+            } else {
+                dot.classList.remove('bg-pink-500', 'w-6');
+                dot.classList.add('bg-indigo-300', 'w-2');
+            }
+        });
+    };
+
+    window.startAutoPlay = function() {
+        clearInterval(autoPlayInterval);
+        const model = database[currentSlideIndex];
+        if (model && model.images && model.images.length > 1) {
+            autoPlayInterval = setInterval(() => {
+                changeProductImage(currentImageIndex + 1);
+            }, 4000); // Ganti foto setiap 4 detik
+        }
+    };
+
+    window.stopAutoPlay = function() {
+        clearInterval(autoPlayInterval);
+    };
+
+    function renderSlide() {
         const container = document.getElementById('slideContainer');
         if (database.length === 0) return;
         if (currentSlideIndex >= database.length) currentSlideIndex = database.length - 1;
@@ -633,9 +684,25 @@ function renderSlide() {
             <h2 class="text-[26px] md:text-[32px] font-cute font-bold text-indigo-900 drop-shadow-sm">${model.name}</h2>
         `;
 
-        const currentImg = model.image ? model.image : DEFAULT_IMAGE;
+        // Render Bagian Slider Foto
+        currentImageIndex = 0; // Reset index saat model berganti
+        const images = (model.images && model.images.length > 0) ? model.images : [DEFAULT_IMAGE];
+        let trackHtml = '';
+        let dotsHtml = '';
+
+        images.forEach((img, idx) => {
+            trackHtml += `
+                <div class="w-full h-full flex-shrink-0 flex items-center justify-center p-3">
+                    <img src="${img}" loading="lazy" alt="Foto Baju ${idx+1}" onclick="openZoom('${img}')" class="w-full h-full object-contain cursor-zoom-in hover:scale-105 transition duration-500 rounded-xl" onerror="this.src='${DEFAULT_IMAGE}'">
+                </div>
+            `;
+            
+            if (images.length > 1) {
+                dotsHtml += `<button onclick="changeProductImage(${idx}); stopAutoPlay(); startAutoPlay(); event.stopPropagation();" class="img-dot h-2 rounded-full transition-all duration-300 ${idx === 0 ? 'bg-pink-500 w-6' : 'bg-indigo-300 w-2'} shadow-sm"></button>`;
+            }
+        });
+
         let rowsHtml = '';
-        
         orderedCategories.forEach(cat => {
             const catItems = model.items.filter(item => item.category === cat);
             if (catItems.length > 0) {
@@ -679,9 +746,26 @@ function renderSlide() {
             <div class="w-full h-full flex flex-col md:flex-row gap-6 p-5 md:p-8">
                 <!-- Kiri: Gambar & Harga CMT -->
                 <div class="w-full md:w-2/5 flex flex-col gap-4">
-                    <div class="w-full h-64 md:h-[380px] bg-indigo-50 border-4 border-indigo-100 rounded-[2rem] overflow-hidden flex items-center justify-center p-3 relative shadow-inner">
-                        <span class="absolute top-4 right-4 bg-white/90 text-pink-500 text-[10px] font-cute font-bold tracking-widest px-4 py-2 rounded-full border-2 border-pink-200 backdrop-blur-md z-10 shadow-md">🔍 TAP ZOOM</span>
-                        <img src="${currentImg}" loading="lazy" alt="Foto Baju" onclick="openZoom('${currentImg}')" class="w-full h-full object-contain cursor-zoom-in hover:scale-105 transition duration-500 rounded-xl" onerror="this.src='${DEFAULT_IMAGE}'">
+                    
+                    <!-- AREA FOTO SLIDER -->
+                    <div class="w-full h-64 md:h-[380px] bg-indigo-50 border-4 border-indigo-100 rounded-[2rem] overflow-hidden flex items-center justify-center relative shadow-inner group" onmouseenter="stopAutoPlay()" onmouseleave="startAutoPlay()">
+                        <span class="absolute top-4 right-4 bg-white/90 text-pink-500 text-[10px] font-cute font-bold tracking-widest px-4 py-2 rounded-full border-2 border-pink-200 backdrop-blur-md z-20 shadow-md">🔍 TAP ZOOM</span>
+                        
+                        <!-- Track Container Gambar -->
+                        <div id="imageTrack" class="w-full h-full flex transition-transform duration-500 ease-in-out relative z-10" style="transform: translateX(0%);">
+                            ${trackHtml}
+                        </div>
+
+                        <!-- Panah Navigasi Kiri / Kanan -->
+                        ${images.length > 1 ? `
+                            <button onclick="changeProductImage(currentImageIndex - 1); stopAutoPlay(); startAutoPlay(); event.stopPropagation();" class="absolute left-3 top-1/2 -translate-y-1/2 z-30 bg-white/80 hover:bg-white text-indigo-500 w-10 h-10 flex items-center justify-center rounded-full shadow-md md:opacity-0 group-hover:opacity-100 transition-opacity border-2 border-indigo-100">👈</button>
+                            <button onclick="changeProductImage(currentImageIndex + 1); stopAutoPlay(); startAutoPlay(); event.stopPropagation();" class="absolute right-3 top-1/2 -translate-y-1/2 z-30 bg-white/80 hover:bg-white text-indigo-500 w-10 h-10 flex items-center justify-center rounded-full shadow-md md:opacity-0 group-hover:opacity-100 transition-opacity border-2 border-indigo-100">👉</button>
+                            
+                            <!-- Titik Indikator Bawah -->
+                            <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 z-30">
+                                ${dotsHtml}
+                            </div>
+                        ` : ''}
                     </div>
                     
                     <div class="bg-gradient-to-b from-yellow-200 to-yellow-400 border-4 border-yellow-300 rounded-[2rem] p-5 shadow-[0_8px_0_#ca8a04] relative overflow-hidden text-center flex flex-col justify-center transform transition hover:-translate-y-1">
@@ -699,11 +783,9 @@ function renderSlide() {
                         </h3>
                     </div>
                     
-                    <!-- PERBAIKAN: Hapus p-1, ubah flex col, tambah overflow-hidden agar menempel sempurna di lengkungan border -->
                     <div class="flex-1 bg-white border-4 border-indigo-100 rounded-[2rem] overflow-hidden min-h-[220px] max-h-[300px] md:max-h-[360px] shadow-inner flex flex-col">
                         <div class="overflow-y-auto w-full h-full">
                             <table class="w-full text-left border-collapse relative">
-                                <!-- PERBAIKAN: Thead Solid Background dan Proporsi Lebar Kolom 25% - 50% - 25% -->
                                 <thead class="bg-indigo-100 sticky top-0 z-10 shadow-sm border-b-2 border-indigo-200">
                                     <tr class="text-[10px] md:text-[11px] font-cute text-indigo-800 uppercase tracking-wider">
                                         <th class="py-3 px-3 md:px-4 w-[25%] md:w-1/4">Proses</th>
@@ -742,6 +824,9 @@ function renderSlide() {
             <span class="text-indigo-400 mx-1">dari</span> 
             <span class="bg-white text-indigo-600 px-3 py-1 rounded-lg border-2 border-indigo-200 shadow-sm">${database.length}</span>
         `;
+        
+        // Mulai autoplay setelah slide selesai dimuat
+        startAutoPlay();
     }
 
     window.searchModel = function(query) {
@@ -816,107 +901,111 @@ function renderSlide() {
     document.addEventListener('click', e => { if (!e.target.closest('#searchInput')) document.getElementById('searchDropdown').classList.add('hidden'); });
 
     fetchSheetData();
-      function shareScreenshotToWA() {
-    if (typeof html2canvas === 'undefined') {
-        const btn = event.currentTarget;
-        const originalText = btn.innerHTML;
-        btn.innerHTML = "⏳ Memuat...";
-        
-        const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-        script.onload = () => {
-            btn.innerHTML = originalText;
-            shareScreenshotToWA();
-        };
-        document.head.appendChild(script);
-        return;
-    }
 
-    const model = database[currentSlideIndex];
-    if (!model) return;
-    
-    const currentTotalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
-    const profitKotor = model.hargaCMT - currentTotalHPP;
-    const profitColor = profitKotor > 0 ? '#047857' : (profitKotor === 0 ? '#374151' : '#b91c1c');
+    function shareScreenshotToWA() {
+        if (typeof html2canvas === 'undefined') {
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "⏳ Memuat...";
+            
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+            script.onload = () => {
+                btn.innerHTML = originalText;
+                shareScreenshotToWA();
+            };
+            document.head.appendChild(script);
+            return;
+        }
 
-    const tempDiv = document.createElement('div');
-    tempDiv.style.width = '450px';
-    tempDiv.style.padding = '24px';
-    tempDiv.style.backgroundColor = '#e0e7ff';
-    tempDiv.style.borderRadius = '24px';
-    tempDiv.style.position = 'absolute';
-    tempDiv.style.left = '-9999px';
-    tempDiv.style.top = '0';
-    tempDiv.style.display = 'flex';
-    tempDiv.style.flexDirection = 'column';
-    tempDiv.style.gap = '20px';
-    tempDiv.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+        const model = database[currentSlideIndex];
+        if (!model) return;
+        
+        const currentTotalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
+        const profitKotor = model.hargaCMT - currentTotalHPP;
+        const profitColor = profitKotor > 0 ? '#047857' : (profitKotor === 0 ? '#374151' : '#b91c1c');
 
-    tempDiv.innerHTML = `
-        <h2 style="margin: 0; color: #312e81; font-size: 28px; font-weight: 800; text-align: center; text-transform: capitalize;">${model.name}</h2>
-        
-        <div style="width: 100%; height: 400px; background: #ffffff; border-radius: 20px; padding: 12px; box-sizing: border-box; border: 4px solid #c7d2fe;">
-            <img src="${model.image || DEFAULT_IMAGE}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 12px;">
-        </div>
-        
-        <div style="background: linear-gradient(to bottom, #fef08a, #facc15); border: 4px solid #fde047; border-radius: 20px; padding: 20px; text-align: center;">
-            <span style="font-size: 14px; font-weight: 800; color: #854d0e; letter-spacing: 1px; text-transform: uppercase;">🏷️ Harga CMT</span>
-            <div style="font-size: 36px; font-weight: 900; color: #713f12; margin-top: 4px;">
-                Rp ${model.hargaCMT > 0 ? model.hargaCMT.toLocaleString('id-ID') : '0'}
+        // Untuk Screenshot, kita ambil foto yang sedang tampil aktif di slider, atau foto default pertama
+        const images = (model.images && model.images.length > 0) ? model.images : [DEFAULT_IMAGE];
+        const displayImg = images[currentImageIndex] || images[0];
+
+        const tempDiv = document.createElement('div');
+        tempDiv.style.width = '450px';
+        tempDiv.style.padding = '24px';
+        tempDiv.style.backgroundColor = '#e0e7ff';
+        tempDiv.style.borderRadius = '24px';
+        tempDiv.style.position = 'absolute';
+        tempDiv.style.left = '-9999px';
+        tempDiv.style.top = '0';
+        tempDiv.style.display = 'flex';
+        tempDiv.style.flexDirection = 'column';
+        tempDiv.style.gap = '20px';
+        tempDiv.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+
+        tempDiv.innerHTML = `
+            <h2 style="margin: 0; color: #312e81; font-size: 28px; font-weight: 800; text-align: center; text-transform: capitalize;">${model.name}</h2>
+            
+            <div style="width: 100%; height: 400px; background: #ffffff; border-radius: 20px; padding: 12px; box-sizing: border-box; border: 4px solid #c7d2fe;">
+                <img src="${displayImg}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 12px;">
             </div>
             
-            <div style="margin: 20px 0; background: #ffffff; padding: 16px; border-radius: 16px; border: 2px dashed #ca8a04; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
-                <span style="font-size: 13px; font-weight: 800; color: #6b21a8; letter-spacing: 1px; text-transform: uppercase;">🧵 Total Produksi</span>
-                <div style="font-size: 26px; font-weight: 900; color: #581c87; margin-top: 4px;">
-                    Rp ${currentTotalHPP.toLocaleString('id-ID')}
+            <div style="background: linear-gradient(to bottom, #fef08a, #facc15); border: 4px solid #fde047; border-radius: 20px; padding: 20px; text-align: center;">
+                <span style="font-size: 14px; font-weight: 800; color: #854d0e; letter-spacing: 1px; text-transform: uppercase;">🏷️ Harga CMT</span>
+                <div style="font-size: 36px; font-weight: 900; color: #713f12; margin-top: 4px;">
+                    Rp ${model.hargaCMT > 0 ? model.hargaCMT.toLocaleString('id-ID') : '0'}
+                </div>
+                
+                <div style="margin: 20px 0; background: #ffffff; padding: 16px; border-radius: 16px; border: 2px dashed #ca8a04; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
+                    <span style="font-size: 13px; font-weight: 800; color: #6b21a8; letter-spacing: 1px; text-transform: uppercase;">🧵 Total Produksi</span>
+                    <div style="font-size: 26px; font-weight: 900; color: #581c87; margin-top: 4px;">
+                        Rp ${currentTotalHPP.toLocaleString('id-ID')}
+                    </div>
+                </div>
+
+                <div style="background: rgba(255,255,255,0.4); padding: 12px; border-radius: 16px;">
+                    <span style="font-size: 13px; font-weight: 800; color: #854d0e; letter-spacing: 1px; text-transform: uppercase;">💖 Selisih</span>
+                    <div style="font-size: 26px; font-weight: 900; margin-top: 4px; color: ${profitColor};">
+                        Rp ${profitKotor.toLocaleString('id-ID')}
+                    </div>
                 </div>
             </div>
+        `;
 
-            <div style="background: rgba(255,255,255,0.4); padding: 12px; border-radius: 16px;">
-                <span style="font-size: 13px; font-weight: 800; color: #854d0e; letter-spacing: 1px; text-transform: uppercase;">💖 Selisih</span>
-                <div style="font-size: 26px; font-weight: 900; margin-top: 4px; color: ${profitColor};">
-                    Rp ${profitKotor.toLocaleString('id-ID')}
-                </div>
-            </div>
-        </div>
-    `;
+        document.body.appendChild(tempDiv);
 
-    document.body.appendChild(tempDiv);
-
-    html2canvas(tempDiv, { scale: 2, useCORS: true, backgroundColor: '#e0e7ff' }).then(canvas => {
-        document.body.removeChild(tempDiv);
-        
-        canvas.toBlob(async (blob) => {
-            const file = new File([blob], `${model.name}.png`, { type: 'image/png' });
+        html2canvas(tempDiv, { scale: 2, useCORS: true, backgroundColor: '#e0e7ff' }).then(canvas => {
+            document.body.removeChild(tempDiv);
             
-            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                try {
-                    await navigator.share({
-                        files: [file],
-                        title: model.name,
-                        text: 'Rincian: ' + model.name
-                    });
-                    return;
-                } catch (err) {
-                    console.log("Share dibatalkan", err);
+            canvas.toBlob(async (blob) => {
+                const file = new File([blob], `${model.name}.png`, { type: 'image/png' });
+                
+                if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: model.name,
+                            text: 'Rincian: ' + model.name
+                        });
+                        return;
+                    } catch (err) {
+                        console.log("Share dibatalkan", err);
+                    }
                 }
-            }
-            
-            // Langsung copy & buka WA tanpa pesan popup alert
-            try {
-                await navigator.clipboard.write([
-                    new ClipboardItem({ 'image/png': blob })
-                ]);
-                window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('Berikut foto rincian untuk model: ' + model.name), '_blank');
-            } catch (err) {
-                window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('Berikut foto rincian untuk model: ' + model.name), '_blank');
-            }
+                
+                try {
+                    await navigator.clipboard.write([
+                        new ClipboardItem({ 'image/png': blob })
+                    ]);
+                    window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('Berikut foto rincian untuk model: ' + model.name), '_blank');
+                } catch (err) {
+                    window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent('Berikut foto rincian untuk model: ' + model.name), '_blank');
+                }
+            });
+        }).catch(err => {
+            if(document.body.contains(tempDiv)) document.body.removeChild(tempDiv);
+            console.error(err);
         });
-    }).catch(err => {
-        if(document.body.contains(tempDiv)) document.body.removeChild(tempDiv);
-        console.error(err);
-    });
-}
+    }
 </script>
 </body>
 </html>
