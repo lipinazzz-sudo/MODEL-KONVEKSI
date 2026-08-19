@@ -65,8 +65,6 @@
     <!-- Background Dekorasi -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div class="absolute top-8 right-8 text-[110px] drop-shadow-[0_0_40px_rgba(253,224,71,0.8)] animate-pulse">🌕</div>
-        
-        <!-- Bintang -->
         <div class="absolute top-16 left-12 text-3xl animate-ping" style="animation-duration: 3s">✨</div>
         <div class="absolute top-48 right-32 text-2xl animate-pulse" style="animation-duration: 2s">⭐</div>
         <div class="absolute bottom-32 left-8 text-4xl animate-float-fast drop-shadow-md">🌟</div>
@@ -78,8 +76,6 @@
         <div class="absolute top-2/3 left-1/4 text-xl animate-pulse" style="animation-duration: 1.8s">🌟</div>
         <div class="absolute top-20 right-1/2 text-2xl animate-float-fast">✨</div>
         <div class="absolute bottom-10 right-1/2 text-4xl animate-ping" style="animation-duration: 4.5s">⭐</div>
-
-        <!-- Awan -->
         <div class="absolute top-20 left-[-20px] text-8xl opacity-80 animate-float-slow drop-shadow-lg">☁️</div>
         <div class="absolute top-1/4 right-[-30px] text-7xl opacity-90 animate-float-slow" style="animation-delay: 2s;">☁️</div>
         <div class="absolute bottom-20 right-10 text-6xl opacity-70 animate-float-fast drop-shadow-lg">☁️</div>
@@ -153,7 +149,7 @@
         </div>
     </div>
 
-    <!-- Navigasi Bawah (Diperbarui dengan Elemen Elegan) -->
+    <!-- Navigasi Bawah -->
     <nav class="mt-8 flex items-center gap-5 z-30 bg-white/90 backdrop-blur-lg border-4 border-white p-2 rounded-full shadow-[0_10px_20px_rgba(49,46,129,0.15)] sticky bottom-4 transition-all duration-300">
         <button type="button" onclick="changeSlide('prev')" class="btn-3d w-14 h-14 md:w-16 md:h-12 flex items-center justify-center rounded-full border-2 border-indigo-200 bg-indigo-50 text-indigo-600 hover:bg-indigo-100 shadow-[0_4px_0_#c7d2fe] transition-all">
             <span class="text-xl font-bold select-none text-indigo-500 drop-shadow-sm flex items-center gap-1"> ❮</span>
@@ -176,7 +172,6 @@
     let compareSlideIndex = null; 
     let compareActive = false; 
     
-    // Variabel untuk Slider Gambar Produk
     let autoPlayInterval = null;
     let currentImageIndex = 0;
     
@@ -197,7 +192,6 @@
         setTimeout(() => { toast.classList.remove('toast-show'); toast.classList.add('toast-enter'); setTimeout(() => toast.remove(), 300); }, 3000);
     };
 
-    // LOGIKA DRAG & ZOOM
     let isZoomed = false, scaleValue = 1, isDragging = false, dragMoved = false; 
     let startX, startY, translateX = 0, translateY = 0;
 
@@ -352,7 +346,6 @@
 
     window.manualRefresh = function() { fetchSheetData(true); };
 
-    // ======= LOGIKA MASTER TABLE =======
     window.toggleViewMode = function() {
         if (database.length === 0) return;
         isTableView = !isTableView;
@@ -361,7 +354,6 @@
         stopAutoPlay();
         
         const nav = document.querySelector('nav'); 
-
         const container = document.getElementById('slideContainer');
         container.classList.add('slide-hidden');
         
@@ -384,7 +376,6 @@
 
     function renderMasterTable(searchQuery = '') {
         const container = document.getElementById('slideContainer');
-        
         let filteredDatabase = database;
         if (searchQuery.trim()) {
             filteredDatabase = database.filter(m => m.name.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -450,7 +441,6 @@
         }, 400);
     };
 
-    // Fungsi Baru untuk Langsung Memilih dari List Dropdown saat Mode Banding
     window.selectCompareModel = function(idx) {
         compareSlideIndex = idx;
         document.getElementById('searchInput').placeholder = "Cari model...";
@@ -653,8 +643,8 @@
                     <h2 class="text-xl md:text-2xl font-cute font-bold text-indigo-900 drop-shadow-sm">${model.name} vs ...</h2>
                 `;
 
-                // --- Generate HTML untuk List Semua Model (Kecuali Model yang Sedang Dipilih) ---
-                let allModelsListHtml = '<div class="w-full mt-2 flex flex-col gap-2 overflow-y-auto pr-1" style="scrollbar-width: thin;">';
+                // --- PEMBERIAN BATAS TINGGI (max-h) & OVERFLOW AGAR BISA SCROLL RAPI DI DALAM KONTAINER ---
+                let allModelsListHtml = '<div class="w-full flex-1 mt-2 flex flex-col gap-2 overflow-y-auto pr-2 max-h-[350px] md:max-h-[450px]" style="scrollbar-width: thin;">';
                 database.forEach((m, idx) => {
                     if (idx !== currentSlideIndex) {
                         allModelsListHtml += `
@@ -672,7 +662,7 @@
                         ${renderSingleModelBlock(model, false)}
                         
                         <!-- Placeholder Pembanding (Tampilan Scroll Model) -->
-                        <div class="flex-1 min-w-0 bg-white border-4 border-dashed border-indigo-200 rounded-[1.5rem] p-3 md:p-5 flex flex-col relative shadow-inner max-h-full">
+                        <div class="flex-1 min-w-0 bg-white border-4 border-dashed border-indigo-200 rounded-[1.5rem] p-3 md:p-5 flex flex-col relative shadow-inner">
                             <div class="flex justify-between items-center mb-2 pb-2 border-b-2 border-indigo-50 shrink-0">
                                 <h4 class="text-xs md:text-sm font-cute font-black text-indigo-900 uppercase flex items-center gap-2">🔍 Pilih Model Kedua</h4>
                                 <button onclick="closeSplitView()" class="bg-red-500 hover:bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-md transition-all">
@@ -781,28 +771,23 @@
                 <!-- Kiri: Gambar & Harga CMT -->
                 <div class="w-full md:w-2/5 flex flex-col gap-4">
                     
-                    <!-- AREA FOTO SLIDER -->
                     <div class="w-full h-64 md:h-[380px] bg-indigo-50 border-4 border-indigo-100 rounded-[2rem] overflow-hidden flex items-center justify-center relative shadow-inner group" onmouseenter="stopAutoPlay()" onmouseleave="startAutoPlay()">
                         <span class="absolute top-4 right-4 bg-white/90 text-pink-500 text-[10px] font-cute font-bold tracking-widest px-4 py-2 rounded-full border-2 border-pink-200 backdrop-blur-md z-20 shadow-md">🔍 TAP ZOOM</span>
                         
-                        <!-- Track Container Gambar -->
                         <div id="imageTrack" class="w-full h-full flex transition-transform duration-500 ease-in-out relative z-10" style="transform: translateX(0%);">
                             ${trackHtml}
                         </div>
 
-                        <!-- Panah Navigasi Slider Kiri / Kanan -->
                         ${images.length > 1 ? `
                             <button onclick="changeProductImage(currentImageIndex - 1); stopAutoPlay(); startAutoPlay(); event.stopPropagation();" class="absolute left-3 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-indigo-500 w-10 h-10 flex items-center justify-center rounded-full shadow-lg md:opacity-0 group-hover:opacity-100 transition-opacity border-2 border-indigo-100 font-black text-lg">❮</button>
                             <button onclick="changeProductImage(currentImageIndex + 1); stopAutoPlay(); startAutoPlay(); event.stopPropagation();" class="absolute right-3 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-indigo-500 w-10 h-10 flex items-center justify-center rounded-full shadow-lg md:opacity-0 group-hover:opacity-100 transition-opacity border-2 border-indigo-100 font-black text-lg">❯</button>
                             
-                            <!-- Titik Indikator Bawah -->
                             <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 z-30">
                                 ${dotsHtml}
                             </div>
                         ` : ''}
                     </div>
                     
-                    <!-- KOTAK HARGA CMT BISA DIKLIK -->
                     <div onclick="selectModelFromTable(${currentSlideIndex})" class="bg-gradient-to-b from-yellow-200 to-yellow-400 border-4 border-yellow-300 rounded-[2rem] p-5 shadow-[0_8px_0_#ca8a04] relative overflow-hidden text-center flex flex-col justify-center transform transition hover:-translate-y-1 cursor-pointer group" title="Bandingkan Model Ini">
                         <span class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-[10px] bg-white/90 px-2 py-0.5 rounded-full text-yellow-800 font-cute font-bold shadow-sm backdrop-blur-sm z-10 border border-yellow-200">⚖️ Bandingkan</span>
                         <span class="text-xs font-bold uppercase tracking-widest text-yellow-800 block mb-1">🏷️ Harga CMT</span>
