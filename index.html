@@ -1026,5 +1026,57 @@
         });
     }
 </script>
+    <!-- Widget Pemutar Musik Tim Produksi -->
+<div id="music-player-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); padding: 8px 14px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.12); border: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 10px; font-family: system-ui, -apple-system, sans-serif; font-size: 13px;">
+  
+  <!-- Element Audio Internal -->
+  <audio id="bgMusic" src="https://ice1.somafm.com/groovesalad-128-mp3" preload="none"></audio>
+
+  <!-- Tombol Utama Putar / Jeda -->
+  <button id="musicToggleBtn" onclick="togglePlayMusic()" style="background: #4F46E5; color: white; border: none; padding: 7px 14px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease;">
+    <span id="musicIcon">▶</span> <span id="musicText">Putar Radio Tim</span>
+  </button>
+
+  <!-- Pilihan Genre Musik -->
+  <select id="musicSelect" onchange="changeMusicSource(this.value)" style="border: none; background: transparent; font-size: 12px; color: #374151; font-weight: 500; cursor: pointer; outline: none; padding-right: 5px;">
+    <option value="https://ice1.somafm.com/groovesalad-128-mp3">Lo-Fi / Chill Ambient</option>
+    <option value="https://ice1.somafm.com/lush-128-mp3">Acoustic & Mellow</option>
+    <option value="https://ice1.somafm.com/deepspaceone-128-mp3">Deep Focus / Instrument</option>
+  </select>
+</div>
+
+<script>
+function togglePlayMusic() {
+  const audio = document.getElementById('bgMusic');
+  const btnText = document.getElementById('musicText');
+  const btnIcon = document.getElementById('musicIcon');
+  const btn = document.getElementById('musicToggleBtn');
+
+  if (audio.paused) {
+    audio.play().then(() => {
+      btnText.innerText = 'Jeda Musik';
+      btnIcon.innerText = '⏸';
+      btn.style.background = '#059669'; // Berubah warna jadi hijau saat musik berjalan
+    }).catch(err => {
+      console.log("Audio Play Error: ", err);
+    });
+  } else {
+    audio.pause();
+    btnText.innerText = 'Putar Radio Tim';
+    btnIcon.innerText = '▶';
+    btn.style.background = '#4F46E5'; // Berubah kembali ke warna semula
+  }
+}
+
+function changeMusicSource(newUrl) {
+  const audio = document.getElementById('bgMusic');
+  const isPlaying = !audio.paused;
+  
+  audio.src = newUrl;
+  if (isPlaying) {
+    audio.play();
+  }
+}
+</script>
 </body>
 </html>
