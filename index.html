@@ -58,6 +58,9 @@
         .btn-3d:active { transform: translateY(4px); box-shadow: 0 0 0 transparent !important; }
         
         .img-dot { transition: all 0.3s ease; }
+
+        #music-player-widget { font-family: 'Nunito', sans-serif !important; }
+        #music-player-widget select:focus { outline: none; }
     </style>
 </head>
 <body class="bg-gradient-to-b from-blue-400 via-blue-200 to-orange-100 text-indigo-950 min-h-screen flex flex-col justify-start items-center p-4 md:p-6 overflow-x-hidden relative selection:bg-pink-300 selection:text-pink-900">
@@ -165,15 +168,36 @@
     </nav>
 
    <script>
+    // Data -> state -> render. Keep shared business rules in helper functions above.
     const GOOGLE_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1L24DsxwQ0uLxblnKzJ3YzH91gnsXuEhb8OVcRsH3WNo/edit?gid=0#gid=0";
 
-    let database = [], highlightedIndex = -1, currentSlideIndex = 0, currentTotalHPP = 0;
-    let isTableView = false; 
-    let compareSlideIndex = null; 
-    let compareActive = false; 
-    
-    let autoPlayInterval = null;
-    let currentImageIndex = 0;
+    const state = {
+        database: [],
+        highlightedIndex: -1,
+        currentSlideIndex: 0,
+        isTableView: false,
+        compareSlideIndex: null,
+        compareActive: false,
+        autoPlayInterval: null,
+        currentImageIndex: 0,
+    };
+
+    const getCurrentModel = () => state.database[state.currentSlideIndex] || null;
+    const getTotalHPP = (model) => (model?.items || []).reduce((sum, item) => sum + item.price, 0);
+    const getProfitKotor = (model) => (model?.hargaCMT || 0) - getTotalHPP(model);
+
+    // Backward-compatible aliases for the inline event handlers already used by the UI.
+    // Keep the application state itself in one place.
+    Object.defineProperties(window, {
+        database: { get: () => state.database, set: (value) => { state.database = value; } },
+        highlightedIndex: { get: () => state.highlightedIndex, set: (value) => { state.highlightedIndex = value; } },
+        currentSlideIndex: { get: () => state.currentSlideIndex, set: (value) => { state.currentSlideIndex = value; } },
+        isTableView: { get: () => state.isTableView, set: (value) => { state.isTableView = value; } },
+        compareSlideIndex: { get: () => state.compareSlideIndex, set: (value) => { state.compareSlideIndex = value; } },
+        compareActive: { get: () => state.compareActive, set: (value) => { state.compareActive = value; } },
+        autoPlayInterval: { get: () => state.autoPlayInterval, set: (value) => { state.autoPlayInterval = value; } },
+        currentImageIndex: { get: () => state.currentImageIndex, set: (value) => { state.currentImageIndex = value; } }
+    });
     
     const orderedCategories = ["OBRAS", "JAHIT", "KAM", "KARET", "BIS", "NECCI", "PACKING"];
     const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=600&auto=format&fit=crop"; 
@@ -388,7 +412,7 @@
 
         let rows = filteredDatabase.map((model) => {
             const originalIndex = database.findIndex(m => m.name === model.name);
-            const totalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
+            const totalHPP = getTotalHPP(model);
             const selisih = model.hargaCMT - totalHPP;
             
             const statusSelisih = model.hargaCMT === 0 ? 
@@ -469,7 +493,7 @@
             }
         });
         text += `=========================\n`;
-        text += `*💖 TOTAL PRODUKSI : Rp ${currentTotalHPP.toLocaleString('id-ID')}*\n`;
+        text += `*💖 TOTAL PRODUKSI : Rp ${getTotalHPP(model).toLocaleString('id-ID')}*\n`;
         
         if (model.hargaCMT > 0) { text += `*🎀 HARGA CMT : Rp ${model.hargaCMT.toLocaleString('id-ID')}*\n`; }
         
@@ -513,7 +537,7 @@
     };
 
     function renderSingleModelBlock(model, isCompareColumn = false) {
-        const totalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
+        const totalHPP = getTotalHPP(model);
         const currentImg = (model.images && model.images.length > 0) ? model.images[0] : DEFAULT_IMAGE;
         
         let rowsHtml = '';
@@ -633,7 +657,7 @@
         if (currentSlideIndex >= database.length) currentSlideIndex = database.length - 1;
         
         const model = database[currentSlideIndex];
-        currentTotalHPP = model.items.reduce((sum, item) => sum + item.price, 0);
+        const currentTotalHPP = getTotalHPP(model);
 
         // ==== TAMPILAN BANDING ====
         if (compareActive) {
@@ -751,7 +775,7 @@
         });
 
         const textHargaCMT = model.hargaCMT > 0 ? `Rp ${model.hargaCMT.toLocaleString('id-ID')}` : "Belum Set";
-        const profitKotor = model.hargaCMT - currentTotalHPP;
+        const profitKotor = getProfitKotor(model);
         let profitHtml = '';
         
         if (model.hargaCMT > 0) {
@@ -832,7 +856,7 @@
                             <button onclick="sendToWhatsApp()" class="flex-1 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white text-[10px] md:text-xs font-cute font-extrabold uppercase tracking-wider py-3.5 px-2 rounded-[1.5rem] shadow-md transition-all flex items-center justify-center gap-1 border-2 border-emerald-600 whitespace-nowrap">
                                 💬 Kirim WA
                             </button>
-                            <button onclick="shareScreenshotToWA()" class="flex-1 bg-pink-500 hover:bg-pink-600 active:scale-95 text-white text-[10px] md:text-xs font-cute font-extrabold uppercase tracking-wider py-3.5 px-2 rounded-[1.5rem] shadow-md transition-all flex items-center justify-center gap-1 border-2 border-pink-600 whitespace-nowrap">
+                            <button onclick="shareScreenshotToWA(event)" class="flex-1 bg-pink-500 hover:bg-pink-600 active:scale-95 text-white text-[10px] md:text-xs font-cute font-extrabold uppercase tracking-wider py-3.5 px-2 rounded-[1.5rem] shadow-md transition-all flex items-center justify-center gap-1 border-2 border-pink-600 whitespace-nowrap">
                                 📸 Foto WA
                             </button>
                         </div>
@@ -922,9 +946,9 @@
 
     fetchSheetData();
 
-    function shareScreenshotToWA() {
+    function shareScreenshotToWA(event) {
         if (typeof html2canvas === 'undefined') {
-            const btn = event.currentTarget;
+            const btn = event?.currentTarget;
             const originalText = btn.innerHTML;
             btn.innerHTML = "⏳ Memuat...";
             
@@ -932,7 +956,7 @@
             script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
             script.onload = () => {
                 btn.innerHTML = originalText;
-                shareScreenshotToWA();
+                shareScreenshotToWA(event);
             };
             document.head.appendChild(script);
             return;
@@ -1026,57 +1050,82 @@
         });
     }
 </script>
-    <!-- Widget Pemutar Musik Tim Produksi -->
-<div id="music-player-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); padding: 8px 14px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.12); border: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 10px; font-family: system-ui, -apple-system, sans-serif; font-size: 13px;">
-  
-  <!-- Element Audio Internal -->
-  <audio id="bgMusic" src="https://ice1.somafm.com/groovesalad-128-mp3" preload="none"></audio>
+    <!-- Pemutar BGM Lokal -->
+    <div id="music-player-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); padding: 8px 14px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.12); border: 1px solid rgba(0,0,0,0.08); display: flex; align-items: center; gap: 10px; font-family: system-ui, -apple-system, sans-serif; font-size: 13px;">
+      <audio id="bgMusic" src="audio/bgm-1.mp3" preload="metadata"></audio>
 
-  <!-- Tombol Utama Putar / Jeda -->
-  <button id="musicToggleBtn" onclick="togglePlayMusic()" style="background: #4F46E5; color: white; border: none; padding: 7px 14px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease;">
-    <span id="musicIcon">▶</span> <span id="musicText">Putar Radio Tim</span>
-  </button>
+      <button id="musicToggleBtn" type="button" onclick="togglePlayMusic()" style="background: #4F46E5; color: white; border: none; padding: 7px 14px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 12px; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease;">
+        <span id="musicIcon">▶</span> <span id="musicText">Putar BGM</span>
+      </button>
 
-  <!-- Pilihan Genre Musik -->
-  <select id="musicSelect" onchange="changeMusicSource(this.value)" style="border: none; background: transparent; font-size: 12px; color: #374151; font-weight: 500; cursor: pointer; outline: none; padding-right: 5px;">
-    <option value="https://ice1.somafm.com/groovesalad-128-mp3">Lo-Fi / Chill Ambient</option>
-    <option value="https://ice1.somafm.com/lush-128-mp3">Acoustic & Mellow</option>
-    <option value="https://ice1.somafm.com/deepspaceone-128-mp3">Deep Focus / Instrument</option>
-  </select>
-</div>
+      <select id="musicSelect" onchange="changeMusicSource(this.value)" style="border: none; background: transparent; font-size: 12px; color: #374151; font-weight: 500; cursor: pointer; outline: none; padding-right: 5px;">
+        <option value="audio/bgm-1.mp3">BGM 1</option>
+        <option value="audio/bgm-2.mp3">BGM 2</option>
+        <option value="audio/bgm-3.mp3">BGM 3</option>
+      </select>
+    </div>
 
-<script>
-function togglePlayMusic() {
-  const audio = document.getElementById('bgMusic');
-  const btnText = document.getElementById('musicText');
-  const btnIcon = document.getElementById('musicIcon');
-  const btn = document.getElementById('musicToggleBtn');
+    <script>
+    const MUSIC_VOLUME = 0.35;
 
-  if (audio.paused) {
-    audio.play().then(() => {
-      btnText.innerText = 'Jeda Musik';
-      btnIcon.innerText = '⏸';
-      btn.style.background = '#059669'; // Berubah warna jadi hijau saat musik berjalan
-    }).catch(err => {
-      console.log("Audio Play Error: ", err);
+    function syncMusicButton() {
+      const audio = document.getElementById('bgMusic');
+      const btnText = document.getElementById('musicText');
+      const btnIcon = document.getElementById('musicIcon');
+      const btn = document.getElementById('musicToggleBtn');
+      if (!audio || !btnText || !btnIcon || !btn) return;
+
+      const playing = !audio.paused;
+      btnText.innerText = playing ? 'Jeda BGM' : 'Putar BGM';
+      btnIcon.innerText = playing ? '⏸' : '▶';
+      btn.style.background = playing ? '#059669' : '#4F46E5';
+    }
+
+    function togglePlayMusic() {
+      const audio = document.getElementById('bgMusic');
+      if (!audio) return;
+
+      audio.volume = MUSIC_VOLUME;
+      if (audio.paused) {
+        audio.play().then(syncMusicButton).catch(err => {
+          console.error('Audio Play Error:', err);
+          syncMusicButton();
+        });
+      } else {
+        audio.pause();
+        syncMusicButton();
+      }
+    }
+
+    function changeMusicSource(newUrl) {
+      const audio = document.getElementById('bgMusic');
+      if (!audio || !newUrl) return;
+
+      const wasPlaying = !audio.paused;
+      audio.pause();
+      audio.src = newUrl;
+      audio.load();
+      audio.volume = MUSIC_VOLUME;
+
+      if (wasPlaying) {
+        audio.play().then(syncMusicButton).catch(err => {
+          console.error('Audio source error:', err);
+          syncMusicButton();
+        });
+      } else {
+        syncMusicButton();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const audio = document.getElementById('bgMusic');
+      if (audio) {
+        audio.volume = MUSIC_VOLUME;
+        audio.addEventListener('play', syncMusicButton);
+        audio.addEventListener('pause', syncMusicButton);
+        audio.addEventListener('ended', syncMusicButton);
+      }
     });
-  } else {
-    audio.pause();
-    btnText.innerText = 'Putar Radio Tim';
-    btnIcon.innerText = '▶';
-    btn.style.background = '#4F46E5'; // Berubah kembali ke warna semula
-  }
-}
-
-function changeMusicSource(newUrl) {
-  const audio = document.getElementById('bgMusic');
-  const isPlaying = !audio.paused;
-  
-  audio.src = newUrl;
-  if (isPlaying) {
-    audio.play();
-  }
-}
-</script>
+    </script>
 </body>
 </html>
